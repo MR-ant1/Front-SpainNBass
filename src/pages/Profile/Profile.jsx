@@ -8,10 +8,11 @@ import { useEffect, useState } from 'react';
 import { CInput } from '../../common/CInput/CInput';
 import { validate } from '../../utils/validations';
 import { CButton } from '../../common/CButton/CButton';
-import { GetMyPosts, GetProfile, UpdateCall } from '../../services/apiCalls';
+import { GetProfile, UpdateCall } from '../../services/api.Calls';
 
-import {  toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
 
 
 
@@ -21,7 +22,7 @@ export const Profile = () => {
 
     const [loadedData, setLoadedData] = useState(false)
 
-    const [posts, setPosts] = useState([])
+    // const [posts, setPosts] = useState([])
 
     const reduxUser = useSelector(userData)
 
@@ -78,8 +79,10 @@ export const Profile = () => {
             try {
                 const fetched = await GetProfile(reduxUser.tokenData.token)
                 setUser({
-                    firstName: fetched.data.firstName,
-                    lastName: fetched.data.lastName,
+                    nickname: fetched.data.nickname,
+                    favSubgenre: fetched.data.favSubgenre,
+                    preference: fetched.data.preference,
+                    turntable: fetched.data.turntable,
                     email: fetched.data.email
                 })
 
@@ -96,28 +99,28 @@ export const Profile = () => {
 
     useEffect(() => {
         toast.dismiss()
-        userError.firstNameError &&
-            toast.warn(userError.firstNameError)
-        userError.lastNameError &&
-            toast.warn(userError.lastNameError)
+        userError.nicknameError &&
+            toast.warn(userError.nicknameError)
+        userError.turntableError &&
+            toast.warn(userError.turntableError)
     }, [userError])
 
-    useEffect(() => {
-        const myPosts = async () => {
-            try {
-                const fetched = await GetMyPosts(reduxUser.tokenData.token)
+    // useEffect(() => {
+    //     const myPosts = async () => {
+    //         try {
+    //             const fetched = await GetMyPosts(reduxUser.tokenData.token)
 
-                setPosts(fetched.data)
+    //             setPosts(fetched.data)
 
-            } catch (error) {
-                console.log(error)
-            }
-        }
+    //         } catch (error) {
+    //             console.log(error)
+    //         }
+    //     }
 
-        if (reduxUser.tokenData.token && posts.length === 0) {
-            myPosts()
-        }
-    }, [posts])
+    //     if (reduxUser.tokenData.token && posts.length === 0) {
+    //         myPosts()
+    //     }
+    // }, [posts])
 
 
     const UpdateProfile = async () => {
@@ -133,7 +136,7 @@ export const Profile = () => {
                 toast.success(fetched.message)
             } else toast.error(fetched.message)
 
-            setWrite("disabled")  
+            setWrite("disabled")
         } catch (error) {
             console.log(error.message)
         }
@@ -163,32 +166,67 @@ export const Profile = () => {
         <div className="profileDesign">
             {loadedData ? (
                 <div className='inputsContainer'>
-                    <div className='editInstruction'>click sobre un post para editarlo y sobre habilitar para cambiar tu información personal</div> 
+                    <div className='editInstruction'>click sobre un post para editarlo y sobre habilitar para cambiar tu información personal</div>
                     <CInput
-                        className={`inputDesign ${userError.firstNameError !== "" ? "inputDesignError" : ""
+                        className={`inputDesign ${userError.nicknameError !== "" ? "inputDesignError" : ""
                             }`}
                         type={"text"}
-                        name={"firstName"}
+                        name={"nickname"}
                         disabled={write}
-                        value={user.firstName || ""}
+                        value={user.nickname || ""}
+                        changeFunction={inputHandler}
+                        blurFunction={checkError}
+                    />
+
+                    <select
+                        className={`inputDesign ${userError.favSubgenreError !== "" ? "inputDesignError" : ""
+                            }`}
+                        type={"text"}
+                        name={"favSubgenre"}
+                        disabled={write}
+                        value={user.favSubgenre || ""}
+                        onChange={inputHandler}
+                    >
+                        <option value="">Elige un subgenero</option>
+                        <option value="Club dnb">Club dnb</option>
+                        <option value="RaggaJungle">RaggaJungle</option>
+                        <option value="Rollers">Rollers</option>
+                        <option value="Liquid dnb">Liquid dnb</option>
+                        <option value="Jump Up">Jump Up</option>
+                        <option value="NeuroFunk">NeuroFunk</option>
+                    </select>
+
+
+                    <select
+                        className={`inputDesign ${userError.preferenceError !== "" ? "inputDesignError" : ""
+                            }`}
+                        type={"text"}
+                        name={"preference"}
+                        disabled={write}
+                        value={user.preference || ""}
+                        onChange={inputHandler}
+                    >
+                        <option value="">¿Cual es tu rol?</option>
+                        <option value="dnb Lover">dnb Fan</option>
+                        <option value="DJ">DJ</option>
+                        <option value="Producer">Producer</option>
+                        <option value="DJ/Producer">DJ/Producer
+                        </option>
+                    </select>
+
+                        <CInput
+                        className={`inputDesign ${userError.turntableError !== "" ? "inputDesignError" : ""
+                            }`}
+                        type={"textarea"}
+                        name={"turntable"}
+                        disabled={write}
+                        value={user.turntable || ""}
                         changeFunction={inputHandler}
                         blurFunction={checkError}
                     />
 
                     <CInput
-                        className={`inputDesign ${userError.lastNameError !== "" ? "inputDesignError" : ""
-                            }`}
-                        type={"text"}
-                        name={"lastName"}
-                        disabled={write}
-                        value={user.lastName || ""}
-                        changeFunction={inputHandler}
-                        blurFunction={checkError}
-                    />
-
-                    <CInput
-                        className={`inputDesign ${userError.emailError !== "" ? "inputDesignError" : ""
-                            }`}
+                        className={"inputDesign"}
                         type={"email"}
                         name={"email"}
                         disabled={true}
@@ -199,7 +237,7 @@ export const Profile = () => {
 
                     <CButton
                         className={write === "" ? " updateButton" : "allowButton"}
-                        title={write === "" ? "Actualizar" : <img src="img/EditIcon.png" alt="editIcon"></img>}
+                        title={write === "" ? "Actualizar" : "Habilitar"}
                         emitFunction={write === "" ? UpdateProfile : () => setWrite("")}
                     />
 
@@ -207,7 +245,7 @@ export const Profile = () => {
             ) : (
                 <div>loading</div>
             )}
-            </div>)
-            
+        </div>)
+
 
 }

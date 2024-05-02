@@ -56,3 +56,54 @@ export const loginCall = async (user) => {
         return error;
     }
   }
+
+  export const GetProfile = async (token) => {
+    const clientData = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`          //adding token in authorization to pass the auth middleware in backend
+        }
+    }
+    
+    try {
+        const response = await fetch(`${root}users/profile`, clientData)
+      
+        const data = await response.json();
+  
+        if (!data.success) {
+            throw new Error(data.message)
+        }
+  
+        return data
+  
+    } catch (error) {
+        return error
+    }
+  }
+  
+  export const UpdateCall = async (token, user) => {
+    const clientData = {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`        
+        },
+        body: JSON.stringify(user)
+    }
+  
+    try {
+        const response = await fetch(`${root}users/profile`, clientData)
+
+        const data = await response.json();
+        console.log(data)
+        if (!data.success) {
+            throw new Error(data.message)
+        }
+  
+        return data
+  
+    } catch (error) {
+        return error
+    }
+  }

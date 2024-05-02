@@ -113,7 +113,7 @@ export const Register = () => {
             />
 
             <select
-                className={`inputDesign ${userError.lastNameError !== "" ? "inputDesignError" : ""
+                className={`inputDesign ${userError.favSubgenreError !== "" ? "inputDesignError" : ""
                     }`}
                 type={"text"}
                 name={"favSubgenre"}
@@ -131,7 +131,7 @@ export const Register = () => {
 
 
             <select 
-                className={`inputDesign ${userError.favSubgenreError !== "" ? "inputDesignError" : ""
+                className={`inputDesign ${userError.preferenceError !== "" ? "inputDesignError" : ""
                     }`}
                 type={"text"}
                 name={"preference"}

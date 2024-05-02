@@ -27,9 +27,9 @@ export const Header = () => {
                 reduxUser.tokenData.user.role === 'super_admin' ? (
                     <div className='navigatorDesign'>
                         <Navigator
-                            path='/superAdmin' title='admin area' />
+                            path='/superAdmin' title='super admin' />
                         <Navigator
-                            path='/profile' title={reduxUser.tokenData.user} />
+                            path='/profile' title={reduxUser?.tokenData?.user.nickname} />
                         <div
                             className='logoutDesign'
                             onClick={() => dispatch(logout({ tokenData: "" }))}>
@@ -40,7 +40,7 @@ export const Header = () => {
 
                     <div className='navigatorDesign'>
                         <Navigator
-                            path='/profile' title={reduxUser.tokenData.user.authorFirstName} />
+                            path='/profile' title={reduxUser.tokenData.user.nickname} />
                         <div
                             className='logoutDesign'
                             onClick={() => dispatch(logout({ tokenData: "" }))}>
