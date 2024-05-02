@@ -1,4 +1,6 @@
+
 const root = "http://localhost:4001/api/"
+import { logout } from "../app/Slices/userSlice";
 
 export const loginCall = async (user) => {
 
