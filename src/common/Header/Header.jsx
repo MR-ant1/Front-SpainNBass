@@ -3,7 +3,7 @@ import './Header.css'
 import { Navigator } from '../Navigator/Navigator'
 import { useSelector, useDispatch } from "react-redux";
 import { userData, logout } from "../../app/Slices/userSlice";
-import { IconNavigator } from '../IconNavigator/IconNavigator';
+import { LogoNavigator } from '../LogoNavigator/LogoNavigator';
 
 
 export const Header = () => {
@@ -16,7 +16,7 @@ export const Header = () => {
         <div className="headerDesign">
             <div className='titleRow'>
             <div className='webTitle'>
-                <IconNavigator
+                <LogoNavigator
                 path="/"
                 title="INICIO"
                 />
@@ -29,7 +29,7 @@ export const Header = () => {
                         <Navigator
                             path='/superAdmin' title='admin area' />
                         <Navigator
-                            path='/profile' title={reduxUser.tokenData.user.authorFirstName} />
+                            path='/profile' title={reduxUser.tokenData.user} />
                         <div
                             className='logoutDesign'
                             onClick={() => dispatch(logout({ tokenData: "" }))}>

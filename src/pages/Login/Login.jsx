@@ -8,6 +8,9 @@ import { validate } from '../../utils/validations'
 import { toast } from 'react-toastify'
 import { loginCall } from '../../services/api.Calls'
 import { decodeToken } from 'react-jwt'
+import { CInput } from '../../common/CInput/CInput'
+import { CButton } from '../../common/CButton/CButton'
+import { RedirectButton } from '../../common/RedirButton/RedirButton'
 
 export const Login = () => {
     const navigate = useNavigate()
@@ -87,4 +90,55 @@ export const Login = () => {
             console.log(error.message);
         }
     }
+
+    return (
+        <div className="loginDesign">
+            <CInput
+                className={`inputDesign ${userError.emailError !== "" ? "inputDesignError" : ""
+                    }`}
+                type={"email"}
+                name={"email"}
+                placeholder={"email"}
+                value={user.email || ""}
+                changeFunction={inputHandler}
+                blurFunction={checkError}
+            />
+
+            <CInput
+                className={`inputDesign ${userError.passwordError !== "" ? "inputDesignError" : ""
+                    }`}
+                type={"password"}
+                name={"password"}
+                placeholder={"password"}
+                value={user.password || ""}
+                changeFunction={inputHandler}
+                blurFunction={checkError}
+            />
+
+            <CButton
+                className={"cbuttonDesign"}
+                title={"Login"}
+                emitFunction={(loginUser)}
+            />
+         
+            <div className="redirectRegisterMsg">Si no dispones de una cuenta, haz click aqui abajo</div>
+            <RedirectButton
+                className={"RedirectButtonDesign"}
+                title={"Register"}
+                emitFunction={() => navigate("/register")}
+            />
+            {/* <ToastContainer
+                position="top-center"
+                autoClose={1000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="dark"
+            /> */}
+        </div>
+    )
 }
