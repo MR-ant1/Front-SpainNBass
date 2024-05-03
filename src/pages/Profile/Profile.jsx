@@ -35,7 +35,7 @@ export const Profile = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if (!reduxUser.tokenData.token) {
+        if (!reduxUser?.tokenData?.token) {
             navigate("/")
         }
     }, [reduxUser])
@@ -74,8 +74,8 @@ export const Profile = () => {
 
     const manageDetail = (post) => {
         dispatch(updateDetail({ detail: post }));
+        
         navigate("/postDetail");
-        console.log(post)
     };
 
     useEffect(() => {
@@ -88,7 +88,8 @@ export const Profile = () => {
                     favSubgenre: fetched.data.favSubgenre,
                     preference: fetched.data.preference,
                     turntable: fetched.data.turntable,
-                    email: fetched.data.email
+                    email: fetched.data.email,
+                    createdAt: fetched.data.createdAt,
                 })
 
                 setLoadedData(true)
@@ -240,6 +241,15 @@ export const Profile = () => {
                         changeFunction={inputHandler}
                         blurFunction={checkError}
                     />
+                    <CInput
+                        className={"inputDesign"}
+                        type={"text"}
+                        name={"createdAt"}
+                        disabled={true}
+                        value={"Fecha de creación:" + user.createdAt}
+                        changeFunction={inputHandler}
+                        blurFunction={checkError}
+                    />
 
                     <CButton
                         className={write === "" ? " updateButton" : "allowButton"}
@@ -261,10 +271,12 @@ export const Profile = () => {
 
                             <div className='myPostCard' key={post.id}>
                                 <PostCard
-                                    nickname={post.ownerNickname}
+                                    nickname={post.owner.nickname}
                                     title={post.title.length > 20 ? post.title.substring(0, 20) : post.title}
                                     description={post.description.length > 40 ? post.description.substring(0, 40) + "..." : post.description}
                                     picUrl={post.picUrl}
+                                    createdAt={"Creado:" + post.createdAt}
+                                    updatedAt={"Edit:" + post.updatedAt}
                                     clickFunction={() => manageDetail(post)}
                                 />
                                 {/* <div className='deleteButton'>

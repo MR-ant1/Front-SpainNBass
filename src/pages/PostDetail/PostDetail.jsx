@@ -8,7 +8,7 @@ import { CButton } from "../../common/CButton/CButton";
 import { CInput } from "../../common/CInput/CInput";
 import { userData } from "../../app/Slices/userSlice";
 import { validate } from "../../utils/validations";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 // import { UpdatePostCall } from "../../services/apiCalls";
 // import { useDispatch } from "react-redux";
@@ -26,17 +26,18 @@ export const PostDetail = () => {
 //   const [isLikedBefore, setIsLikedBefore] = useState(detailRdx.detail?.likes.includes(reduxUser.tokenData.userId))
 
   const [post, setPost] = useState({
-    postId: detailRdx.detail.id,
-    title: detailRdx.detail.title,
-    description: detailRdx?.detail.description,
-    topic: detailRdx?.detail.topic,
-    picUrl: detailRdx?.detail.picUrl,
-    ownerId: detailRdx?.detail.ownerId,
-    ownerNickname: detailRdx?.detail.ownerNickname,
-    createdAt: detailRdx?.detail.creatdedAt
+    id: detailRdx?.detail?.id,
+    title: detailRdx?.detail?.title,
+    description: detailRdx?.detail?.description,
+    topic: detailRdx?.detail?.topic,
+    picUrl: detailRdx?.detail?.picUrl,
+    ownerId: detailRdx?.detail?.ownerId,
+    ownerNickname: detailRdx?.detail?.ownerNickname,
+    createdAt: detailRdx?.detail?.createdAt
   })
-  
 
+  console.log(post)
+  
   const [postError, setPostError] = useState({
     titleError: "",
     descriptionError: "",
@@ -47,18 +48,18 @@ export const PostDetail = () => {
   const [write, setWrite] = useState("disabled")
 
   useEffect(() => {
-    if (!reduxUser.tokenData.token) {
+    if (!reduxUser?.tokenData?.token) {
         navigate("/")
     }
 }, [reduxUser])
 
-  useEffect(() => {
-    toast.dismiss()
-    postError.titleError && 
-    toast.warn(postError.titleError)
-    postError.descriptionError && 
-    toast.warn(postError.descriptionError)
-    }, [postError])
+//   useEffect(() => {
+//     toast.dismiss()
+//     postError.titleError && 
+//     toast.warn(postError.titleError)
+//     postError.descriptionError && 
+//     toast.warn(postError.descriptionError)
+//     }, [postError])
 
 
 
@@ -79,12 +80,12 @@ export const PostDetail = () => {
   }
 
 
-  useEffect(() => {
-
-    if (!detailRdx?.detail?._id) {
-      navigate("/");
-    }
-  }, [detailRdx]);
+//   useEffect(() => {
+    
+//     if (!detailRdx?.detail?.id) {
+//       navigate("/");
+//     }
+//   }, [detailRdx]);
 
 //   const UpdatePost = async (postId) => {
 //     try {
@@ -136,7 +137,7 @@ export const PostDetail = () => {
 
 
   return (
-    detailRdx.detail?._id &&
+    detailRdx?.detail?.id &&
       <div className="detailDesign">
     <div className="undoButton">
       <CButton
