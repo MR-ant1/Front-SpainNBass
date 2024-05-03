@@ -109,6 +109,7 @@ export const loginCall = async (user) => {
   }
 
   export const GetMyPosts = async (token) => {
+    
     const clientData = {
         method: "GET",
         headers: {
@@ -116,12 +117,12 @@ export const loginCall = async (user) => {
             "Authorization": `Bearer ${token}`
         }
     }
-  
+    
     try {
         const response = await fetch(`${root}posts`, clientData)
   
         const data = await response.json();
-  
+        console.log(data)
         if (!data.success) {
             throw new Error(data.message)
         }

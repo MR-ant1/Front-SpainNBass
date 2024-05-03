@@ -3,7 +3,7 @@
 import './Profile.css';
 import { userData } from '../../app/Slices/userSlice';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react';
 import { CInput } from '../../common/CInput/CInput';
 import { validate } from '../../utils/validations';
@@ -13,6 +13,7 @@ import { GetMyPosts, GetProfile, UpdateCall } from '../../services/api.Calls';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { PostCard } from '../../common/PostCard/PostCard';
+import { updateDetail } from '../../app/Slices/postDetailSlice';
 
 
 
@@ -31,7 +32,7 @@ export const Profile = () => {
 
     const [write, setWrite] = useState("disabled")
 
-    // const dispatch = useDispatch()
+    const dispatch = useDispatch()
 
     useEffect(() => {
         if (!reduxUser.tokenData.token) {
@@ -71,10 +72,11 @@ export const Profile = () => {
         }))
     }
 
-    // const manageDetail = (post) => {
-    //     dispatch(updateDetail({ detail: post }));
-    //     navigate("/detail");
-    // };
+    const manageDetail = (post) => {
+        dispatch(updateDetail({ detail: post }));
+        navigate("/postDetail");
+        console.log(post)
+    };
 
     useEffect(() => {
 
@@ -257,12 +259,13 @@ export const Profile = () => {
                     post => {
                         return (
 
-                            <div className='myPostCard' key={post._id}>
+                            <div className='myPostCard' key={post.id}>
                                 <PostCard
                                     nickname={post.ownerNickname}
                                     title={post.title.length > 20 ? post.title.substring(0, 20) : post.title}
                                     description={post.description.length > 40 ? post.description.substring(0, 40) + "..." : post.description}
-                                    // clickFunction={() => manageDetail(post)}
+                                    picUrl={post.picUrl}
+                                    clickFunction={() => manageDetail(post)}
                                 />
                                 {/* <div className='deleteButton'>
                                     <CButton key={post._id}
@@ -280,7 +283,7 @@ export const Profile = () => {
             </div>
 
         ) : (
-            <div>Aun no hay Posts</div>
+            <div>Cargando tus Posts</div>
         )}
         </div>
     )}
