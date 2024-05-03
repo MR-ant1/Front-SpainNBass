@@ -22,8 +22,8 @@ export const validate = (type, value) => {
     //         return "Por favor, el nombre debe tener un formato valido.";
     //       }
 
-    
     //       return "";
+
     switch (type) {
         case "email":
         case "e-mail":

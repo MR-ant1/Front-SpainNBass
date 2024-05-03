@@ -8,10 +8,11 @@ import { useEffect, useState } from 'react';
 import { CInput } from '../../common/CInput/CInput';
 import { validate } from '../../utils/validations';
 import { CButton } from '../../common/CButton/CButton';
-import { GetProfile, UpdateCall } from '../../services/api.Calls';
+import { GetMyPosts, GetProfile, UpdateCall } from '../../services/api.Calls';
 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { PostCard } from '../../common/PostCard/PostCard';
 
 
 
@@ -22,7 +23,9 @@ export const Profile = () => {
 
     const [loadedData, setLoadedData] = useState(false)
 
-    // const [posts, setPosts] = useState([])
+    const [ loadedPosts, setLoadedPosts] = useState(false)
+
+    const [posts, setPosts] = useState([])
 
     const reduxUser = useSelector(userData)
 
@@ -105,22 +108,23 @@ export const Profile = () => {
             toast.warn(userError.turntableError)
     }, [userError])
 
-    // useEffect(() => {
-    //     const myPosts = async () => {
-    //         try {
-    //             const fetched = await GetMyPosts(reduxUser.tokenData.token)
+    useEffect(() => {
+        const myPosts = async () => {
+            try {
+                const fetched = await GetMyPosts(reduxUser.tokenData.token)
 
-    //             setPosts(fetched.data)
+                setPosts(fetched.data)
+                setLoadedPosts(true)
 
-    //         } catch (error) {
-    //             console.log(error)
-    //         }
-    //     }
+            } catch (error) {
+                console.log(error)
+            }
+        }
 
-    //     if (reduxUser.tokenData.token && posts.length === 0) {
-    //         myPosts()
-    //     }
-    // }, [posts])
+        if (!loadedPosts) {
+            myPosts()
+        }
+    }, [posts])
 
 
     const UpdateProfile = async () => {
@@ -245,7 +249,38 @@ export const Profile = () => {
             ) : (
                 <div>loading</div>
             )}
-        </div>)
+        
 
+        {loadedPosts ? (
+            <div className='myPosts'>
+                {posts.slice(0, posts.length).map(
+                    post => {
+                        return (
 
-}
+                            <div className='myPostCard' key={post._id}>
+                                <PostCard
+                                    nickname={post.ownerNickname}
+                                    title={post.title.length > 20 ? post.title.substring(0, 20) : post.title}
+                                    description={post.description.length > 40 ? post.description.substring(0, 40) + "..." : post.description}
+                                    // clickFunction={() => manageDetail(post)}
+                                />
+                                {/* <div className='deleteButton'>
+                                    <CButton key={post._id}
+                                        className={"deletePostButton"}
+                                        title={"Eliminar"}
+                                        emitFunction={(() => deletePost(post._id))}
+                                    />
+                                </div> */}
+                            </div>
+
+                        )
+                    }
+                ).reverse()
+                }
+            </div>
+
+        ) : (
+            <div>Aun no hay Posts</div>
+        )}
+        </div>
+    )}
