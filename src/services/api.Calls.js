@@ -120,7 +120,7 @@ export const loginCall = async (user) => {
     
     try {
         const response = await fetch(`${root}posts`, clientData)
-  
+        
         const data = await response.json();
         if (!data.success) {
             throw new Error(data.message)

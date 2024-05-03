@@ -74,7 +74,6 @@ export const Profile = () => {
 
     const manageDetail = (post) => {
         dispatch(updateDetail({ detail: post }));
-        
         navigate("/postDetail");
     };
 
@@ -247,6 +246,15 @@ export const Profile = () => {
                         name={"createdAt"}
                         disabled={true}
                         value={"Fecha de creación:" + user.createdAt}
+                        changeFunction={inputHandler}
+                        blurFunction={checkError}
+                    />
+                     <CInput
+                        className={"inputDesign"}
+                        type={"text"}
+                        name={"updatedAt"}
+                        disabled={true}
+                        value={"Fecha de creación:" + user.updatedAt}
                         changeFunction={inputHandler}
                         blurFunction={checkError}
                     />
