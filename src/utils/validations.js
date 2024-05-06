@@ -54,7 +54,7 @@ export const validate = (type, value) => {
             return ""
             
             case "turntable":
-              if (value.length < 3) {
+              if (value && value.length < 3) {
                 return "Se necesitan mas de 3 caracteres en tu equipo y RRSS's"
               }
               return ""

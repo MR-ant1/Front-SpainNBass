@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { CInput } from '../../common/CInput/CInput';
 import { validate } from '../../utils/validations';
 import { CButton } from '../../common/CButton/CButton';
-import { GetMyPosts, GetProfile, UpdateCall } from '../../services/api.Calls';
+import { GetMyPosts, GetProfile, UpdateCall, deleteMyPostCall } from '../../services/api.Calls';
 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -114,10 +114,9 @@ export const Profile = () => {
         const myPosts = async () => {
             try {
                 const fetched = await GetMyPosts(reduxUser.tokenData.token)
-
+                console.log(fetched)
                 setPosts(fetched.data)
                 setLoadedPosts(true)
-
             } catch (error) {
                 console.log(error)
             }
@@ -132,8 +131,14 @@ export const Profile = () => {
     const UpdateProfile = async () => {
         try {
             for (let elemento in user) {
-                if (user[elemento] === "") {
+                if (user[elemento] && elemento !== user.turntable === "") {
                     throw new Error("Todos los campos deben estar rellenos")
+                }
+            }
+
+            for (let elemento in userError) {
+                if (userError[elemento] !== "" ) {
+                    throw new Error("no puedes actualizar hasta que todos los campos sean válidos")
                 }
             }
 
@@ -148,24 +153,24 @@ export const Profile = () => {
         }
     }
 
-    // const deletePost = async (id) => {
-    //     try {
-    //         const fetched = await deletePostCall(id, reduxUser.tokenData.token)
-    //         if (fetched.success === true) {
-    //             toast.success(fetched.message)
-    //         }
-    //         if (fetched.success === false) {
-    //             toast.error(fetched.message)
-    //         }
+    const deleteMyPost = async (id) => {
+        try {
+            const fetched = await deleteMyPostCall(id, reduxUser.tokenData.token)
+            if (fetched.success === true) {
+                toast.success(fetched.message)
+            }
+            if (fetched.success === false) {
+                toast.error(fetched.message)
+            }
 
-    //         setPosts(
-    //             posts.filter((post) => post._id !== id)
-    //         )
+            setPosts(
+                posts.filter((post) => post.id !== id)
+            )
 
-    //     } catch (error) {
-    //         console.log(error.message)
-    //     }
-    // }
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
 
     return (
 
@@ -249,15 +254,6 @@ export const Profile = () => {
                         changeFunction={inputHandler}
                         blurFunction={checkError}
                     />
-                     <CInput
-                        className={"inputDesign"}
-                        type={"text"}
-                        name={"updatedAt"}
-                        disabled={true}
-                        value={"Fecha de creación:" + user.updatedAt}
-                        changeFunction={inputHandler}
-                        blurFunction={checkError}
-                    />
 
                     <CButton
                         className={write === "" ? " updateButton" : "allowButton"}
@@ -270,30 +266,28 @@ export const Profile = () => {
                 <div>loading</div>
             )}
         
-
-        {loadedPosts ? (
+        { posts.length !== 0 ? (
             <div className='myPosts'>
-                {posts.slice(0, posts.length).map(
+                {posts.map(
                     post => {
                         return (
-
                             <div className='myPostCard' key={post.id}>
                                 <PostCard
                                     nickname={post.owner.nickname}
-                                    title={post.title.length > 20 ? post.title.substring(0, 20) : post.title}
+                                    title={post.title && post.title.length > 20 ? post.title.substring(0, 20) : post.title}
                                     description={post.description.length > 40 ? post.description.substring(0, 40) + "..." : post.description}
                                     picUrl={post.picUrl}
                                     createdAt={"Creado:" + post.createdAt}
                                     updatedAt={"Edit:" + post.updatedAt}
                                     clickFunction={() => manageDetail(post)}
                                 />
-                                {/* <div className='deleteButton'>
-                                    <CButton key={post._id}
-                                        className={"deletePostButton"}
+                                <div className='deleteButton'>
+                                    <CButton key={post.id}
+                                        className={"deleteMyPostButton"}
                                         title={"Eliminar"}
-                                        emitFunction={(() => deletePost(post._id))}
+                                        emitFunction={(() => deleteMyPost(post.id))}
                                     />
-                                </div> */}
+                                </div>
                             </div>
 
                         )
@@ -302,8 +296,7 @@ export const Profile = () => {
                 }
             </div>
 
-        ) : (
-            <div>Cargando tus Posts</div>
+        ) : (<div>Aun no has creado ningún post</div>
         )}
         </div>
     )}

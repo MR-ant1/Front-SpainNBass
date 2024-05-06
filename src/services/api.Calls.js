@@ -96,7 +96,7 @@ export const loginCall = async (user) => {
         const response = await fetch(`${root}users/profile`, clientData)
 
         const data = await response.json();
-        console.log(data)
+
         if (!data.success) {
             throw new Error(data.message)
         }
@@ -120,6 +120,31 @@ export const loginCall = async (user) => {
     
     try {
         const response = await fetch(`${root}posts`, clientData)
+        
+        const data = await response.json();
+        if (!data.success) {
+            throw new Error(data.message)
+        }
+  
+        return data
+  
+    } catch (error) {
+        return error
+    }
+  }
+
+  export const deleteMyPostCall = async (id,token) => {
+    
+    const clientData = {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        }
+    }
+    
+    try {
+        const response = await fetch(`${root}posts/own/${id}`, clientData)
         
         const data = await response.json();
         if (!data.success) {
