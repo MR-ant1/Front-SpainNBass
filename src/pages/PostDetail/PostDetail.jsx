@@ -1,12 +1,12 @@
 
 import "./PostDetail.css";
 import { useSelector } from "react-redux";
-import { detailData } from "../../app/Slices/postDetailSlice";
+import { detailData } from "../../app/slices/postDetailSlice";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CButton } from "../../common/CButton/CButton";
 import { CInput } from "../../common/CInput/CInput";
-import { userData } from "../../app/Slices/userSlice";
+import { userData } from "../../app/slices/userSlice";
 import { validate } from "../../utils/validations";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

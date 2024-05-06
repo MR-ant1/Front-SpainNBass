@@ -1,8 +1,7 @@
 
 import './Home.css'
 import { useNavigate } from 'react-router-dom'
-import { userData } from "../../app/slices/userSlice"
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { GetLatestsCall } from '../../services/api.Calls';
 import { updateDetail } from '../../app/slices/postDetailSlice';
@@ -12,15 +11,13 @@ export const Home = () => {
 
     const navigate = useNavigate();
 
-    const reduxUser = useSelector(userData)
-
     const dispatch = useDispatch();
 
     const [latests, setLatests] = useState([])
     
     const manageDetail = (latest) => {
         dispatch(updateDetail({ detail: latest }));
-        navigate("/detailLatest");
+        navigate("/latestDetail");
     };
 
     useEffect(() => {
