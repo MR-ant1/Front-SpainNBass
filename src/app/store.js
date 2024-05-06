@@ -6,10 +6,12 @@ import { thunk } from "redux-thunk"
 import userSlice from "./Slices/userSlice";
 import storage from "redux-persist/lib/storage";
 import { encryptTransform } from "redux-persist-transform-encrypt"
+import  detailSlice  from "./Slices/postDetailSlice";
 
 
 const reducers = combineReducers({
-    user: userSlice
+    user: userSlice,
+    detail: detailSlice
 });
 
 const persistConfig = {

@@ -5,7 +5,7 @@ export const validate = (type, value) => {
     // eslint-disable-next-line no-useless-escape
     const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
-    const nicknameRegex = /^[a-zA-Z0-9_-]{3,15}$/
+    const nicknameRegex = /^[a-zA-Z0-9_-]{3,20}$/
     //nickname regex permite introducir letras en mayuscula y minúscula, numeros y guiones tanto bajos como estándar, con entre 3 y 15 caracateres.
 
 
@@ -22,8 +22,8 @@ export const validate = (type, value) => {
     //         return "Por favor, el nombre debe tener un formato valido.";
     //       }
 
-    
     //       return "";
+
     switch (type) {
         case "email":
         case "e-mail":
@@ -46,11 +46,18 @@ export const validate = (type, value) => {
           return "";
 
           case "nickname":
+          
 
             if (!nicknameRegex.test(value)) {
                 return "Tu nickname debe tener 3-15 caracteres y usar solo guiones, letras y numeros"
             }
             return ""
+            
+            case "turntable":
+              if (value && value.length < 3) {
+                return "Se necesitan mas de 3 caracteres en tu equipo y RRSS's"
+              }
+              return ""
 
         //   case "serviceId":
 
