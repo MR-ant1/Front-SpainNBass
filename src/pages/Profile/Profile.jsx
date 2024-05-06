@@ -1,7 +1,7 @@
 
 
 import './Profile.css';
-import { userData } from '../../app/Slices/userSlice';
+import { userData } from "../../app/slices/userSlice"
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react';
@@ -13,7 +13,7 @@ import { GetMyPosts, GetProfile, UpdateCall, deleteMyPostCall } from '../../serv
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { PostCard } from '../../common/PostCard/PostCard';
-import { updateDetail } from '../../app/Slices/postDetailSlice';
+import { updateDetail } from '../../app/slices/postDetailSlice';
 
 
 
@@ -24,7 +24,7 @@ export const Profile = () => {
 
     const [loadedData, setLoadedData] = useState(false)
 
-    const [ loadedPosts, setLoadedPosts] = useState(false)
+    const [loadedPosts, setLoadedPosts] = useState(false)
 
     const [posts, setPosts] = useState([])
 
@@ -114,7 +114,7 @@ export const Profile = () => {
         const myPosts = async () => {
             try {
                 const fetched = await GetMyPosts(reduxUser.tokenData.token)
-                console.log(fetched)
+
                 setPosts(fetched.data)
                 setLoadedPosts(true)
             } catch (error) {
@@ -122,7 +122,7 @@ export const Profile = () => {
             }
         }
 
-        if (!loadedPosts) {
+        if (!loadedPosts || loadedPosts.length === 0) {
             myPosts()
         }
     }, [posts])
@@ -137,7 +137,7 @@ export const Profile = () => {
             }
 
             for (let elemento in userError) {
-                if (userError[elemento] !== "" ) {
+                if (userError[elemento] !== "") {
                     throw new Error("no puedes actualizar hasta que todos los campos sean válidos")
                 }
             }
@@ -147,7 +147,9 @@ export const Profile = () => {
                 toast.success(fetched.message)
             } else toast.error(fetched.message)
 
+
             setWrite("disabled")
+
         } catch (error) {
             console.log(error.message)
         }
@@ -171,9 +173,7 @@ export const Profile = () => {
             console.log(error.message)
         }
     }
-
     return (
-
         <div className="profileDesign">
             {loadedData ? (
                 <div className='inputsContainer'>
@@ -188,7 +188,6 @@ export const Profile = () => {
                         changeFunction={inputHandler}
                         blurFunction={checkError}
                     />
-
                     <select
                         className={`inputDesign ${userError.favSubgenreError !== "" ? "inputDesignError" : ""
                             }`}
@@ -207,7 +206,6 @@ export const Profile = () => {
                         <option value="NeuroFunk">NeuroFunk</option>
                     </select>
 
-
                     <select
                         className={`inputDesign ${userError.preferenceError !== "" ? "inputDesignError" : ""
                             }`}
@@ -224,8 +222,7 @@ export const Profile = () => {
                         <option value="DJ/Producer">DJ/Producer
                         </option>
                     </select>
-
-                        <CInput
+                    <CInput
                         className={`inputDesign ${userError.turntableError !== "" ? "inputDesignError" : ""
                             }`}
                         type={"textarea"}
@@ -235,7 +232,6 @@ export const Profile = () => {
                         changeFunction={inputHandler}
                         blurFunction={checkError}
                     />
-
                     <CInput
                         className={"inputDesign"}
                         type={"email"}
@@ -254,7 +250,6 @@ export const Profile = () => {
                         changeFunction={inputHandler}
                         blurFunction={checkError}
                     />
-
                     <CButton
                         className={write === "" ? " updateButton" : "allowButton"}
                         title={write === "" ? "Actualizar" : "Habilitar"}
@@ -265,38 +260,39 @@ export const Profile = () => {
             ) : (
                 <div>loading</div>
             )}
-        
-        { posts.length !== 0 ? (
-            <div className='myPosts'>
-                {posts.map(
-                    post => {
-                        return (
-                            <div className='myPostCard' key={post.id}>
-                                <PostCard
-                                    nickname={post.owner.nickname}
-                                    title={post.title && post.title.length > 20 ? post.title.substring(0, 20) : post.title}
-                                    description={post.description.length > 40 ? post.description.substring(0, 40) + "..." : post.description}
-                                    picUrl={post.picUrl}
-                                    createdAt={"Creado:" + post.createdAt}
-                                    updatedAt={"Edit:" + post.updatedAt}
-                                    clickFunction={() => manageDetail(post)}
-                                />
-                                <div className='deleteButton'>
-                                    <CButton key={post.id}
-                                        className={"deleteMyPostButton"}
-                                        title={"Eliminar"}
-                                        emitFunction={(() => deleteMyPost(post.id))}
+
+            {posts.length !== 0 ? (
+                <div className='myPosts'>
+                    {posts.map(
+                        post => {
+                            return (
+                                <div className='myPostCard' key={post.id}>
+                                    <PostCard
+                                        nickname={post.owner.nickname}
+                                        title={post.title && post.title.length > 20 ? post.title.substring(0, 20) : post.title}
+                                        description={post.description.length > 40 ? post.description.substring(0, 40) + "..." : post.description}
+                                        picUrl={post.picUrl}
+                                        createdAt={"Creado:" + post.createdAt}
+                                        updatedAt={"Edit:" + post.updatedAt}
+                                        clickFunction={() => manageDetail(post)}
                                     />
+                                    <div className='deleteButton'>
+                                        <CButton key={post.id}
+                                            className={"deleteMyPostButton"}
+                                            title={"Eliminar"}
+                                            emitFunction={(() => deleteMyPost(post.id))}
+                                        />
+                                    </div>
                                 </div>
-                            </div>
 
-                        )
+                            )
+                        }
+                    ).reverse()
                     }
-                ).reverse()
-                }
-            </div>
+                </div>
 
-        ) : (<div>Aun no has creado ningún post</div>
-        )}
+            ) : (<div>Aun no has creado ningún post</div>
+            )}
         </div>
-    )}
+    )
+}

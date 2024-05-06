@@ -2,7 +2,7 @@
 import './Header.css'
 import { Navigator } from '../Navigator/Navigator'
 import { useSelector, useDispatch } from "react-redux";
-import { userData, logout } from "../../app/Slices/userSlice";
+import { userData, logout } from "../../app/slices/userSlice";
 import { LogoNavigator } from '../LogoNavigator/LogoNavigator';
 
 
@@ -23,7 +23,7 @@ export const Header = () => {
             </div>
             </div>
             
-            {reduxUser.tokenData.token ? (
+            {reduxUser?.tokenData?.token ? (
                 reduxUser.tokenData.user.role === 'super_admin' ? (
                     <div className='navigatorDesign'>
                         <Navigator

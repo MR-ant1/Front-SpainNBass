@@ -1,7 +1,7 @@
 
 import { useNavigate } from 'react-router-dom/dist'
 import './Login.css'
-import { login, userData } from '../../app/Slices/userSlice'
+import { login, userData } from '../../app/slices/userSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { validate } from '../../utils/validations'
@@ -20,12 +20,12 @@ export const Login = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if (reduxUser.tokenData.token) {
+        if (reduxUser?.tokenData?.token) {
             setTimeout(() => {
                 navigate('/')
             }, 1000)
         }
-    }, [reduxUser.tokenData.token])
+    }, [reduxUser?.tokenData?.token])
     
     const [user, setUser] = useState({
         email: "",
