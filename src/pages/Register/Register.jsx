@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { RedirectButton } from '../../common/RedirButton/RedirButton';
 import { registerCall } from '../../services/api.Calls';
 import { validate } from '../../utils/validations'
-import { userData } from '../../app/Slices/userSlice';
+import { userData } from '../../app/slices/userSlice';
 import { useSelector } from 'react-redux'
 import { ToastContainer, toast } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';

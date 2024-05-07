@@ -1,15 +1,16 @@
 
-import "./PostDetail.css";
+import "./DetailPost.css";
 import { useSelector } from "react-redux";
-import { detailData } from "../../app/Slices/postDetailSlice";
+import { detailData } from "../../app/slices/postDetailSlice";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CButton } from "../../common/CButton/CButton";
 import { CInput } from "../../common/CInput/CInput";
-import { userData } from "../../app/Slices/userSlice";
+import { userData } from "../../app/slices/userSlice";
 import { validate } from "../../utils/validations";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { deleteMyPostCall } from "../../services/api.Calls";
 // import { UpdatePostCall } from "../../services/apiCalls";
 // import { useDispatch } from "react-redux";
 
@@ -35,7 +36,7 @@ export const PostDetail = () => {
         ownerNickname: detailRdx?.detail?.owner.nickname,
         createdAt: detailRdx?.detail?.createdAt
     })
-   
+
 
     const [postError, setPostError] = useState({
         titleError: "",
@@ -77,7 +78,18 @@ export const PostDetail = () => {
             [e.target.name + "Error"]: error
         }))
     }
+    const deleteMyPost = async (id) => {
+        try {
+            const fetched = await deleteMyPostCall(id, reduxUser.tokenData.token)
 
+            if(fetched.success === true) {
+                navigate('/profile')
+            }
+            
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
 
     //   useEffect(() => {
 
@@ -215,7 +227,13 @@ export const PostDetail = () => {
                     changeFunction={inputHandler}
                     blurFunction={checkError}
                 />
-
+                <div className='deleteButton'>
+                    <CButton key={post.id}
+                        className={"deleteMyPostButton"}
+                        title={"Eliminar"}
+                        emitFunction={(() => deleteMyPost(post.id))}
+                    />
+                </div>
                 <CButton
                     className={write === "" ? " updateButton" : "allowButton"}
                     title={write === "" ? "Actualizar" : <img src="img/EditIcon.png" alt="editIcon"></img>}
