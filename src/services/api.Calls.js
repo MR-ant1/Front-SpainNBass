@@ -62,7 +62,7 @@ export const GetProfile = async (token) => {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`          //adding token in authorization to pass the auth middleware in backend
+            "Authorization": `Bearer ${token}`          
         }
     }
 
@@ -169,6 +169,32 @@ export const GetLatestsCall = async () => {
 
     try {
         const response = await fetch(`${root}latests`, clientData)
+
+        const data = await response.json();
+        if (!data.success) {
+            throw new Error(data.message)
+        }
+
+        return data
+
+    } catch (error) {
+        return error
+    }
+}
+
+
+export const GetGenrePostCall = async (token, topic) => {
+
+    const clientData = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        }
+    }
+
+    try {
+        const response = await fetch(`${root}posts/${topic}`, clientData)
 
         const data = await response.json();
         if (!data.success) {

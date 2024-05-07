@@ -8,8 +8,7 @@ import { useEffect, useState } from 'react';
 import { CInput } from '../../common/CInput/CInput';
 import { validate } from '../../utils/validations';
 import { CButton } from '../../common/CButton/CButton';
-import { GetMyPosts, GetProfile, UpdateCall, deleteMyPostCall } from '../../services/api.Calls';
-
+import { GetMyPosts, GetProfile, UpdateCall } from '../../services/api.Calls';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { PostCard } from '../../common/PostCard/PostCard';
@@ -74,7 +73,7 @@ export const Profile = () => {
 
     const manageDetail = (post) => {
         dispatch(updateDetail({ detail: post }));
-        navigate("/postDetail");
+        navigate("/detailPost");
     };
 
     useEffect(() => {
@@ -149,25 +148,6 @@ export const Profile = () => {
 
 
             setWrite("disabled")
-
-        } catch (error) {
-            console.log(error.message)
-        }
-    }
-
-    const deleteMyPost = async (id) => {
-        try {
-            const fetched = await deleteMyPostCall(id, reduxUser.tokenData.token)
-            if (fetched.success === true) {
-                toast.success(fetched.message)
-            }
-            if (fetched.success === false) {
-                toast.error(fetched.message)
-            }
-
-            setPosts(
-                posts.filter((post) => post.id !== id)
-            )
 
         } catch (error) {
             console.log(error.message)
@@ -255,7 +235,6 @@ export const Profile = () => {
                         title={write === "" ? "Actualizar" : "Habilitar"}
                         emitFunction={write === "" ? UpdateProfile : () => setWrite("")}
                     />
-
                 </div>
             ) : (
                 <div>loading</div>
@@ -276,13 +255,6 @@ export const Profile = () => {
                                         updatedAt={"Edit:" + post.updatedAt}
                                         clickFunction={() => manageDetail(post)}
                                     />
-                                    <div className='deleteButton'>
-                                        <CButton key={post.id}
-                                            className={"deleteMyPostButton"}
-                                            title={"Eliminar"}
-                                            emitFunction={(() => deleteMyPost(post.id))}
-                                        />
-                                    </div>
                                 </div>
 
                             )

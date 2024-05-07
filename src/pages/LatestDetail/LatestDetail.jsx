@@ -33,7 +33,7 @@ export const LatestDetail = () => {
                 <CButton
                     className={"backButton"}
                     title={"X"}
-                    emitFunction={(() => navigate('/profile'))}
+                    emitFunction={(() => navigate('/'))}
                 />
             </div>
             <div className="postFields">
