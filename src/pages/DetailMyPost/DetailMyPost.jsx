@@ -8,9 +8,9 @@ import { CButton } from "../../common/CButton/CButton";
 import { CInput } from "../../common/CInput/CInput";
 import { userData } from "../../app/slices/userSlice";
 // import { validate } from "../../utils/validations";
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { deleteMyPostCall } from "../../services/api.Calls";
+
 // import { UpdatePostCall } from "../../services/apiCalls";
 // import { useDispatch } from "react-redux";
 
@@ -22,9 +22,9 @@ export const MyPostDetail = () => {
 
     const navigate = useNavigate();
 
-    //   const dispatch = useDispatch();
 
-    //   const [isLikedBefore, setIsLikedBefore] = useState(detailRdx.detail?.likes.includes(reduxUser.tokenData.userId))
+
+      
 
     const [post, setPost] = useState({
         id: detailRdx?.detail?.id,
@@ -122,30 +122,7 @@ export const MyPostDetail = () => {
     //     }
     // }
 
-    // const likePost = async (postId) => {
-
-    //   try {
-    //       const fetched = await likeCall(reduxUser.tokenData.token, postId)
-
-    //       if(isLikedBefore===false){
-    //         setIsLikedBefore(true)
-    //       }else setIsLikedBefore(false)
-
-    //       dispatch(updateDetail({detail: fetched.data}))
-
-    //       if (fetched.message === "Like") {
-    //           toast.success(fetched.message)
-
-    //       } else toast.info(fetched.message)
-
-    //       if (fetched.data && fetched.data._id) {
-    //           setPost(post?.map(post => post._id === postId ? fetched.data
-    //            : detailRdx.detail))}
-
-    //   } catch (error) {
-    //       console.log(error)
-    //   }
-
+    
 
     return (
         detailRdx?.detail?.id &&
@@ -227,29 +204,9 @@ export const MyPostDetail = () => {
                     title={write === "" ? "Actualizar" : <img src="img/EditIcon.png" alt="editIcon"></img>}
                 //   emitFunction={write === "" ? () => UpdatePost(post._id) : () => setWrite("")}
                 />
-                {/* <div className="likeRow">
-        <CButton
-      className={"likeButton"}
-      title={<Heart fill={isLikedBefore===true ? "red"
-        : "white"}/>}
-      emitFunction={() => likePost(detailRdx.detail?._id)}
-      />
-      <div className="likesNum">{detailRdx.detail?.likes.length}</div>
-      </div> */}
+                
             </div>
 
-            <ToastContainer
-                position="top-center"
-                autoClose={2000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="dark"
-            />
         </div>
     )
-}
+    }

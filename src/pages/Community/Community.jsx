@@ -6,7 +6,6 @@ import { PostCard } from "../../common/PostCard/PostCard"
 import { userData } from "../../app/slices/userSlice"
 import { RedirectButton } from "../../common/RedirButton/RedirButton"
 import { useNavigate } from 'react-router-dom'
-import { CButton } from "../../common/CButton/CButton"
 import { updateDetail } from "../../app/slices/postDetailSlice"
 import 'react-toastify/dist/ReactToastify.css';
 import { categoryData } from "../../app/slices/communitySlice"
@@ -136,50 +135,15 @@ export const Community = () => {
                     </div>
                 </>
             ) : (
-
+                
                 posts.length !== 0 ? (
-                    <>
-                    <div className="homeHeader">
-                    FEED
-                    </div>
-                        <div className="postPanel">
-                            {/* <div className="writeBox">
-                                <PostInput
-                                    className={`postTitleInput`}
-                                    type={"text"}
-                                    name={"title"}
-                                    value={newPost.title}
-                                    placeholder={"¿Qué hay de nuevo?"}
-                                    changeFunction={inputHandler}
-
-                                />
-                                <PostInput
-                                    className={`createPostInput`}
-                                    type={"text"}
-                                    name={"description"}
-                                    value={newPost.description}
-                                    placeholder={"Desarrolla tu historia"}
-                                    changeFunction={inputHandler}
-                                />
-                            </div> */}
-
-                            <div className="sendButton">
-                                <CButton
-                                    className={"createPostButton"}
-                                    title={"Publicar"}
-                                    // emitFunction={(sendPost)}
-                                />
-
-                            </div>
-                        </div>
-
-                        <div className="cardsDesign">
-                            {posts.map(     
+                            <>
+                    {posts.map(     
                                 post => {
                                     return (
-                                        <div className="cardDiv" key={post.id}>
+                                        <div className="cardDiv" key={post.index}>
                                             <PostCard 
-                                                key={post.id}
+                                                key={post.index}
                                                 title={post.title.length > 20 ? post.title.substring(0, 20) : post.title}
                                                 clickFunction={() => manageDetail(post)}
                                             />
@@ -196,10 +160,7 @@ export const Community = () => {
                                         </div>
                                     )
                                 }).reverse()}
-                        </div>
-                    </>
-
-                ) : (
+               </> ) : (
                     loadedPosts === false ? <div className="homeDesign">LOADING</div>
                     : <div className="homeDesign">AUN NO HAY POST DE ESTA CATEGORIA</div>
                    

@@ -31,9 +31,9 @@ export const Header = () => {
             dispatch(navigateCategory({ category: e.target.value }))
             navigate('/')
             navigate('/community')
-            setCommunity({
-                election: ""
-            })
+            // setCommunity({
+            //     election: ""
+            // })
     }
 
   

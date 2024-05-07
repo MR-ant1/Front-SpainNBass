@@ -1,7 +1,7 @@
 
 import "./DetailPost.css";
 import { useSelector } from "react-redux";
-import { detailData } from "../../app/slices/postDetailSlice";
+import { detailData,  } from "../../app/slices/postDetailSlice";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { userData } from "../../app/slices/userSlice";
@@ -9,6 +9,9 @@ import { userData } from "../../app/slices/userSlice";
 
 import 'react-toastify/dist/ReactToastify.css';
 import { PostCard } from "../../common/PostCard/PostCard";
+import { CButton } from "../../common/CButton/CButton";
+import { Heart } from "lucide-react";
+import { LikeCall } from "../../services/api.Calls";
 
 // import { UpdatePostCall } from "../../services/apiCalls";
 // import { useDispatch } from "react-redux";
@@ -20,6 +23,10 @@ export const PostDetail = () => {
     const reduxUser = useSelector(userData)
 
     const navigate = useNavigate();
+
+    // const dispatch = useDispatch();
+
+    const [isLikedBefore, setIsLikedBefore] = useState()
 
     //   const dispatch = useDispatch();
 
@@ -34,10 +41,10 @@ export const PostDetail = () => {
         picUrl: detailRdx?.detail?.picUrl,
         ownerId: detailRdx?.detail?.owner.id,
         ownerNickname: detailRdx?.detail?.owner.nickname,
-        createdAt: detailRdx?.detail?.createdAt,
-        updatedAt: detailRdx.detail.updatedAt
+        createdAt: detailRdx?.detail?.owner.createdAt,
+        updatedAt: detailRdx?.detail?.owner.updatedAt,
     })
-
+console.log(post.id)
 
     // const [postError, setPostError] = useState({
     //     titleError: "",
@@ -111,40 +118,60 @@ export const PostDetail = () => {
     //     }
     // }
 
-    // const likePost = async (postId) => {
+    const likePost = async (id) => {
 
-    //   try {
-    //       const fetched = await likeCall(reduxUser.tokenData.token, postId)
-
-    //       if(isLikedBefore===false){
-    //         setIsLikedBefore(true)
-    //       }else setIsLikedBefore(false)
-
-    //       dispatch(updateDetail({detail: fetched.data}))
-
-    //       if (fetched.message === "Like") {
-    //           toast.success(fetched.message)
-
-    //       } else toast.info(fetched.message)
-
-    //       if (fetched.data && fetched.data._id) {
-    //           setPost(post?.map(post => post._id === postId ? fetched.data
-    //            : detailRdx.detail))}
-
-    //   } catch (error) {
-    //       console.log(error)
-    //   }
+        try {
+            const fetched = await LikeCall(reduxUser.tokenData.token, id)
+  
+            if(fetched.message ==="Like"){
+              setIsLikedBefore(true)
+            }else setIsLikedBefore(false)
+  
+            // dispatch(updateDetail({detail: fetched.data}))
+  
+          //   if (fetched.message === "Like") {
+          //       toast.success(fetched.message)
+  
+          //   } else toast.info(fetched.message)
+  
+            if (fetched.data && fetched.data.id) {
+                setPost(post?.map(post => post.id === id ? fetched.data
+                 : detailRdx.detail))}
+  
+        } catch (error) {
+            console.log(error)
+        }
+      }
 
     return (        
-        <div className='myPostCard' key={post.id}>
+        <div className="detailDesign">
+            <div className="undoButton">
+                <CButton 
+                    className={"backButton"}
+                    title={"X"}
+                    emitFunction={(() => navigate(reduxUser.tokenData.role === "super_admin" ? "/superadmin" : '/community'))}
+                        
+                />
+            </div>
+        <div className='myPostCard' key={detailRdx.detail?.id}>
                                     <PostCard
-                                        nickname={post.ownerNickname}
-                                        title={post.title && post.title.length > 20 ? post.title.substring(0, 20) : post.title}
-                                        description={post.description.length > 40 ? post.description.substring(0, 40) + "..." : post.description}
-                                        picUrl={post.picUrl}
-                                        createdAt={"Creado:" + post.createdAt}
-                                        updatedAt={"Edit:" + post.updatedAt}
+                                        nickname={detailRdx.detail?.owner.nickname}
+                                        title={detailRdx.detail?.title}
+                                        description={detailRdx?.detail?.description}
+                                        picUrl={detailRdx?.detail?.picUrl}
+                                        createdAt={"Creado:" + detailRdx?.detail?.owner.createdAt}
+                                        updatedAt={"Actualizado:" + detailRdx?.detail?.owner.updatedAt}
                                     />
+                                </div>
+                                <div className="likeRow">
+        <CButton
+      className={"likeButton"}
+      title={<Heart fill={isLikedBefore===true ? "red"
+        : "white"}/>}
+      emitFunction={() => likePost(parseInt(post.id))}
+      />
+      {/* <div className="likesNum">{detailRdx.detail?.likes.length}</div> */}
+      </div>
                                 </div>
     )
 }

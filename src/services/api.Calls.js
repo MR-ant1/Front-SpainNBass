@@ -207,3 +207,30 @@ export const GetGenrePostCall = async (token, topic) => {
         return error
     }
 }
+
+
+export const LikeCall = async (token, id) => {
+
+    const clientData = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        }
+    }
+
+    try {
+        const response = await fetch(`${root}likes/${id}`, clientData)
+       
+        const data = await response.json();
+        console.log(data)
+        if (!data.success) {
+            throw new Error(data.message)
+        }
+
+        return data
+
+    } catch (error) {
+        return error
+    }
+}
