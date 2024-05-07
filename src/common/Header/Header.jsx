@@ -25,11 +25,14 @@ export const Header = () => {
         
         setCommunity((prevState) => ({
             ...prevState,
-            [e.target.name]: e.target.value
+            election: e.target.value
         }))
             dispatch(navigateCategory({ category: e.target.value }))
+            console.log(e.target.value)
             navigate('/community')
-        
+            // setCommunity({
+            //     election: ""
+            // })
     }
 
   
@@ -64,6 +67,23 @@ export const Header = () => {
                             onClick={() => dispatch(logout({ tokenData: "" }))}>
                             log out
                         </div>
+                        <select
+                        className={"inputDesign"}
+                        type={"text"}
+                        name={"election"}
+                        value={community.election || ""}
+                        onChange={navigateCommunity}
+                    >
+                        
+                        <option value="">COMMUNITY</option>
+                        <option value="Club dnb">Club dnb</option>
+                        <option value="RaggaJungle">RaggaJungle</option>
+                        <option value="Rollers">Rollers</option>
+                        <option value="Liquid dnb">Liquid dnb</option>
+                        <option value="Jump Up">Jump Up</option>
+                        <option value="NeuroFunk">NeuroFunk</option>
+                        <option value="memes">Memes</option>
+                    </select>
                     </div>
                 ) : (
 
@@ -75,6 +95,24 @@ export const Header = () => {
                             onClick={() => dispatch(logout({ tokenData: "" }))}>
                             log out
                         </div>
+                        
+                        <select
+                        className={"inputDesign"}
+                        type={"text"}
+                        name={"election"}
+                        value={community.election || ""}
+                        onChange={navigateCommunity}
+                    >
+                        
+                        <option value="">COMMUNITY</option>
+                        <option value="Club dnb">Club dnb</option>
+                        <option value="RaggaJungle">RaggaJungle</option>
+                        <option value="Rollers">Rollers</option>
+                        <option value="Liquid dnb">Liquid dnb</option>
+                        <option value="Jump Up">Jump Up</option>
+                        <option value="NeuroFunk">NeuroFunk</option>
+                        <option value="memes">Memes</option>
+                    </select>
                     </div>
                 )
             ) : (

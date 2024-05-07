@@ -14,7 +14,6 @@ export const communitySlice = createSlice({
         }
       },
     }
-    
 });
 
 export const { navigateCategory } = communitySlice.actions;

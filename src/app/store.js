@@ -13,7 +13,7 @@ import communitySlice from "./slices/communitySlice";
 const reducers = combineReducers({
     user: userSlice,
     detail: detailSlice,
-    category: communitySlice
+    community: communitySlice
 });
 
 const persistConfig = {

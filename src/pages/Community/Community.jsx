@@ -9,7 +9,6 @@ import { useNavigate } from 'react-router-dom'
 import { CButton } from "../../common/CButton/CButton"
 import { updateDetail } from "../../app/slices/postDetailSlice"
 import 'react-toastify/dist/ReactToastify.css';
-import { Heart } from "lucide-react"
 import { categoryData } from "../../app/slices/communitySlice"
 import { GetGenrePostCall } from "../../services/api.Calls"
 
@@ -21,7 +20,11 @@ export const Community = () => {
 
     const categorySelection = useSelector(categoryData)
 
+    console.log(categorySelection.category)
+
     const navigate = useNavigate()
+
+    const [loadedPosts, setLoadedPosts] = useState(false)
 
     const dispatch = useDispatch()
 
@@ -49,15 +52,17 @@ export const Community = () => {
     useEffect(() => {
         const postFeed = async () => {
             try {
+                
                 const fetched = await GetGenrePostCall(reduxUser.tokenData.token, categorySelection.category)
+                
                 setPosts(fetched.data)
-   
+                setLoadedPosts(true)
 
             } catch (error) {
                 console.log(error)
             }
         }
-        if (reduxUser.tokenData.token && posts.length === 0) {
+        if ( loadedPosts=== false) {
             postFeed()
         }
     }, [posts])
@@ -115,10 +120,10 @@ export const Community = () => {
     return (
         <div className="homeDesign">
 
-            {reduxUser.tokenData.token === undefined ? (
+            {!reduxUser.tokenData.token  ? (
                 <>
                 <div className="welcomeView">
-                    <div className="welcomeMsg">Bienvenido a Post It!</div>
+                    <div className="welcomeMsg">Bienvenido a Community!</div>
                     <RedirectButton
                         className={"loginButtonDesign"}
                         title={"Login"}
@@ -133,7 +138,7 @@ export const Community = () => {
                 </>
             ) : (
 
-                posts.length > 0 ? (
+                posts.length !== 0 ? (
                     <>
                     <div className="homeHeader">
                     FEED
@@ -170,17 +175,16 @@ export const Community = () => {
                         </div>
 
                         <div className="cardsDesign">
-                            {posts.slice(0, posts.length).map(     
+                            {posts.map(     
                                 post => {
                                     return (
-                                        <div className="cardDiv" key={post._id}>
+                                        <div className="cardDiv" key={post.id}>
                                             <PostCard
-                                                authorFirstName={post.authorFirstName}
+                                                key={post.id}
                                                 title={post.title.length > 20 ? post.title.substring(0, 20) : post.title}
-                                                description={post.description.length > 40 ? post.description.substring(0, 40) + "..." : post.description}
                                                 clickFunction={() => manageDetail(post)}
                                             />
-                                            <div className="likeContainer" key={post._id} >
+                                            {/* <div className="likeContainer" key={post._id} >
                                                 <CButton
                                                 className={"likeButton"}
                                                 title={<Heart fill={post.likes.includes(reduxUser.tokenData.user.userId) ? "red"
@@ -188,7 +192,7 @@ export const Community = () => {
                                                 // emitFunction={() => likePost(post._id)}
                                                 />
                                                 <div className="likesNum">{post.likes.length}</div>
-                                            </div>
+                                            </div> */}
                                             
                                         </div>
                                     )
