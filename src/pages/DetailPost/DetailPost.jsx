@@ -1,7 +1,7 @@
 
 import "./DetailPost.css";
-import { useSelector } from "react-redux";
-import { detailData,  } from "../../app/slices/postDetailSlice";
+import {  useSelector } from "react-redux";
+import { detailData,   } from "../../app/slices/postDetailSlice";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { userData } from "../../app/slices/userSlice";
@@ -11,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { PostCard } from "../../common/PostCard/PostCard";
 import { CButton } from "../../common/CButton/CButton";
 import { Heart } from "lucide-react";
-import { LikeCall } from "../../services/api.Calls";
+import { LikeCall, PostLikesCall } from "../../services/api.Calls";
 
 // import { UpdatePostCall } from "../../services/apiCalls";
 // import { useDispatch } from "react-redux";
@@ -23,6 +23,12 @@ export const PostDetail = () => {
     const reduxUser = useSelector(userData)
 
     const navigate = useNavigate();
+
+    // const dispatch = useDispatch()
+
+    const [countDone, setCountDone] = useState(false)
+
+    const [likeCount, setLikeCount] = useState([])
 
     // const dispatch = useDispatch();
 
@@ -44,7 +50,6 @@ export const PostDetail = () => {
         createdAt: detailRdx?.detail?.owner.createdAt,
         updatedAt: detailRdx?.detail?.owner.updatedAt,
     })
-console.log(post.id)
 
     // const [postError, setPostError] = useState({
     //     titleError: "",
@@ -54,6 +59,33 @@ console.log(post.id)
 
     // eslint-disable-next-line no-unused-vars
     const [write, setWrite] = useState("disabled")
+console.log(likeCount)
+    
+    useEffect(() => {
+        const likesCount = async () => {
+                try {
+        
+                    const fetched = await PostLikesCall(reduxUser.tokenData.token, post.id)
+        
+                    // if (fetched.message === "Post updated successfully"){
+                    //   toast.success(fetched.message)
+                    //   }else toast.error(fetched.message)
+                    setLikeCount(fetched.data.length)
+                    
+                    setCountDone(true)
+
+                    // if (likeCount===0) {
+                    //     setLikeCount(likeCount.length===0 ? 0 : fetched.data.length)}
+        
+                } catch (error) {
+                    console.log(error.message)
+                }
+            }
+
+                likesCount() 
+            
+           
+    }, [likeCount])
 
     useEffect(() => {
         if (!reduxUser?.tokenData?.token) {
@@ -111,8 +143,6 @@ console.log(post.id)
 
     //         setWrite("disabled")
 
-
-
     //     } catch (error) {
     //         console.log(error.message)
     //     }
@@ -126,17 +156,16 @@ console.log(post.id)
             if(fetched.message ==="Like"){
               setIsLikedBefore(true)
             }else setIsLikedBefore(false)
-  
+            console.log(fetched.data)
+            // dispatch(updateDetail({ detail: fetched.data }));
             // dispatch(updateDetail({detail: fetched.data}))
   
           //   if (fetched.message === "Like") {
           //       toast.success(fetched.message)
   
           //   } else toast.info(fetched.message)
-  
-            if (fetched.data && fetched.data.id) {
-                setPost(post?.map(post => post.id === id ? fetched.data
-                 : detailRdx.detail))}
+            fetched.message==="Like" ? setLikeCount(countDone+1)
+            : setLikeCount(countDone-1 )
   
         } catch (error) {
             console.log(error)
@@ -168,9 +197,9 @@ console.log(post.id)
       className={"likeButton"}
       title={<Heart fill={isLikedBefore===true ? "red"
         : "white"}/>}
-      emitFunction={() => likePost(parseInt(post.id))}
+      emitFunction={() => likePost((post.id))}
       />
-      {/* <div className="likesNum">{detailRdx.detail?.likes.length}</div> */}
+      <div className="likesNum">{likeCount}</div>
       </div>
                                 </div>
     )

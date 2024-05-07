@@ -223,7 +223,33 @@ export const LikeCall = async (token, id) => {
         const response = await fetch(`${root}likes/${id}`, clientData)
        
         const data = await response.json();
-        console.log(data)
+
+        if (!data.success) {
+            throw new Error(data.message)
+        }
+
+        return data
+
+    } catch (error) {
+        return error
+    }
+}
+
+export const PostLikesCall = async (token, id) => {
+
+    const clientData = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        }
+    }
+
+    try {
+        const response = await fetch(`${root}likes/posts/${id}`, clientData)
+       
+        const data = await response.json();
+
         if (!data.success) {
             throw new Error(data.message)
         }
