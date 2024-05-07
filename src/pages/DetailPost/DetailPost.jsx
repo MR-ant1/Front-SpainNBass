@@ -4,13 +4,12 @@ import { useSelector } from "react-redux";
 import { detailData } from "../../app/slices/postDetailSlice";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CButton } from "../../common/CButton/CButton";
-import { CInput } from "../../common/CInput/CInput";
 import { userData } from "../../app/slices/userSlice";
-import { validate } from "../../utils/validations";
-import { ToastContainer } from 'react-toastify';
+// import { validate } from "../../utils/validations";
+
 import 'react-toastify/dist/ReactToastify.css';
-import { deleteMyPostCall } from "../../services/api.Calls";
+import { PostCard } from "../../common/PostCard/PostCard";
+
 // import { UpdatePostCall } from "../../services/apiCalls";
 // import { useDispatch } from "react-redux";
 
@@ -26,6 +25,7 @@ export const PostDetail = () => {
 
     //   const [isLikedBefore, setIsLikedBefore] = useState(detailRdx.detail?.likes.includes(reduxUser.tokenData.userId))
 
+    // eslint-disable-next-line no-unused-vars
     const [post, setPost] = useState({
         id: detailRdx?.detail?.id,
         title: detailRdx?.detail?.title,
@@ -34,15 +34,16 @@ export const PostDetail = () => {
         picUrl: detailRdx?.detail?.picUrl,
         ownerId: detailRdx?.detail?.owner.id,
         ownerNickname: detailRdx?.detail?.owner.nickname,
-        createdAt: detailRdx?.detail?.createdAt
+        createdAt: detailRdx?.detail?.createdAt,
+        updatedAt: detailRdx.detail.updatedAt
     })
 
 
-    const [postError, setPostError] = useState({
-        titleError: "",
-        descriptionError: "",
-        picUrlError: ""
-    })
+    // const [postError, setPostError] = useState({
+    //     titleError: "",
+    //     descriptionError: "",
+    //     picUrlError: ""
+    // })
 
     // eslint-disable-next-line no-unused-vars
     const [write, setWrite] = useState("disabled")
@@ -63,33 +64,21 @@ export const PostDetail = () => {
 
 
 
-    const inputHandler = (e) => {
-        setPost((prevState) => ({
-            ...prevState,
-            [e.target.name]: e.target.value
-        }))
-    }
+    // const inputHandler = (e) => {
+    //     setPost((prevState) => ({
+    //         ...prevState,
+    //         [e.target.name]: e.target.value
+    //     }))
+    // }
 
-    const checkError = (e) => {
-        const error = validate(e.target.name, e.target.value)
+    // const checkError = (e) => {
+    //     const error = validate(e.target.name, e.target.value)
 
-        setPostError((prevState) => ({
-            ...prevState,
-            [e.target.name + "Error"]: error
-        }))
-    }
-    const deleteMyPost = async (id) => {
-        try {
-            const fetched = await deleteMyPostCall(id, reduxUser.tokenData.token)
-
-            if(fetched.success === true) {
-                navigate('/profile')
-            }
-            
-        } catch (error) {
-            console.log(error.message)
-        }
-    }
+    //     setPostError((prevState) => ({
+    //         ...prevState,
+    //         [e.target.name + "Error"]: error
+    //     }))
+    // }
 
     //   useEffect(() => {
 
@@ -146,122 +135,16 @@ export const PostDetail = () => {
     //       console.log(error)
     //   }
 
-
-    return (
-        detailRdx?.detail?.id &&
-        <div className="detailDesign">
-            <div className="undoButton">
-                <CButton
-                    className={"backButton"}
-                    title={"X"}
-                    emitFunction={(() => navigate('/profile'))}
-                />
-            </div>
-            <div className="postFields">
-                <CInput
-                    className={`titleInputDesign ${postError.titleError !== "" ? "inputDesignError" : ""
-                        }`}
-                    type={"text"}
-                    name={"title"}
-                    disabled={write}
-                    value={post.title || ""}
-                    changeFunction={inputHandler}
-                    blurFunction={checkError}
-                />
-
-                <CInput
-                    className={`descriptionInputDesign ${postError.descriptionError !== "" ? "inputDesignError" : ""
-                        }`}
-                    type={"text"}
-                    name={"description"}
-                    disabled={write}
-                    value={post.description || ""}
-                    changeFunction={inputHandler}
-                    blurFunction={checkError}
-                />
-
-                <CInput
-                    className={"topicInputDesign"}
-                    type={"text"}
-                    name={"topic"}
-                    disabled={true}
-                    value={post.topic}
-                    changeFunction={inputHandler}
-                    blurFunction={checkError}
-                />
-
-                <CInput
-                    className={`descriptionInputDesign ${postError.picUrlError !== "" ? "inputDesignError" : ""
-                        }`}
-                    type={"text"}
-                    name={"picUrl"}
-                    disabled={write}
-                    value={post.picUrl || ""}
-                    changeFunction={inputHandler}
-                    blurFunction={checkError}
-                />
-                <CInput
-                    className={"inputDesign"}
-                    type={"text"}
-                    name={"ownerNickname"}
-                    disabled={write}
-                    value={post.ownerNickname}
-                    changeFunction={inputHandler}
-                    blurFunction={checkError}
-                />
-                <CInput
-                    className={"inputDesign"}
-                    type={"text"}
-                    name={"createdAt"}
-                    disabled={true}
-                    value={"Fecha de creación:" + post.createdAt}
-                    changeFunction={inputHandler}
-                    blurFunction={checkError}
-                />
-                <CInput
-                    className={"inputDesign"}
-                    type={"text"}
-                    name={"updatedAt"}
-                    disabled={true}
-                    value={"Fecha de creación:" + post.updatedAt}
-                    changeFunction={inputHandler}
-                    blurFunction={checkError}
-                />
-                <div className='deleteButton'>
-                    <CButton key={post.id}
-                        className={"deleteMyPostButton"}
-                        title={"Eliminar"}
-                        emitFunction={(() => deleteMyPost(post.id))}
-                    />
-                </div>
-                <CButton
-                    className={write === "" ? " updateButton" : "allowButton"}
-                    title={write === "" ? "Actualizar" : <img src="img/EditIcon.png" alt="editIcon"></img>}
-                //   emitFunction={write === "" ? () => UpdatePost(post._id) : () => setWrite("")}
-                />
-                {/* <div className="likeRow">
-        <CButton
-      className={"likeButton"}
-      title={<Heart fill={isLikedBefore===true ? "red"
-        : "white"}/>}
-      emitFunction={() => likePost(detailRdx.detail?._id)}
-      />
-      <div className="likesNum">{detailRdx.detail?.likes.length}</div>
-      </div> */}
-            </div>
-
-            <ToastContainer
-                position="top-center"
-                autoClose={2000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="dark"
-            />
-        </div>
+    return (        
+        <div className='myPostCard' key={post.id}>
+                                    <PostCard
+                                        nickname={post.ownerNickname}
+                                        title={post.title && post.title.length > 20 ? post.title.substring(0, 20) : post.title}
+                                        description={post.description.length > 40 ? post.description.substring(0, 40) + "..." : post.description}
+                                        picUrl={post.picUrl}
+                                        createdAt={"Creado:" + post.createdAt}
+                                        updatedAt={"Edit:" + post.updatedAt}
+                                    />
+                                </div>
     )
 }

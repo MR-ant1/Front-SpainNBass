@@ -178,8 +178,8 @@ export const Community = () => {
                                 post => {
                                     return (
                                         <div className="cardDiv" key={post.id}>
-                                            <PostCard
-                                                
+                                            <PostCard 
+                                                key={post.id}
                                                 title={post.title.length > 20 ? post.title.substring(0, 20) : post.title}
                                                 clickFunction={() => manageDetail(post)}
                                             />
