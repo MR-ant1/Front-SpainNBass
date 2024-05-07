@@ -253,9 +253,35 @@ export const PostLikesCall = async (token, id) => {
         if (!data.success) {
             throw new Error(data.message)
         }
-
+     
         return data
+        
+    } catch (error) {
+        return error
+    }
+}
 
+export const GetCommentsCall = async (token, id) => {
+
+    const clientData = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        }
+    }
+
+    try {
+        const response = await fetch(`${root}comments/${id}`, clientData)
+       
+        const data = await response.json();
+
+        if (!data.success) {
+            throw new Error(data.message)
+        }
+     
+        return data
+        
     } catch (error) {
         return error
     }

@@ -1,7 +1,7 @@
 
 import "./DetailPost.css";
-import {  useSelector } from "react-redux";
-import { detailData,   } from "../../app/slices/postDetailSlice";
+import { useSelector } from "react-redux";
+import { detailData, } from "../../app/slices/postDetailSlice";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { userData } from "../../app/slices/userSlice";
@@ -11,7 +11,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { PostCard } from "../../common/PostCard/PostCard";
 import { CButton } from "../../common/CButton/CButton";
 import { Heart } from "lucide-react";
-import { LikeCall, PostLikesCall } from "../../services/api.Calls";
+import { GetCommentsCall, LikeCall, PostLikesCall } from "../../services/api.Calls";
+import { toast } from "react-toastify";
 
 // import { UpdatePostCall } from "../../services/apiCalls";
 // import { useDispatch } from "react-redux";
@@ -24,19 +25,14 @@ export const PostDetail = () => {
 
     const navigate = useNavigate();
 
-    // const dispatch = useDispatch()
+    const [comments, setComments] = useState([])
+
 
     const [countDone, setCountDone] = useState(false)
 
     const [likeCount, setLikeCount] = useState([])
 
-    // const dispatch = useDispatch();
-
     const [isLikedBefore, setIsLikedBefore] = useState()
-
-    //   const dispatch = useDispatch();
-
-    //   const [isLikedBefore, setIsLikedBefore] = useState(detailRdx.detail?.likes.includes(reduxUser.tokenData.userId))
 
     // eslint-disable-next-line no-unused-vars
     const [post, setPost] = useState({
@@ -50,41 +46,25 @@ export const PostDetail = () => {
         createdAt: detailRdx?.detail?.owner.createdAt,
         updatedAt: detailRdx?.detail?.owner.updatedAt,
     })
-
-    // const [postError, setPostError] = useState({
-    //     titleError: "",
-    //     descriptionError: "",
-    //     picUrlError: ""
-    // })
-
-    // eslint-disable-next-line no-unused-vars
-    const [write, setWrite] = useState("disabled")
-console.log(likeCount)
-    
     useEffect(() => {
         const likesCount = async () => {
-                try {
-        
-                    const fetched = await PostLikesCall(reduxUser.tokenData.token, post.id)
-        
-                    // if (fetched.message === "Post updated successfully"){
-                    //   toast.success(fetched.message)
-                    //   }else toast.error(fetched.message)
-                    setLikeCount(fetched.data.length)
-                    
-                    setCountDone(true)
+            try {
 
-                    // if (likeCount===0) {
-                    //     setLikeCount(likeCount.length===0 ? 0 : fetched.data.length)}
-        
-                } catch (error) {
-                    console.log(error.message)
-                }
+                const fetched = await PostLikesCall(reduxUser.tokenData.token, post.id)
+
+                // if (fetched.message === "Post updated successfully"){
+                //   toast.success(fetched.message)
+                //   }else toast.error(fetched.message)
+                setLikeCount(fetched.data)
+                setCountDone(true)
+
+            } catch (error) {
+                console.log(error.message)
             }
-
-                likesCount() 
-            
-           
+        }
+        if (countDone === false) {
+            likesCount()
+        }
     }, [likeCount])
 
     useEffect(() => {
@@ -119,88 +99,100 @@ console.log(likeCount)
     //     }))
     // }
 
-    //   useEffect(() => {
 
-    //     if (!detailRdx?.detail?.id) {
-    //       navigate("/");
-    //     }
-    //   }, [detailRdx]);
+    const bringComments = async () => {
 
-    //   const UpdatePost = async (postId) => {
-    //     try {
-    //         for (let elemento in post) {
-    //             if (post[elemento] === "") {
-    //                 throw new Error("All fields are required")
-    //             }
-    //         }
+        try {
+            const fetched = await GetCommentsCall(reduxUser.tokenData.token, post.id)
 
-    //         const fetched = await UpdatePostCall(reduxUser?.tokenData?.token, post, postId)
+            setComments(fetched.data)
 
-    //         if (fetched.message === "Post updated successfully"){
-    //           toast.success(fetched.message)
-    //           }else toast.error(fetched.message)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    if (comments.length === 0) {
+        bringComments()
+    }
 
 
-    //         setWrite("disabled")
-
-    //     } catch (error) {
-    //         console.log(error.message)
-    //     }
-    // }
 
     const likePost = async (id) => {
 
         try {
             const fetched = await LikeCall(reduxUser.tokenData.token, id)
-  
-            if(fetched.message ==="Like"){
-              setIsLikedBefore(true)
-            }else setIsLikedBefore(false)
-            console.log(fetched.data)
-            // dispatch(updateDetail({ detail: fetched.data }));
-            // dispatch(updateDetail({detail: fetched.data}))
-  
-          //   if (fetched.message === "Like") {
-          //       toast.success(fetched.message)
-  
-          //   } else toast.info(fetched.message)
-            fetched.message==="Like" ? setLikeCount(countDone+1)
-            : setLikeCount(countDone-1 )
-  
+
+            if (fetched.message === "Like") {
+                setIsLikedBefore(true)
+            } else setIsLikedBefore(false)
+            setCountDone(false)
+
+            if (fetched.message === "Like") {
+                toast.success(fetched.message)
+            } else toast.info(fetched.message)
+            fetched.message === "Like" ? setLikeCount(countDone + 1)
+                : setLikeCount(countDone - 1)
+
         } catch (error) {
             console.log(error)
         }
-      }
+    }
 
-    return (        
+    return (
         <div className="detailDesign">
             <div className="undoButton">
-                <CButton 
+                <CButton
                     className={"backButton"}
                     title={"X"}
                     emitFunction={(() => navigate(reduxUser.tokenData.role === "super_admin" ? "/superadmin" : '/community'))}
-                        
+
                 />
             </div>
-        <div className='myPostCard' key={detailRdx.detail?.id}>
+            <div className='myPostCard' key={detailRdx.detail?.id}>
+                <PostCard
+                    nickname={detailRdx.detail?.owner.nickname}
+                    title={detailRdx.detail?.title}
+                    description={detailRdx?.detail?.description}
+                    picUrl={detailRdx?.detail?.picUrl}
+                    createdAt={"Creado:" + detailRdx?.detail?.owner.createdAt}
+                    updatedAt={"Actualizado:" + detailRdx?.detail?.owner.updatedAt}
+                />
+            </div>
+            <div className="likeRow">
+                <CButton
+                    className={"likeButton"}
+                    title={<Heart fill={isLikedBefore === true ? "red"
+                        : "white"} />}
+                    emitFunction={() => likePost((post.id))}
+                />
+                <div className="likesNum">{likeCount.length}</div>
+            </div>
+      
+            {comments !== "" ? (
+                <div className='myPosts'>
+                    {comments.map(
+                        comment => {
+                            return (
+                                <div className='myPostCard' key={comment.id}>
                                     <PostCard
-                                        nickname={detailRdx.detail?.owner.nickname}
-                                        title={detailRdx.detail?.title}
-                                        description={detailRdx?.detail?.description}
-                                        picUrl={detailRdx?.detail?.picUrl}
-                                        createdAt={"Creado:" + detailRdx?.detail?.owner.createdAt}
-                                        updatedAt={"Actualizado:" + detailRdx?.detail?.owner.updatedAt}
+                                        nickname={comment.user.nickname}
+                                        comment={comment.comment}
+                                        url={comment.url}
+                                        createdAt={"Creado:" + comment.createdAt}
+                                        updatedAt={comment.updatedAt === comment.createdAt
+                                            ? ""
+                                            : "Edit:" + comment.updatedAt}
                                     />
                                 </div>
-                                <div className="likeRow">
-        <CButton
-      className={"likeButton"}
-      title={<Heart fill={isLikedBefore===true ? "red"
-        : "white"}/>}
-      emitFunction={() => likePost((post.id))}
-      />
-      <div className="likesNum">{likeCount}</div>
-      </div>
-                                </div>
+
+                            )
+                        }
+                    ).reverse()
+                    }
+                </div>
+
+            ) : (<div>Aun no hay ningún comentario en este post</div>
+            )}
+        </div>
     )
 }
