@@ -27,12 +27,13 @@ export const Header = () => {
             ...prevState,
             election: e.target.value
         }))
+
             dispatch(navigateCategory({ category: e.target.value }))
-            console.log(e.target.value)
+            navigate('/')
             navigate('/community')
-            // setCommunity({
-            //     election: ""
-            // })
+            setCommunity({
+                election: ""
+            })
     }
 
   

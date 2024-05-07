@@ -20,13 +20,12 @@ export const Community = () => {
 
     const categorySelection = useSelector(categoryData)
 
-    console.log(categorySelection.category)
-
     const navigate = useNavigate()
 
-    const [loadedPosts, setLoadedPosts] = useState(false)
-
     const dispatch = useDispatch()
+
+    
+    const [loadedPosts, setLoadedPosts] = useState(false)
 
     const [posts, setPosts] = useState([])
 
@@ -58,14 +57,14 @@ export const Community = () => {
                 setPosts(fetched.data)
                 setLoadedPosts(true)
 
+                // dispatch(navigateCategory({ category: "" }))
+
             } catch (error) {
                 console.log(error)
             }
         }
-        if ( loadedPosts=== false) {
             postFeed()
-        }
-    }, [posts])
+    }, [categorySelection.category])
 
 
 
@@ -180,7 +179,7 @@ export const Community = () => {
                                     return (
                                         <div className="cardDiv" key={post.id}>
                                             <PostCard
-                                                key={post.id}
+                                                
                                                 title={post.title.length > 20 ? post.title.substring(0, 20) : post.title}
                                                 clickFunction={() => manageDetail(post)}
                                             />
@@ -201,7 +200,9 @@ export const Community = () => {
                     </>
 
                 ) : (
-                    <div className="homeDesign">LOADING</div>
+                    loadedPosts === false ? <div className="homeDesign">LOADING</div>
+                    : <div className="homeDesign">AUN NO HAY POST DE ESTA CATEGORIA</div>
+                   
                 ))}
         </div>
     )
