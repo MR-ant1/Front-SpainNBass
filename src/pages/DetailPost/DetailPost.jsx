@@ -5,17 +5,15 @@ import { detailData, } from "../../app/slices/postDetailSlice";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { userData } from "../../app/slices/userSlice";
-// import { validate } from "../../utils/validations";
-
+import { validate } from "../../utils/validations";
 import 'react-toastify/dist/ReactToastify.css';
 import { PostCard } from "../../common/PostCard/PostCard";
 import { CButton } from "../../common/CButton/CButton";
-import { Heart } from "lucide-react";
-import { GetCommentsCall, LikeCall, PostLikesCall } from "../../services/api.Calls";
+// import { Heart } from "lucide-react";
+import { GetCommentsCall,  PostLikesCall, newCommentCall } from "../../services/api.Calls";
 import { toast } from "react-toastify";
+import { CInput } from "../../common/CInput/CInput";
 
-// import { UpdatePostCall } from "../../services/apiCalls";
-// import { useDispatch } from "react-redux";
 
 export const PostDetail = () => {
 
@@ -25,14 +23,25 @@ export const PostDetail = () => {
 
     const navigate = useNavigate();
 
-    const [comments, setComments] = useState([])
+    const [postComments, setPostComments] = useState([])
 
+    const [newComment, setNewComment] = useState({
+        comment: "",
+        url: ""
+    })
+
+    const [newCommentError, setNewCommentError] = useState({
+        commentError: "",
+        urlError: ""
+    })
 
     const [countDone, setCountDone] = useState(false)
 
     const [likeCount, setLikeCount] = useState([])
 
-    const [isLikedBefore, setIsLikedBefore] = useState()
+    const [write, setWrite] = useState("disabled")
+
+    // const [isLikedBefore, setIsLikedBefore] = useState()
 
     // eslint-disable-next-line no-unused-vars
     const [post, setPost] = useState({
@@ -73,31 +82,31 @@ export const PostDetail = () => {
         }
     }, [reduxUser])
 
-    //   useEffect(() => {
-    //     toast.dismiss()
-    //     postError.titleError && 
-    //     toast.warn(postError.titleError)
-    //     postError.descriptionError && 
-    //     toast.warn(postError.descriptionError)
-    //     }, [postError])
+      useEffect(() => {
+        toast.dismiss()
+        newComment.commentError && 
+        toast.warn(newComment.commentError)
+        newComment.urlError && 
+        toast.warn(newComment.urlError)
+        }, [newCommentError])
 
 
 
-    // const inputHandler = (e) => {
-    //     setPost((prevState) => ({
-    //         ...prevState,
-    //         [e.target.name]: e.target.value
-    //     }))
-    // }
+    const inputHandler = (e) => {
+        setNewComment((prevState) => ({
+            ...prevState,
+            [e.target.name]: e.target.value
+        }))
+    }
 
-    // const checkError = (e) => {
-    //     const error = validate(e.target.name, e.target.value)
+    const checkError = (e) => {
+        const error = validate(e.target.name, e.target.value)
 
-    //     setPostError((prevState) => ({
-    //         ...prevState,
-    //         [e.target.name + "Error"]: error
-    //     }))
-    // }
+        setNewCommentError((prevState) => ({
+            ...prevState,
+            [e.target.name + "Error"]: error
+        }))
+    }
 
 
     const bringComments = async () => {
@@ -105,33 +114,50 @@ export const PostDetail = () => {
         try {
             const fetched = await GetCommentsCall(reduxUser.tokenData.token, post.id)
 
-            setComments(fetched.data)
+            setPostComments(fetched.data)
 
         } catch (error) {
             console.log(error)
         }
     }
-    if (comments.length === 0) {
+    if (postComments.length === 0) {
         bringComments()
     }
 
+    // const likePost = async (id) => {
 
+    //     try {
+    //         const fetched = await LikeCall(reduxUser.tokenData.token, id)
 
-    const likePost = async (id) => {
+    //         if (fetched.message === "Like") {
+    //             setIsLikedBefore(true)
+    //         } else setIsLikedBefore(false)
+    //         setCountDone(false)
+
+    //         if (fetched.message === "Like") {
+    //             toast.success(fetched.message)
+    //         } else toast.info(fetched.message)
+    //         fetched.message === "Like" ? setLikeCount(countDone + 1)
+    //             : setLikeCount(countDone - 1)
+
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
+
+    const createComment = async (id) => {
 
         try {
-            const fetched = await LikeCall(reduxUser.tokenData.token, id)
+            const fetched = await newCommentCall(reduxUser.tokenData.token, id)
 
-            if (fetched.message === "Like") {
-                setIsLikedBefore(true)
-            } else setIsLikedBefore(false)
-            setCountDone(false)
+            setNewComment({
+                comment: "",
+                url: ""
+            })
 
-            if (fetched.message === "Like") {
-                toast.success(fetched.message)
-            } else toast.info(fetched.message)
-            fetched.message === "Like" ? setLikeCount(countDone + 1)
-                : setLikeCount(countDone - 1)
+            if (fetched.data && fetched.data.id) {
+                setPostComments(postComments.map(postComment => postComment.id === id ? fetched.data
+                 : postComments))}
 
         } catch (error) {
             console.log(error)
@@ -139,38 +165,62 @@ export const PostDetail = () => {
     }
 
     return (
-        <div className="detailDesign">
-            <div className="undoButton">
-                <CButton
-                    className={"backButton"}
-                    title={"X"}
-                    emitFunction={(() => navigate(reduxUser.tokenData.role === "super_admin" ? "/superadmin" : '/community'))}
+        // <div className="detailDesign">
+        //     <div className="undoButton">
+        //         <CButton
+        //             className={"backButton"}
+        //             title={"X"}
+        //             emitFunction={(() => navigate(reduxUser.tokenData.role === "super_admin" ? "/superadmin" : '/community'))}
 
-                />
-            </div>
-            <div className='myPostCard' key={detailRdx.detail?.id}>
-                <PostCard
-                    nickname={detailRdx.detail?.owner.nickname}
-                    title={detailRdx.detail?.title}
-                    description={detailRdx?.detail?.description}
-                    picUrl={detailRdx?.detail?.picUrl}
-                    createdAt={"Creado:" + detailRdx?.detail?.owner.createdAt}
-                    updatedAt={"Actualizado:" + detailRdx?.detail?.owner.updatedAt}
-                />
-            </div>
-            <div className="likeRow">
-                <CButton
-                    className={"likeButton"}
-                    title={<Heart fill={isLikedBefore === true ? "red"
-                        : "white"} />}
-                    emitFunction={() => likePost((post.id))}
-                />
-                <div className="likesNum">{likeCount.length}</div>
-            </div>
-      
-            {comments !== "" ? (
+        //         />
+        //     </div>
+        //     <div className='myPostCard' key={detailRdx.detail?.id}>
+        //         <PostCard
+        //             nickname={detailRdx.detail?.owner.nickname}
+        //             title={detailRdx.detail?.title}
+        //             description={detailRdx?.detail?.description}
+        //             picUrl={detailRdx?.detail?.picUrl}
+        //             createdAt={"Creado:" + detailRdx?.detail?.owner.createdAt}
+        //             updatedAt={"Actualizado:" + detailRdx?.detail?.owner.updatedAt}
+        //         />
+        //     </div>
+        //     <div className="likeRow">
+        //         <CButton
+        //             className={"likeButton"}
+        //             title={<Heart fill={isLikedBefore === true ? "red"
+        //                 : "white"} />}
+        //             emitFunction={() => likePost((post.id))}
+        //         />
+        //         <div className="likesNum">{likeCount.length}</div>
+        //     </div>
+      <div>
+                    <CInput
+                        className={"inputDesign"}
+                        type={"text"}
+                        name={"comment"}
+                        disabled={write}
+                        value={newComment.comment || ""}
+                        changeFunction={inputHandler}
+                        blurFunction={checkError}
+                    />
+                    <CInput
+                        className={"inputDesign"}
+                        type={"text"}
+                        name={"url"}
+                        disabled={write}
+                        value={newComment.url}
+                        changeFunction={inputHandler}
+                        blurFunction={checkError}
+                    />
+                    <CButton
+                        className={write === "" ? " updateButton" : "allowButton"}
+                        title={write === "" ? "Actualizar" : "Habilitar"}
+                        emitFunction={write === "" ? createComment : () => setWrite("")}
+                    />
+
+            {postComments !== "" ? (
                 <div className='myPosts'>
-                    {comments.map(
+                    {postComments.map(
                         comment => {
                             return (
                                 <div className='myPostCard' key={comment.id}>
