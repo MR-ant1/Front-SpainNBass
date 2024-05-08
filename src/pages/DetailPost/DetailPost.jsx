@@ -23,6 +23,8 @@ export const PostDetail = () => {
 
     const navigate = useNavigate();
 
+    const [loadedComments, setLoadedComments] = useState(false)
+
     const [postComments, setPostComments] = useState([])
 
     const [newComment, setNewComment] = useState({
@@ -108,22 +110,23 @@ export const PostDetail = () => {
         }))
     }
 
-
+    useEffect(() => {
     const bringComments = async () => {
 
         try {
             const fetched = await GetCommentsCall(reduxUser.tokenData.token, post.id)
-
+            console.log(fetched.data)
+            // setPostComments(fetched.data !== undefined ? fetched.data : [])
             setPostComments(fetched.data)
-
+            setLoadedComments(true)
         } catch (error) {
             console.log(error)
         }
     }
-    if (postComments.length === 0) {
+    if (loadedComments=== false) {
         bringComments()
     }
-
+    },[postComments])
     // const likePost = async (id) => {
 
     //     try {
@@ -145,19 +148,23 @@ export const PostDetail = () => {
     //     }
     // }
 
-    const createComment = async (id) => {
+    const createComment = async () => {
 
         try {
-            const fetched = await newCommentCall(reduxUser.tokenData.token, id)
+            const fetched = await newCommentCall(reduxUser.tokenData.token, post.id, newComment)
 
-            setNewComment({
-                comment: "",
-                url: ""
-            })
 
-            if (fetched.data && fetched.data.id) {
-                setPostComments(postComments.map(postComment => postComment.id === id ? fetched.data
-                 : postComments))}
+            if (fetched) {
+                setNewComment({
+                    comment: "",
+                    url: ""
+                })
+                setLoadedComments(false)
+                // setPostComments(postComments.map(postComment => postComment.post.id === post.id ? fetched.data
+                //  : postComments))
+                // setPostComments(postComments.push(fetched.data))
+                setPostComments([])
+            }
 
         } catch (error) {
             console.log(error)
@@ -193,7 +200,7 @@ export const PostDetail = () => {
         //         />
         //         <div className="likesNum">{likeCount.length}</div>
         //     </div>
-      <div>
+      <div className="detail">
                     <CInput
                         className={"inputDesign"}
                         type={"text"}
@@ -218,14 +225,14 @@ export const PostDetail = () => {
                         emitFunction={write === "" ? createComment : () => setWrite("")}
                     />
 
-            {postComments !== "" ? (
+            {postComments.length > 0  ? (
                 <div className='myPosts'>
                     {postComments.map(
                         comment => {
                             return (
                                 <div className='myPostCard' key={comment.id}>
                                     <PostCard
-                                        nickname={comment.user.nickname}
+                                        nickname={comment.user?.nickname}
                                         comment={comment.comment}
                                         url={comment.url}
                                         createdAt={"Creado:" + comment.createdAt}

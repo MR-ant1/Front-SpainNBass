@@ -275,7 +275,7 @@ export const GetCommentsCall = async (token, id) => {
         const response = await fetch(`${root}comments/${id}`, clientData)
        
         const data = await response.json();
-
+        console.log(data)
         if (!data.success) {
             throw new Error(data.message)
         }
@@ -288,14 +288,15 @@ export const GetCommentsCall = async (token, id) => {
 }
 
 
-export const newCommentCall = async (token, id) => {
+export const newCommentCall = async (token, id, comment) => {
 
     const clientData = {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`
-        }
+        },
+        body: JSON.stringify(comment)
     }
 
     try {
