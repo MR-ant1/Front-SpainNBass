@@ -1,0 +1,12 @@
+
+.detail{
+    display: flex;
+    flex-direction: column;
+}
+
+.myPostCard{
+    height: 5em;
+}
+.PostCard {
+    height:1em;
+}

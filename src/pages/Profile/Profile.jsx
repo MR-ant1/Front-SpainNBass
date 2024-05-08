@@ -73,7 +73,7 @@ export const Profile = () => {
 
     const manageDetail = (post) => {
         dispatch(updateDetail({ detail: post }));
-        navigate("/detailPost");
+        navigate("/detailMyPost");
     };
 
     useEffect(() => {

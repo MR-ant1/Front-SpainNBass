@@ -1,18 +1,20 @@
 
 import "./DetailPost.css";
 import { useSelector } from "react-redux";
-import { detailData } from "../../app/slices/postDetailSlice";
+import { detailData, } from "../../app/slices/postDetailSlice";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CButton } from "../../common/CButton/CButton";
-import { CInput } from "../../common/CInput/CInput";
 import { userData } from "../../app/slices/userSlice";
 import { validate } from "../../utils/validations";
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { deleteMyPostCall } from "../../services/api.Calls";
-// import { UpdatePostCall } from "../../services/apiCalls";
-// import { useDispatch } from "react-redux";
+import { PostCard } from "../../common/PostCard/PostCard";
+import { CButton } from "../../common/CButton/CButton";
+// import { Heart } from "lucide-react";
+import { GetCommentsCall,  LikeCall,  PostLikesCall, bannedPostCall, newCommentCall } from "../../services/api.Calls";
+import { toast } from "react-toastify";
+import { CInput } from "../../common/CInput/CInput";
+import { Heart } from "lucide-react";
+
 
 export const PostDetail = () => {
 
@@ -22,10 +24,29 @@ export const PostDetail = () => {
 
     const navigate = useNavigate();
 
-    //   const dispatch = useDispatch();
+    const [loadedComments, setLoadedComments] = useState(false)
 
-    //   const [isLikedBefore, setIsLikedBefore] = useState(detailRdx.detail?.likes.includes(reduxUser.tokenData.userId))
+    const [postComments, setPostComments] = useState([])
 
+    const [newComment, setNewComment] = useState({
+        comment: "",
+        url: ""
+    })
+
+    const [newCommentError, setNewCommentError] = useState({
+        commentError: "",
+        urlError: ""
+    })
+
+    const [countDone, setCountDone] = useState(false)
+
+    const [likeCount, setLikeCount] = useState([])
+
+    const [write, setWrite] = useState("disabled")
+
+    const [isLikedBefore, setIsLikedBefore] = useState()
+
+    // eslint-disable-next-line no-unused-vars
     const [post, setPost] = useState({
         id: detailRdx?.detail?.id,
         title: detailRdx?.detail?.title,
@@ -34,18 +55,26 @@ export const PostDetail = () => {
         picUrl: detailRdx?.detail?.picUrl,
         ownerId: detailRdx?.detail?.owner.id,
         ownerNickname: detailRdx?.detail?.owner.nickname,
-        createdAt: detailRdx?.detail?.createdAt
+        createdAt: detailRdx?.detail?.owner.createdAt,
+        updatedAt: detailRdx?.detail?.owner.updatedAt,
     })
+    useEffect(() => {
+        const likesCount = async () => {
+            try {
 
+                const fetched = await PostLikesCall(reduxUser.tokenData.token, post.id)
 
-    const [postError, setPostError] = useState({
-        titleError: "",
-        descriptionError: "",
-        picUrlError: ""
-    })
+                setLikeCount(fetched.data)
+                setCountDone(true)
 
-    // eslint-disable-next-line no-unused-vars
-    const [write, setWrite] = useState("disabled")
+            } catch (error) {
+                console.log(error.message)
+            }
+        }
+        if (countDone === false) {
+            likesCount()
+        }
+    }, [likeCount])
 
     useEffect(() => {
         if (!reduxUser?.tokenData?.token) {
@@ -53,18 +82,18 @@ export const PostDetail = () => {
         }
     }, [reduxUser])
 
-    //   useEffect(() => {
-    //     toast.dismiss()
-    //     postError.titleError && 
-    //     toast.warn(postError.titleError)
-    //     postError.descriptionError && 
-    //     toast.warn(postError.descriptionError)
-    //     }, [postError])
+      useEffect(() => {
+        toast.dismiss()
+        newComment.commentError && 
+        toast.warn(newComment.commentError)
+        newComment.urlError && 
+        toast.warn(newComment.urlError)
+        }, [newCommentError])
 
 
 
     const inputHandler = (e) => {
-        setPost((prevState) => ({
+        setNewComment((prevState) => ({
             ...prevState,
             [e.target.name]: e.target.value
         }))
@@ -73,17 +102,78 @@ export const PostDetail = () => {
     const checkError = (e) => {
         const error = validate(e.target.name, e.target.value)
 
-        setPostError((prevState) => ({
+        setNewCommentError((prevState) => ({
             ...prevState,
             [e.target.name + "Error"]: error
         }))
     }
+
+    useEffect(() => {
+    const bringComments = async () => {
+
+        try {
+            const fetched = await GetCommentsCall(reduxUser.tokenData.token, post.id)
+
+            setPostComments(fetched.data)
+            setLoadedComments(true)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    if (loadedComments=== false) {
+        bringComments()
+    }
+    },[postComments])
+
+    const likePost = async (id) => {
+
+        try {
+            const fetched = await LikeCall(reduxUser.tokenData.token, id)
+
+            if (fetched.message === "Like") {
+                setIsLikedBefore(true)
+            } else setIsLikedBefore(false)
+            setCountDone(false)
+
+            if (fetched.message === "Like") {
+                toast.success(fetched.message)
+            } else toast.info(fetched.message)
+
+            fetched.message === "Like" ? setLikeCount(countDone + 1)
+                : setLikeCount(countDone - 1)
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const createComment = async () => {
+
+        try {
+            const fetched = await newCommentCall(reduxUser.tokenData.token, post.id, newComment)
+            if (newComment.comment.length=== 0){
+                throw new Error("Tu comentario debe tener texto"),
+                    toast.error("Comentario es obligatorio")
+            }
+                if (fetched.success === true && fetched.data && fetched.data.id) {
+                    setPostComments([...postComments, fetched.data])
+                    setWrite("disabled")
+                    setNewComment({
+                        comment: "",
+                        url: ""
+                    })
+                }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     const deleteMyPost = async (id) => {
         try {
-            const fetched = await deleteMyPostCall(id, reduxUser.tokenData.token)
-
+            const fetched = await bannedPostCall(id, reduxUser.tokenData.token)
+            console.log(fetched.message)
             if(fetched.success === true) {
-                navigate('/profile')
+                navigate('/community')
             }
             
         } catch (error) {
@@ -91,177 +181,97 @@ export const PostDetail = () => {
         }
     }
 
-    //   useEffect(() => {
-
-    //     if (!detailRdx?.detail?.id) {
-    //       navigate("/");
-    //     }
-    //   }, [detailRdx]);
-
-    //   const UpdatePost = async (postId) => {
-    //     try {
-    //         for (let elemento in post) {
-    //             if (post[elemento] === "") {
-    //                 throw new Error("All fields are required")
-    //             }
-    //         }
-
-    //         const fetched = await UpdatePostCall(reduxUser?.tokenData?.token, post, postId)
-
-    //         if (fetched.message === "Post updated successfully"){
-    //           toast.success(fetched.message)
-    //           }else toast.error(fetched.message)
-
-
-    //         setWrite("disabled")
-
-
-
-    //     } catch (error) {
-    //         console.log(error.message)
-    //     }
-    // }
-
-    // const likePost = async (postId) => {
-
-    //   try {
-    //       const fetched = await likeCall(reduxUser.tokenData.token, postId)
-
-    //       if(isLikedBefore===false){
-    //         setIsLikedBefore(true)
-    //       }else setIsLikedBefore(false)
-
-    //       dispatch(updateDetail({detail: fetched.data}))
-
-    //       if (fetched.message === "Like") {
-    //           toast.success(fetched.message)
-
-    //       } else toast.info(fetched.message)
-
-    //       if (fetched.data && fetched.data._id) {
-    //           setPost(post?.map(post => post._id === postId ? fetched.data
-    //            : detailRdx.detail))}
-
-    //   } catch (error) {
-    //       console.log(error)
-    //   }
-
-
     return (
-        detailRdx?.detail?.id &&
         <div className="detailDesign">
             <div className="undoButton">
                 <CButton
                     className={"backButton"}
                     title={"X"}
-                    emitFunction={(() => navigate('/profile'))}
+                    emitFunction={(() => navigate(reduxUser.tokenData.role === "super_admin" ? "/superadmin" : '/community'))}
+
                 />
             </div>
-            <div className="postFields">
-                <CInput
-                    className={`titleInputDesign ${postError.titleError !== "" ? "inputDesignError" : ""
-                        }`}
-                    type={"text"}
-                    name={"title"}
-                    disabled={write}
-                    value={post.title || ""}
-                    changeFunction={inputHandler}
-                    blurFunction={checkError}
+            <div className='myPostCard' key={detailRdx.detail?.id}>
+                <PostCard
+                    nickname={detailRdx.detail?.owner.nickname}
+                    title={detailRdx.detail?.title}
+                    description={detailRdx?.detail?.description}
+                    picUrl={detailRdx?.detail?.picUrl}
+                    createdAt={"Creado:" + detailRdx?.detail?.owner.createdAt}
+                    updatedAt={"Actualizado:" + detailRdx?.detail?.owner.updatedAt}
                 />
-
-                <CInput
-                    className={`descriptionInputDesign ${postError.descriptionError !== "" ? "inputDesignError" : ""
-                        }`}
-                    type={"text"}
-                    name={"description"}
-                    disabled={write}
-                    value={post.description || ""}
-                    changeFunction={inputHandler}
-                    blurFunction={checkError}
+            </div>
+            <div className="likeRow">
+                <CButton
+                    className={"likeButton"}
+                    title={<Heart fill={isLikedBefore === true ? "red"
+                        : "white"} />}
+                    emitFunction={() => likePost((post.id))}
                 />
-
-                <CInput
-                    className={"topicInputDesign"}
-                    type={"text"}
-                    name={"topic"}
-                    disabled={true}
-                    value={post.topic}
-                    changeFunction={inputHandler}
-                    blurFunction={checkError}
-                />
-
-                <CInput
-                    className={`descriptionInputDesign ${postError.picUrlError !== "" ? "inputDesignError" : ""
-                        }`}
-                    type={"text"}
-                    name={"picUrl"}
-                    disabled={write}
-                    value={post.picUrl || ""}
-                    changeFunction={inputHandler}
-                    blurFunction={checkError}
-                />
-                <CInput
-                    className={"inputDesign"}
-                    type={"text"}
-                    name={"ownerNickname"}
-                    disabled={write}
-                    value={post.ownerNickname}
-                    changeFunction={inputHandler}
-                    blurFunction={checkError}
-                />
-                <CInput
-                    className={"inputDesign"}
-                    type={"text"}
-                    name={"createdAt"}
-                    disabled={true}
-                    value={"Fecha de creación:" + post.createdAt}
-                    changeFunction={inputHandler}
-                    blurFunction={checkError}
-                />
-                <CInput
-                    className={"inputDesign"}
-                    type={"text"}
-                    name={"updatedAt"}
-                    disabled={true}
-                    value={"Fecha de creación:" + post.updatedAt}
-                    changeFunction={inputHandler}
-                    blurFunction={checkError}
-                />
-                <div className='deleteButton'>
+                <div className="likesNum">{likeCount.length}</div>
+            </div>
+    
+                    <CInput
+                        className={"inputDesign"}
+                        type={"text"}
+                        name={"comment"}
+                        disabled={write}
+                        value={newComment.comment || ""}
+                        changeFunction={inputHandler}
+                        blurFunction={checkError}
+                    />
+                    <CInput
+                        className={"inputDesign"}
+                        type={"text"}
+                        name={"url"}
+                        disabled={write}
+                        value={newComment.url}
+                        changeFunction={inputHandler}
+                        blurFunction={checkError}
+                    />
+                    <CButton
+                        className={write === "" ? " updateButton" : "allowButton"}
+                        title={write === "" ? "Actualizar" : "Habilitar"}
+                        emitFunction={write === "" ? createComment : () => setWrite("")}
+                    />
+                    {reduxUser.tokenData.user.role === "super_admin"
+                    ? (
+                    <div className='deleteButton'>
                     <CButton key={post.id}
                         className={"deleteMyPostButton"}
                         title={"Eliminar"}
                         emitFunction={(() => deleteMyPost(post.id))}
                     />
                 </div>
-                <CButton
-                    className={write === "" ? " updateButton" : "allowButton"}
-                    title={write === "" ? "Actualizar" : <img src="img/EditIcon.png" alt="editIcon"></img>}
-                //   emitFunction={write === "" ? () => UpdatePost(post._id) : () => setWrite("")}
-                />
-                {/* <div className="likeRow">
-        <CButton
-      className={"likeButton"}
-      title={<Heart fill={isLikedBefore===true ? "red"
-        : "white"}/>}
-      emitFunction={() => likePost(detailRdx.detail?._id)}
-      />
-      <div className="likesNum">{detailRdx.detail?.likes.length}</div>
-      </div> */}
-            </div>
+                    ) : (
+                        <div></div>
+                    )}
 
-            <ToastContainer
-                position="top-center"
-                autoClose={2000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="dark"
-            />
+            {postComments.length > 0  ? (
+                <div className='myPosts'>
+                    {postComments.map(
+                        comment => {
+                            return (
+                                <div className='myPostCard' key={comment.id}>
+                                    <PostCard
+                                        nickname={comment.user?.nickname}
+                                        comment={comment.comment}
+                                        url={comment.url}
+                                        createdAt={"Creado:" + comment.createdAt}
+                                        updatedAt={comment.updatedAt === comment.createdAt
+                                            ? ""
+                                            : "Edit:" + comment.updatedAt}
+                                    />
+                                </div>
+
+                            )
+                        }
+                    ).reverse()
+                    }
+                </div>
+
+            ) : (<div>Aun no hay ningún comentario en este post</div>
+            )}
         </div>
     )
 }

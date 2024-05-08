@@ -6,12 +6,14 @@ import { PostCard } from "../../common/PostCard/PostCard"
 import { userData } from "../../app/slices/userSlice"
 import { RedirectButton } from "../../common/RedirButton/RedirButton"
 import { useNavigate } from 'react-router-dom'
-import { CButton } from "../../common/CButton/CButton"
 import { updateDetail } from "../../app/slices/postDetailSlice"
 import 'react-toastify/dist/ReactToastify.css';
-import { Heart } from "lucide-react"
 import { categoryData } from "../../app/slices/communitySlice"
-import { GetGenrePostCall } from "../../services/api.Calls"
+import { GetGenrePostCall, createPostCall } from "../../services/api.Calls"
+import { CInput } from "../../common/CInput/CInput"
+import { validate } from "../../utils/validations"
+import { CButton } from "../../common/CButton/CButton"
+import { toast } from "react-toastify"
 
 
 
@@ -25,180 +27,175 @@ export const Community = () => {
 
     const dispatch = useDispatch()
 
+
+    const [loadedPosts, setLoadedPosts] = useState(false)
+
     const [posts, setPosts] = useState([])
 
-    // const inputHandler = (e) => {
-    //     setNewPost((prevState) => ({
-    //         ...prevState,
-    //         [e.target.name]: e.target.value,
-    //     }));
-    // };
+    const [newPost, setNewPost] = useState({
+        title: "",
+        description: "",
+        picUrl: "",
+        topic: categorySelection.category
+    })
+
+    // eslint-disable-next-line no-unused-vars
+    const [newPostError, setNewPostError] = useState({
+        titleError: "",
+        descriptionError: "",
+        picUrlError: ""
+    })
+
+    const [write, setWrite] = useState("disabled")
+
+    const inputHandler = (e) => {
+        setNewPost((prevState) => ({
+            ...prevState,
+            [e.target.name]: e.target.value,
+        }));
+    };
+
+    const checkError = (e) => {
+        const error = validate(e.target.name, e.target.value)
+
+        setNewPostError((prevState) => ({
+            ...prevState,
+            [e.target.name + "Error"]: error
+        }))
+    }
 
     const manageDetail = (post) => {
         dispatch(updateDetail({ detail: post }));
         navigate("/detailPost");
     };
 
-    // eslint-disable-next-line no-unused-vars
-    const [newPost, setNewPost] = useState({
-        title: "",
-        description: "",
-        picUrl: ""
-    })
-
     useEffect(() => {
         const postFeed = async () => {
             try {
+
                 const fetched = await GetGenrePostCall(reduxUser.tokenData.token, categorySelection.category)
+
                 setPosts(fetched.data)
-   
+                setLoadedPosts(true)
+
+                // dispatch(navigateCategory({ category: "" }))
 
             } catch (error) {
                 console.log(error)
             }
         }
-        if (reduxUser.tokenData.token && posts.length === 0) {
-            postFeed()
+        postFeed()
+    }, [categorySelection.category])
+
+
+
+    const sendPost = async () => {
+        try {
+
+            if (newPost.description === "") {
+                throw new Error("El campo description es obligatorio"),
+                toast.error("Descripción es obligatorio")
+            }
+
+
+            const fetched = await createPostCall(reduxUser.tokenData.token, newPost)
+
+            if (fetched.data && fetched.data.id) {
+                setPosts([...posts, fetched.data])
+                setWrite("disabled")
+                setNewPost({
+                    title: "",
+                    description: "",
+                    picUrl: ""
+                })
+            }
+
+
+
+            if (fetched.success === true) {
+                toast.success(fetched.message)
+            } else { toast.error(fetched.message) }
+
+        } catch (error) {
+            console.log(error.message)
         }
-    }, [posts])
-
-
-
-    // const sendPost = async () => {
-    //     try {
-    //         for (let elemento in story) {
-    //             if (story[elemento] === "") {
-    //                 throw new Error("All fields are required"),
-    //                 toast.error("All fields are required")
-    //             }
-    //         }
-          
-    //         const fetched = await createPostCall(reduxUser.tokenData.token, story)
-
-    //         if (fetched.data && fetched.data._id) {
-    //             setPosts([...posts, fetched.data])
-    //         }
-    //         setPosts({
-    //             title:"",
-    //             description:"",
-    //             picUrl: ""
-    //         })
-            
-
-    //         if (fetched.success === true) {
-    //             toast.success(fetched.message)
-    //         } else { toast.error(fetched.message) }
-
-    //     } catch (error) {
-    //         console.log(error.message)
-    //     }
-    // }
-
-    // const likePost = async (postId) => {
-
-    //     try {
-    //         const fetched = await likeCall(reduxUser.tokenData.token, postId)
-
-    //         if (fetched.message === "Like") {
-    //             toast.success(fetched.message)
-    //         } else toast.info(fetched.message)
-
-    //         if (fetched.data && fetched.data._id) {
-    //             setPosts(posts.map(post => post._id === postId ? fetched.data
-    //              : post))}
-
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // }
+    }
 
     return (
         <div className="homeDesign">
 
-            {reduxUser.tokenData.token === undefined ? (
+            {!reduxUser.tokenData.token ? (
                 <>
-                <div className="welcomeView">
-                    <div className="welcomeMsg">Bienvenido a Post It!</div>
-                    <RedirectButton
-                        className={"loginButtonDesign"}
-                        title={"Login"}
-                        emitFunction={() => navigate("/login")}
-                    />
-                    <RedirectButton
-                        className={"registerButtonDesign"}
-                        title={"Register"}
-                        emitFunction={() => navigate("/register")}
-                    />
+                    <div className="welcomeView">
+                        <div className="welcomeMsg">Bienvenido a Community!</div>
+                        <RedirectButton
+                            className={"loginButtonDesign"}
+                            title={"Login"}
+                            emitFunction={() => navigate("/login")}
+                        />
+                        <RedirectButton
+                            className={"registerButtonDesign"}
+                            title={"Register"}
+                            emitFunction={() => navigate("/register")}
+                        />
                     </div>
                 </>
             ) : (
-
-                posts.length > 0 ? (
-                    <>
-                    <div className="homeHeader">
-                    FEED
-                    </div>
-                        <div className="postPanel">
-                            {/* <div className="writeBox">
-                                <PostInput
-                                    className={`postTitleInput`}
-                                    type={"text"}
-                                    name={"title"}
-                                    value={newPost.title}
-                                    placeholder={"¿Qué hay de nuevo?"}
-                                    changeFunction={inputHandler}
-
-                                />
-                                <PostInput
-                                    className={`createPostInput`}
-                                    type={"text"}
-                                    name={"description"}
-                                    value={newPost.description}
-                                    placeholder={"Desarrolla tu historia"}
-                                    changeFunction={inputHandler}
-                                />
-                            </div> */}
-
-                            <div className="sendButton">
-                                <CButton
-                                    className={"createPostButton"}
-                                    title={"Publicar"}
-                                    // emitFunction={(sendPost)}
-                                />
-
-                            </div>
-                        </div>
-
-                        <div className="cardsDesign">
-                            {posts.slice(0, posts.length).map(     
+                <>
+                    <CInput
+                        className={"inputDesign"}
+                        type={"text"}
+                        name={"title"}
+                        disabled={write}
+                        value={newPost.title || ""}
+                        changeFunction={inputHandler}
+                        blurFunction={checkError}
+                    />
+                    <CInput
+                        className={"inputDesign"}
+                        type={"text"}
+                        name={"description"}
+                        disabled={write}
+                        value={newPost.description}
+                        changeFunction={inputHandler}
+                        blurFunction={checkError}
+                    />
+                    <CInput
+                        className={"inputDesign"}
+                        type={"text"}
+                        name={"picUrl"}
+                        disabled={write}
+                        value={newPost.picUrl}
+                        changeFunction={inputHandler}
+                        blurFunction={checkError}
+                    />
+                    <CButton
+                        className={write === "" ? " updateButton" : "allowButton"}
+                        title={write === "" ? "Actualizar" : "Habilitar"}
+                        emitFunction={write === "" ? sendPost : () => setWrite("")}
+                    />
+                    {posts.length !== 0 ? (
+                        <>
+                            {posts.map(
                                 post => {
                                     return (
-                                        <div className="cardDiv" key={post._id}>
+                                        <div className="cardDiv" key={post.index}>
                                             <PostCard
-                                                authorFirstName={post.authorFirstName}
+                                                key={post.index}
                                                 title={post.title.length > 20 ? post.title.substring(0, 20) : post.title}
-                                                description={post.description.length > 40 ? post.description.substring(0, 40) + "..." : post.description}
+                                                description={post.description.length > 20 ? post.description.substring(0, 20) : post.description}
+                                                nickname={post.owner.nickname}
                                                 clickFunction={() => manageDetail(post)}
                                             />
-                                            <div className="likeContainer" key={post._id} >
-                                                <CButton
-                                                className={"likeButton"}
-                                                title={<Heart fill={post.likes.includes(reduxUser.tokenData.user.userId) ? "red"
-                                                : "white"} />}
-                                                // emitFunction={() => likePost(post._id)}
-                                                />
-                                                <div className="likesNum">{post.likes.length}</div>
-                                            </div>
-                                            
                                         </div>
                                     )
                                 }).reverse()}
-                        </div>
-                    </>
+                        </>) : (
+                        loadedPosts === false ? <div className="homeDesign">LOADING</div>
+                            : <div className="homeDesign">AUN NO HAY POST DE ESTA CATEGORIA</div>
 
-                ) : (
-                    <div className="homeDesign">LOADING</div>
-                ))}
+                    )}
+                </>)}
         </div>
     )
 }
