@@ -20,10 +20,8 @@ export const LatestDetail = () => {
         id: detailRdx?.detail?.id,
         title: detailRdx?.detail?.title,
         description: detailRdx?.detail?.description,
-        topic: detailRdx?.detail?.topic,
         picUrl: detailRdx?.detail?.picUrl,
-        createdAt: detailRdx?.detail?.createdAt,
-        updatedAt: detailRdx?.detail?.updatedAt
+        createdAt: detailRdx?.detail?.createdAt
     })
 
     return (

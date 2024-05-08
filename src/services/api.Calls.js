@@ -349,7 +349,7 @@ export const getAllUsersCall = async (token) => {
         headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`
-        },
+        }
     }
 
     try {
@@ -368,7 +368,7 @@ export const getAllUsersCall = async (token) => {
     }
 }
 
-export const deleteUserCall = async (id, token) => {
+export const deleteUserCall = async (token, id) => {
 
     const clientData = {
         method: "DELETE",
@@ -381,7 +381,7 @@ export const deleteUserCall = async (id, token) => {
     try {
         const response = await fetch(`${root}users/${id}`, clientData)
         const data = await response.json();
-
+        console.log(id, token)
         if (!data.success) {
             throw new Error(data.message)
         }
@@ -415,3 +415,54 @@ export const bannedPostCall = async (id, token) => {
         return error
     }
 }
+
+export const newLatestCall = async (token, latest) => {
+
+    const clientData = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(latest)
+    }
+
+    try {
+        const response = await fetch(`${root}latests`, clientData)
+        const data = await response.json();
+    
+        if (!data.success) {
+            throw new Error(data.message)
+        }
+        return data
+        
+    } catch (error) {
+        return error
+    }
+}
+
+export const UpdatePostCall = async (token, post, id) => {
+
+    const clientData = {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(post)
+    }
+
+    try {
+        const response = await fetch(`${root}posts/own/${id}`, clientData)
+        const data = await response.json();
+    
+        if (!data.success) {
+            throw new Error(data.message)
+        }
+        return data
+        
+    } catch (error) {
+        return error
+    }
+}
+

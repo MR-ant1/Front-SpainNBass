@@ -113,9 +113,11 @@ export const PostDetail = () => {
 
         try {
             const fetched = await GetCommentsCall(reduxUser.tokenData.token, post.id)
-
             setPostComments(fetched.data)
             setLoadedComments(true)
+            
+            console.log(detailRdx?.detail?.owner?.id)
+            console.log(reduxUser?.tokenData?.user.userId)
         } catch (error) {
             console.log(error)
         }
@@ -187,12 +189,12 @@ export const PostDetail = () => {
                 <CButton
                     className={"backButton"}
                     title={"X"}
-                    emitFunction={(() => navigate(reduxUser.tokenData.role === "super_admin" ? "/superadmin" : '/community'))}
-
+                    emitFunction={(() => navigate('/community'))}
                 />
             </div>
             <div className='myPostCard' key={detailRdx.detail?.id}>
                 <PostCard
+                    id={detailRdx.detail?.id}
                     nickname={detailRdx.detail?.owner.nickname}
                     title={detailRdx.detail?.title}
                     description={detailRdx?.detail?.description}
@@ -210,6 +212,14 @@ export const PostDetail = () => {
                 />
                 <div className="likesNum">{likeCount.length}</div>
             </div>
+            {detailRdx?.detail?.owner?.id === reduxUser?.tokenData?.user.userId ? (
+                <CButton
+                className={"editButton"}
+                title={"Actualizar"}
+              emitFunction={()=>navigate('/detailMyPost')}
+            />
+        ) : (<div></div>)
+            }
     
                     <CInput
                         className={"inputDesign"}
@@ -231,11 +241,9 @@ export const PostDetail = () => {
                     />
                     <CButton
                         className={write === "" ? " updateButton" : "allowButton"}
-                        title={write === "" ? "Actualizar" : "Habilitar"}
+                        title={write === "" ? "Enviar comentario" : "Escribir comentario"}
                         emitFunction={write === "" ? createComment : () => setWrite("")}
                     />
-                    {reduxUser.tokenData.user.role === "super_admin"
-                    ? (
                     <div className='deleteButton'>
                     <CButton key={post.id}
                         className={"deleteMyPostButton"}
@@ -243,9 +251,6 @@ export const PostDetail = () => {
                         emitFunction={(() => deleteMyPost(post.id))}
                     />
                 </div>
-                    ) : (
-                        <div></div>
-                    )}
 
             {postComments.length > 0  ? (
                 <div className='myPosts'>

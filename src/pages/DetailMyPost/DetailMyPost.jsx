@@ -9,7 +9,8 @@ import { CInput } from "../../common/CInput/CInput";
 import { userData } from "../../app/slices/userSlice";
 // import { validate } from "../../utils/validations";
 import 'react-toastify/dist/ReactToastify.css';
-import { deleteMyPostCall } from "../../services/api.Calls";
+import { UpdatePostCall, deleteMyPostCall } from "../../services/api.Calls";
+import { toast } from "react-toastify";
 
 // import { UpdatePostCall } from "../../services/apiCalls";
 // import { useDispatch } from "react-redux";
@@ -94,29 +95,28 @@ export const MyPostDetail = () => {
     //     }
     //   }, [detailRdx]);
 
-    //   const UpdatePost = async (postId) => {
-    //     try {
-    //         for (let elemento in post) {
-    //             if (post[elemento] === "") {
-    //                 throw new Error("All fields are required")
-    //             }
-    //         }
+      const UpdatePost = async (postId) => {
+        try {
+            
+                if (post.description === "") {
+                    throw new Error("La descripción es obligatoria")
+            }
 
-    //         const fetched = await UpdatePostCall(reduxUser?.tokenData?.token, post, postId)
+            const fetched = await UpdatePostCall(reduxUser?.tokenData?.token, post, postId)
 
-    //         if (fetched.message === "Post updated successfully"){
-    //           toast.success(fetched.message)
-    //           }else toast.error(fetched.message)
-
-
-    //         setWrite("disabled")
+            if (fetched.message === "Post actualizado correctamente"){
+              toast.success(fetched.message)
+              }else toast.error(fetched.message)
 
 
+            setWrite("disabled")
 
-    //     } catch (error) {
-    //         console.log(error.message)
-    //     }
-    // }
+
+
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
 
     
 
@@ -127,7 +127,7 @@ export const MyPostDetail = () => {
                 <CButton
                     className={"backButton"}
                     title={"X"}
-                    emitFunction={(() => navigate('/profile'))}
+                    emitFunction={(() => navigate('/detailPost'))}
                 />
             </div>
             <div className="postFields">
@@ -150,17 +150,6 @@ export const MyPostDetail = () => {
                     changeFunction={inputHandler}
                     // blurFunction={checkError}
                 />
-
-                <CInput
-                    className={"topicInputDesign"}
-                    type={"text"}
-                    name={"topic"}
-                    disabled={true}
-                    value={post.topic}
-                    changeFunction={inputHandler}
-                    // blurFunction={checkError}
-                />
-
                 <CInput
                     className={"InputDesign"}
                     type={"text"}
@@ -174,7 +163,7 @@ export const MyPostDetail = () => {
                     className={"inputDesign"}
                     type={"text"}
                     name={"ownerNickname"}
-                    disabled={write}
+                    disabled={true}
                     value={post.ownerNickname}
                     changeFunction={inputHandler}
                     // blurFunction={checkError}
@@ -198,7 +187,7 @@ export const MyPostDetail = () => {
                 <CButton
                     className={write === "" ? " updateButton" : "allowButton"}
                     title={write === "" ? "Actualizar" : <img src="img/EditIcon.png" alt="editIcon"></img>}
-                //   emitFunction={write === "" ? () => UpdatePost(post._id) : () => setWrite("")}
+                  emitFunction={write === "" ? () => UpdatePost(post.id) : () => setWrite("")}
                 />
             </div>
         </div>

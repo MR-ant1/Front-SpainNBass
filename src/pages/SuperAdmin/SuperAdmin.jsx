@@ -46,11 +46,12 @@ export const SuperAdmin = () => {
 
     const deleteUser = async (id) => {
         try {
-            const fetched = await deleteUserCall(id, reduxUser.tokenData.token, reduxUser.tokenData)
-            if(fetched.success === true) {
+            const fetched = await deleteUserCall(reduxUser?.tokenData?.token, id)
+
+            if (fetched.message === "Este usuario ha sido borrado correctamente") {
                 setUsers(users.filter((user) => user.id !== id))
             }
-            
+
         } catch (error) {
             console.log(error.message)
         }
@@ -58,35 +59,35 @@ export const SuperAdmin = () => {
 
     return (
         <div className="adminDesign">
-                    {loadedData === true ? (
-                        <div className="userCards">
-                            <div className="usersColumnTitle">USERS</div>
-                            {users.slice(0, users.length).map(
-                                user => {
-                                    return (
-                                        <div className="userContainer" key={user.id}>
-                                            <UserCard
-                                                nickname={user.nickname}
-                                                favSubgenre={user.favSubgenre}
-                                                preference={user.preference}
-                                                turntable={user.turntable}
-                                                email={user.email}
-                                                createdAt={user.createdAt}
-                                            />
-                                             <div className='deleteButton'>
-                    <CButton key={user.id}
-                        className={"deleteMyPostButton"}
-                        title={"Eliminar"}
-                        emitFunction={(() => deleteUser(user.id))}
-                    />
+            {loadedData === true ? (
+                <div className="userCards">
+                    <div className="usersColumnTitle">USUARIOS</div>
+                    {users.map(
+                        user => {
+                            return (
+                                <div className="userContainer" key={user.id}>
+                                    <UserCard
+                                        nickname={user.nickname}
+                                        favSubgenre={user.favSubgenre}
+                                        preference={user.preference}
+                                        turntable={user.turntable}
+                                        email={user.email}
+                                        createdAt={user.createdAt}
+                                    />
+                                    <div className='deleteButton'>
+                                        <CButton key={user.id}
+                                            className={"deleteMyPostButton"}
+                                            title={"Eliminar"}
+                                            emitFunction={(() => deleteUser(user.id))}
+                                        />
+                                    </div>
+                                </div>
+                            )
+                        })}
                 </div>
-                                        </div>
-                                    )
-                                })}
-                        </div>
-                    ) : (
-                        <div className="loadingUsers">LOADING</div>
-                    )}
+            ) : (
+                <div className="loadingUsers">LOADING</div>
+            )}
         </div>
     )
 }
