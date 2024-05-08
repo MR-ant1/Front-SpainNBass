@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { PostCard } from "../../common/PostCard/PostCard";
 import { CButton } from "../../common/CButton/CButton";
 // import { Heart } from "lucide-react";
-import { GetCommentsCall,  LikeCall,  PostLikesCall, newCommentCall } from "../../services/api.Calls";
+import { GetCommentsCall,  LikeCall,  PostLikesCall, bannedPostCall, newCommentCall } from "../../services/api.Calls";
 import { toast } from "react-toastify";
 import { CInput } from "../../common/CInput/CInput";
 import { Heart } from "lucide-react";
@@ -168,6 +168,19 @@ export const PostDetail = () => {
         }
     }
 
+    const deleteMyPost = async (id) => {
+        try {
+            const fetched = await bannedPostCall(id, reduxUser.tokenData.token)
+            console.log(fetched.message)
+            if(fetched.success === true) {
+                navigate('/community')
+            }
+            
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
+
     return (
         <div className="detailDesign">
             <div className="undoButton">
@@ -221,6 +234,18 @@ export const PostDetail = () => {
                         title={write === "" ? "Actualizar" : "Habilitar"}
                         emitFunction={write === "" ? createComment : () => setWrite("")}
                     />
+                    {reduxUser.tokenData.user.role === "super_admin"
+                    ? (
+                    <div className='deleteButton'>
+                    <CButton key={post.id}
+                        className={"deleteMyPostButton"}
+                        title={"Eliminar"}
+                        emitFunction={(() => deleteMyPost(post.id))}
+                    />
+                </div>
+                    ) : (
+                        <div></div>
+                    )}
 
             {postComments.length > 0  ? (
                 <div className='myPosts'>

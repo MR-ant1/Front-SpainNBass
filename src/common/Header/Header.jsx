@@ -31,20 +31,7 @@ export const Header = () => {
             dispatch(navigateCategory({ category: e.target.value }))
             navigate('/')
             navigate('/community')
-            // setCommunity({
-            //     election: ""
-            // })
     }
-
-  
-
-//     const selectedCommunity = async () => {
-//         try {
-            
-//         } catch (error) {
-//             console.log(error)
-//         }
-// }
     return (
         <div className="headerDesign">
             <div className='titleRow'>

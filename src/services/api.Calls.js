@@ -341,3 +341,77 @@ export const createPostCall = async (token, post) => {
         return error
     }
 }
+
+export const getAllUsersCall = async (token) => {
+
+    const clientData = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+    }
+
+    try {
+        const response = await fetch(`${root}users`, clientData)
+
+        const data = await response.json();
+
+        if (!data.success) {
+            throw new Error(data.message)
+        }
+     
+        return data
+        
+    } catch (error) {
+        return error
+    }
+}
+
+export const deleteUserCall = async (id, token) => {
+
+    const clientData = {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+    }
+
+    try {
+        const response = await fetch(`${root}users/${id}`, clientData)
+        const data = await response.json();
+
+        if (!data.success) {
+            throw new Error(data.message)
+        }
+        return data
+        
+    } catch (error) {
+        return error
+    }
+}
+
+export const bannedPostCall = async (id, token) => {
+
+    const clientData = {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+    }
+
+    try {
+        const response = await fetch(`${root}posts/${id}`, clientData)
+        const data = await response.json();
+
+        if (!data.success) {
+            throw new Error(data.message)
+        }
+        return data
+        
+    } catch (error) {
+        return error
+    }
+}

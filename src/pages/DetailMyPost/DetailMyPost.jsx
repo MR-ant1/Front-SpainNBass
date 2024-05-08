@@ -22,10 +22,6 @@ export const MyPostDetail = () => {
 
     const navigate = useNavigate();
 
-
-
-      
-
     const [post, setPost] = useState({
         id: detailRdx?.detail?.id,
         title: detailRdx?.detail?.title,
@@ -204,9 +200,7 @@ export const MyPostDetail = () => {
                     title={write === "" ? "Actualizar" : <img src="img/EditIcon.png" alt="editIcon"></img>}
                 //   emitFunction={write === "" ? () => UpdatePost(post._id) : () => setWrite("")}
                 />
-                
             </div>
-
         </div>
     )
     }
