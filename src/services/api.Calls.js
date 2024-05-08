@@ -275,7 +275,7 @@ export const GetCommentsCall = async (token, id) => {
         const response = await fetch(`${root}comments/${id}`, clientData)
        
         const data = await response.json();
-        console.log(data)
+
         if (!data.success) {
             throw new Error(data.message)
         }
@@ -302,6 +302,33 @@ export const newCommentCall = async (token, id, comment) => {
     try {
         const response = await fetch(`${root}comments/${id}`, clientData)
        
+        const data = await response.json();
+
+        if (!data.success) {
+            throw new Error(data.message)
+        }
+     
+        return data
+        
+    } catch (error) {
+        return error
+    }
+}
+
+export const createPostCall = async (token, post) => {
+
+    const clientData = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(post)
+    }
+
+    try {
+        const response = await fetch(`${root}posts`, clientData)
+
         const data = await response.json();
 
         if (!data.success) {
