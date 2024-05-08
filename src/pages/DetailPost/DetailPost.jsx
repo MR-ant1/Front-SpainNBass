@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { PostCard } from "../../common/PostCard/PostCard";
 import { CButton } from "../../common/CButton/CButton";
 // import { Heart } from "lucide-react";
-import { GetCommentsCall,  LikeCall,  PostLikesCall, bannedPostCall, newCommentCall } from "../../services/api.Calls";
+import { GetCommentsCall, LikeCall, PostLikesCall, bannedPostCall, newCommentCall } from "../../services/api.Calls";
 import { toast } from "react-toastify";
 import { CInput } from "../../common/CInput/CInput";
 import { Heart } from "lucide-react";
@@ -30,7 +30,8 @@ export const PostDetail = () => {
 
     const [newComment, setNewComment] = useState({
         comment: "",
-        url: ""
+        url: "",
+        createdAt: detailRdx?.detail?.createdAt
     })
 
     const [newCommentError, setNewCommentError] = useState({
@@ -44,8 +45,8 @@ export const PostDetail = () => {
 
     const [write, setWrite] = useState("disabled")
 
-    const [isLikedBefore, setIsLikedBefore] = useState()
-
+    const [isLikedBefore, setIsLikedBefore] = useState(false)
+    
     // eslint-disable-next-line no-unused-vars
     const [post, setPost] = useState({
         id: detailRdx?.detail?.id,
@@ -58,12 +59,18 @@ export const PostDetail = () => {
         createdAt: detailRdx?.detail?.owner.createdAt,
         updatedAt: detailRdx?.detail?.owner.updatedAt,
     })
+
+    useEffect(() => {
+        if (!reduxUser?.tokenData?.token) {
+            navigate("/")
+        }
+    }, [reduxUser])
+
     useEffect(() => {
         const likesCount = async () => {
             try {
 
                 const fetched = await PostLikesCall(reduxUser.tokenData.token, post.id)
-
                 setLikeCount(fetched.data)
                 setCountDone(true)
 
@@ -77,18 +84,12 @@ export const PostDetail = () => {
     }, [likeCount])
 
     useEffect(() => {
-        if (!reduxUser?.tokenData?.token) {
-            navigate("/")
-        }
-    }, [reduxUser])
-
-      useEffect(() => {
         toast.dismiss()
-        newComment.commentError && 
-        toast.warn(newComment.commentError)
-        newComment.urlError && 
-        toast.warn(newComment.urlError)
-        }, [newCommentError])
+        newComment.commentError &&
+            toast.warn(newComment.commentError)
+        newComment.urlError &&
+            toast.warn(newComment.urlError)
+    }, [newCommentError])
 
 
 
@@ -109,23 +110,25 @@ export const PostDetail = () => {
     }
 
     useEffect(() => {
-    const bringComments = async () => {
+        const bringComments = async () => {
 
-        try {
-            const fetched = await GetCommentsCall(reduxUser.tokenData.token, post.id)
-            setPostComments(fetched.data)
-            setLoadedComments(true)
-            
-            console.log(detailRdx?.detail?.owner?.id)
-            console.log(reduxUser?.tokenData?.user.userId)
-        } catch (error) {
-            console.log(error)
+            try {
+                const fetched = await GetCommentsCall(reduxUser.tokenData.token, post.id)
+
+                if (fetched.success === true ){
+                setPostComments(fetched.data)
+   
+                setLoadedComments(true)
+                // setIsLikedBefore(likeCount?.map(likeCount => likeCount.user.id === reduxUser.tokenData.user.userId ? (true) : (false)))
+                }
+            } catch (error) {
+                console.log(error)
+            }
         }
-    }
-    if (loadedComments=== false) {
-        bringComments()
-    }
-    },[postComments])
+        if (loadedComments === false) {
+            bringComments()
+        }
+    }, [postComments])
 
     const likePost = async (id) => {
 
@@ -153,18 +156,19 @@ export const PostDetail = () => {
 
         try {
             const fetched = await newCommentCall(reduxUser.tokenData.token, post.id, newComment)
-            if (newComment.comment.length=== 0){
+            if (newComment.comment.length === 0) {
                 throw new Error("Tu comentario debe tener texto"),
-                    toast.error("Comentario es obligatorio")
+                toast.error("Comentario es obligatorio")
             }
-                if (fetched.success === true && fetched.data && fetched.data.id) {
-                    setPostComments([...postComments, fetched.data])
-                    setWrite("disabled")
-                    setNewComment({
-                        comment: "",
-                        url: ""
-                    })
-                }
+            if (fetched.success === true) {
+                setLoadedComments(false)
+                setPostComments(false)
+                setWrite("disabled")
+                setNewComment({
+                    comment: "",
+                    url: ""
+                })
+            }
         } catch (error) {
             console.log(error)
         }
@@ -173,11 +177,11 @@ export const PostDetail = () => {
     const deleteMyPost = async (id) => {
         try {
             const fetched = await bannedPostCall(id, reduxUser.tokenData.token)
-            console.log(fetched.message)
-            if(fetched.success === true) {
+
+            if (fetched.success === true) {
                 navigate('/community')
             }
-            
+
         } catch (error) {
             console.log(error.message)
         }
@@ -214,45 +218,48 @@ export const PostDetail = () => {
             </div>
             {detailRdx?.detail?.owner?.id === reduxUser?.tokenData?.user.userId ? (
                 <CButton
-                className={"editButton"}
-                title={"Actualizar"}
-              emitFunction={()=>navigate('/detailMyPost')}
-            />
-        ) : (<div></div>)
+                    className={"editButton"}
+                    title={"Actualizar"}
+                    emitFunction={() => navigate('/detailMyPost')}
+                />
+            ) : (<div></div>)
             }
-    
-                    <CInput
-                        className={"inputDesign"}
-                        type={"text"}
-                        name={"comment"}
-                        disabled={write}
-                        value={newComment.comment || ""}
-                        changeFunction={inputHandler}
-                        blurFunction={checkError}
-                    />
-                    <CInput
-                        className={"inputDesign"}
-                        type={"text"}
-                        name={"url"}
-                        disabled={write}
-                        value={newComment.url}
-                        changeFunction={inputHandler}
-                        blurFunction={checkError}
-                    />
-                    <CButton
-                        className={write === "" ? " updateButton" : "allowButton"}
-                        title={write === "" ? "Enviar comentario" : "Escribir comentario"}
-                        emitFunction={write === "" ? createComment : () => setWrite("")}
-                    />
-                    <div className='deleteButton'>
-                    <CButton key={post.id}
-                        className={"deleteMyPostButton"}
-                        title={"Eliminar"}
-                        emitFunction={(() => deleteMyPost(post.id))}
-                    />
-                </div>
 
-            {postComments.length > 0  ? (
+            <CInput
+                className={"inputDesign"}
+                type={"text"}
+                name={"comment"}
+                disabled={write}
+                value={newComment.comment || ""}
+                changeFunction={inputHandler}
+                blurFunction={checkError}
+            />
+            <CInput
+                className={"inputDesign"}
+                type={"text"}
+                name={"url"}
+                disabled={write}
+                value={newComment.url}
+                changeFunction={inputHandler}
+                blurFunction={checkError}
+            />
+            <CButton
+                className={write === "" ? " updateButton" : "allowButton"}
+                title={write === "" ? "Enviar comentario" : "Escribir comentario"}
+                emitFunction={write === "" ? ()=>createComment() : () => setWrite("")}
+            />
+            {detailRdx?.detail?.owner?.id === reduxUser?.tokenData?.user.userId ? (
+            <div className='deleteButton'>
+                <CButton key={post.id}
+                    className={"deleteMyPostButton"}
+                    title={"Eliminar"}
+                    emitFunction={(() => deleteMyPost(post.id))}
+                />
+            </div>
+            ) : (<div></div>)
+        }
+
+            {loadedComments === true ? (
                 <div className='myPosts'>
                     {postComments.map(
                         comment => {
@@ -263,9 +270,6 @@ export const PostDetail = () => {
                                         comment={comment.comment}
                                         url={comment.url}
                                         createdAt={"Creado:" + comment.createdAt}
-                                        updatedAt={comment.updatedAt === comment.createdAt
-                                            ? ""
-                                            : "Edit:" + comment.updatedAt}
                                     />
                                 </div>
 

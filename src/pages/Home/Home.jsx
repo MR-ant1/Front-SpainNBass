@@ -75,7 +75,7 @@ export const Home = () => {
         const latestFeed = async () => {
             try {
                 const fetched = await GetLatestsCall()
-                console.log(fetched.data)
+                
                 setLatests(fetched.data)
                 if (fetched.success === true) {
                     setLoadedData(true)
@@ -98,7 +98,7 @@ export const Home = () => {
                 }
             }
             const fetched = await newLatestCall(reduxUser?.tokenData?.token, newLatest)
-            
+
             if (fetched.success === true && fetched.data) {
                 setNewLatest({
                     title: "",
