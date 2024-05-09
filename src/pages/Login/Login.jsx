@@ -5,7 +5,7 @@ import { login, userData } from '../../app/slices/userSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { validate } from '../../utils/validations'
-import { toast } from 'react-toastify'
+import { ToastContainer, toast } from 'react-toastify'
 import { loginCall } from '../../services/api.Calls'
 import { decodeToken } from 'react-jwt'
 import { CInput } from '../../common/CInput/CInput'
@@ -21,9 +21,7 @@ export const Login = () => {
 
     useEffect(() => {
         if (reduxUser?.tokenData?.token) {
-            setTimeout(() => {
                 navigate('/')
-            }, 1000)
         }
     }, [reduxUser?.tokenData?.token])
     
@@ -55,7 +53,7 @@ export const Login = () => {
 
     useEffect(() => {
         toast.dismiss()
-        userError.emailError
+        userError.emailError &&
         toast.error(userError.emailError)
         userError.passwordError && 
         toast.error(userError.passwordError)
@@ -66,10 +64,11 @@ export const Login = () => {
         try {
             const fetched = await loginCall(user);
             
-            
             if (fetched.message === "Usuario logueado correctamente") {
                 toast.success(fetched.message)
-            } else (toast.error(fetched.message))
+            } 
+            if(fetched.message !== "Usuario logueado correctamente")
+                {toast.error(fetched.message)}
 
 
             if (fetched.token) {
@@ -118,7 +117,7 @@ export const Login = () => {
             <CButton
                 className={"cbuttonDesign"}
                 title={"Login"}
-                emitFunction={(loginUser)}
+                emitFunction={loginUser}
             />
          
             <div className="redirectRegisterMsg">Si no dispones de una cuenta, haz click aqui abajo</div>
@@ -127,9 +126,9 @@ export const Login = () => {
                 title={"Register"}
                 emitFunction={() => navigate("/register")}
             />
-            {/* <ToastContainer
-                position="top-center"
-                autoClose={1000}
+            <ToastContainer
+                position="top-left"
+                autoClose={1500}
                 hideProgressBar={false}
                 newestOnTop={false}
                 closeOnClick
@@ -138,7 +137,7 @@ export const Login = () => {
                 draggable
                 pauseOnHover
                 theme="dark"
-            /> */}
+            />
         </div>
     )
 }

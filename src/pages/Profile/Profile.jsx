@@ -9,7 +9,7 @@ import { CInput } from '../../common/CInput/CInput';
 import { validate } from '../../utils/validations';
 import { CButton } from '../../common/CButton/CButton';
 import { GetMyPosts, GetProfile, UpdateCall } from '../../services/api.Calls';
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { PostCard } from '../../common/PostCard/PostCard';
 import { updateDetail } from '../../app/slices/postDetailSlice';
@@ -144,10 +144,8 @@ export const Profile = () => {
             const fetched = await UpdateCall(reduxUser?.tokenData?.token, user)
             if (fetched.success === true) {
                 toast.success(fetched.message)
+                setWrite("disabled")
             } else toast.error(fetched.message)
-
-
-            setWrite("disabled")
 
         } catch (error) {
             console.log(error.message)
@@ -265,6 +263,18 @@ export const Profile = () => {
 
             ) : (<div>Aun no has creado ningún post</div>
             )}
+            <ToastContainer
+                position="top-left"
+                autoClose={1500}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="dark"
+                />
         </div>
     )
 }

@@ -35,7 +35,9 @@ export const Community = () => {
         title: "",
         description: "",
         picUrl: "",
-        topic: ""
+        topic: "",
+        createdAt: "",
+        updatedAt: ""
     })
 
     // eslint-disable-next-line no-unused-vars
@@ -71,19 +73,20 @@ export const Community = () => {
     useEffect(() => {
         const postFeed = async () => {
             try {
-
+                if( reduxUser.tokenData.token){
                 const fetched = await GetGenrePostCall(reduxUser.tokenData.token, categorySelection.category)
 
                 if (fetched.success === true) {
-                  setPosts(fetched.data)
-                setLoadedPosts(true)  
-                setNewPost({
-                    title:"",
-                    description:"",
-                    picUrl:"",
-                    topic: categorySelection.category
-                })
-                }
+                    setPosts(fetched.data)
+                    setLoadedPosts(true)
+                    setNewPost({
+                        title: "",
+                        description: "",
+                        picUrl: "",
+                        topic: categorySelection.category
+
+                    })
+                }}
             } catch (error) {
                 console.log(error)
             }
@@ -101,9 +104,8 @@ export const Community = () => {
                 toast.error("Descripción es obligatorio")
             }
             const fetched = await createPostCall(reduxUser.tokenData.token, newPost)
-       
+
             if (fetched.data && fetched.data.id) {
-                
                 setPosts([...posts, fetched.data])
                 setWrite("disabled")
                 setNewPost({

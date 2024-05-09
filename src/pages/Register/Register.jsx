@@ -64,10 +64,10 @@ export const Register = () => {
 
     useEffect(() => {
         toast.dismiss()
-        userError.firstNameError &&
-            toast.error(userError.firstNameError)
-        userError.lastNameError &&
-            toast.error(userError.lastNameError)
+        userError.nicknameError &&
+            toast.error(userError.nicknameError)
+        userError.turntableError &&
+            toast.error(userError.turntableError)
         userError.emailError &&
             toast.error(userError.emailError)
         userError.passwordError &&
@@ -76,13 +76,6 @@ export const Register = () => {
 
     const registerUser = async () => {
         try {
-            for (let elemento in user) {
-                if (user[elemento] === "") {
-                    throw new Error("Todos los campos son obligatorios"),
-                    toast.error("Todos los campos son obligatorios")
-                }
-            }
-
             const fetched = await registerCall(user)
 
             if (fetched.success === true) {
@@ -96,7 +89,7 @@ export const Register = () => {
             } else navigate("/register")
 
         } catch (error) {
-            console.log(error.message)
+            throw new Error("No se pudo registrar el usuario")
         }
     }
     return (
@@ -150,7 +143,7 @@ export const Register = () => {
                 className={`inputDesign ${userError.turntableError !== "" ? "inputDesignError" : ""
                     }`}
                 type={"text"}
-                placeholder={"Turntable"}
+                placeholder={"Bio (equipo, anécdotas, influencias...)"}
                 name={"turntable"}
                 value={user.turntable || ""}
                 changeFunction={inputHandler}
@@ -192,8 +185,8 @@ export const Register = () => {
                 emitFunction={() => navigate("/login")}
             />
             <ToastContainer
-                position="top-center"
-                autoClose={2000}
+                position="top-left"
+                autoClose={1500}
                 hideProgressBar={false}
                 newestOnTop={false}
                 closeOnClick

@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { UserCard } from "../../common/UserCard/UserCard"
 import { deleteUserCall, getAllUsersCall } from "../../services/api.Calls"
 import { CButton } from "../../common/CButton/CButton"
+import { ToastContainer, toast } from "react-toastify"
 
 export const SuperAdmin = () => {
 
@@ -50,8 +51,8 @@ export const SuperAdmin = () => {
 
             if (fetched.message === "Este usuario ha sido borrado correctamente") {
                 setUsers(users.filter((user) => user.id !== id))
-            }
-
+                toast.success(fetched.message)
+            } else toast.error(fetched.message)
         } catch (error) {
             console.log(error.message)
         }
@@ -88,6 +89,18 @@ export const SuperAdmin = () => {
             ) : (
                 <div className="loadingUsers">LOADING</div>
             )}
+            <ToastContainer
+                position="top-left"
+                autoClose={1500}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="dark"
+            />
         </div>
     )
 }

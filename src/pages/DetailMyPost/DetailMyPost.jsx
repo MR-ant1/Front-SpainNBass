@@ -7,13 +7,10 @@ import { useNavigate } from "react-router-dom";
 import { CButton } from "../../common/CButton/CButton";
 import { CInput } from "../../common/CInput/CInput";
 import { userData } from "../../app/slices/userSlice";
-// import { validate } from "../../utils/validations";
 import 'react-toastify/dist/ReactToastify.css';
 import { UpdatePostCall, deleteMyPostCall } from "../../services/api.Calls";
-import { toast } from "react-toastify";
-
-// import { UpdatePostCall } from "../../services/apiCalls";
-// import { useDispatch } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
+import { validate } from "../../utils/validations";
 
 export const MyPostDetail = () => {
 
@@ -35,13 +32,13 @@ export const MyPostDetail = () => {
     })
 
 
-    // const [postError, setPostError] = useState({
-    //     titleError: "",
-    //     descriptionError: "",
-    //     picUrlError: ""
-    // })
+    const [postError, setPostError] = useState({
+        titleError: "",
+        descriptionError: "",
+        picUrlError: ""
+    })
 
-    // eslint-disable-next-line no-unused-vars
+
     const [write, setWrite] = useState("disabled")
 
     useEffect(() => {
@@ -50,13 +47,15 @@ export const MyPostDetail = () => {
         }
     }, [reduxUser])
 
-    //   useEffect(() => {
-    //     toast.dismiss()
-    //     postError.titleError && 
-    //     toast.warn(postError.titleError)
-    //     postError.descriptionError && 
-    //     toast.warn(postError.descriptionError)
-    //     }, [postError])
+    useEffect(() => {
+        toast.dismiss()
+        postError.titleError &&
+            toast.warn(postError.titleError)
+        postError.descriptionError &&
+            toast.warn(postError.descriptionError)
+        postError.picUrlError &&
+            toast.warn(postError.picUrlError)
+    }, [postError])
 
 
 
@@ -67,58 +66,61 @@ export const MyPostDetail = () => {
         }))
     }
 
-    // const checkError = (e) => {
-    //     const error = validate(e.target.name, e.target.value)
+    const checkError = (e) => {
+        const error = validate(e.target.name, e.target.value)
 
-    //     setPostError((prevState) => ({
-    //         ...prevState,
-    //         [e.target.name + "Error"]: error
-    //     }))
-    // }
+        setPostError((prevState) => ({
+            ...prevState,
+            [e.target.name + "Error"]: error
+        }))
+    }
     const deleteMyPost = async (id) => {
         try {
             const fetched = await deleteMyPostCall(id, reduxUser.tokenData.token)
 
-            if(fetched.success === true) {
-                navigate('/profile')
+            if (fetched.success === true) {
+                toast.success(fetched.message)
+            } else toast.error(fetched.message)
+
+            if (fetched.success === true) {
+                setTimeout(() => {
+                    navigate("/profile")
+                }, 1000)
             }
-            
+
+
         } catch (error) {
             console.log(error.message)
         }
     }
 
-    //   useEffect(() => {
+    useEffect(() => {
 
-    //     if (!detailRdx?.detail?.id) {
-    //       navigate("/");
-    //     }
-    //   }, [detailRdx]);
+        if (!detailRdx?.detail?.id) {
+            navigate("/");
+        }
+    }, [detailRdx]);
 
-      const UpdatePost = async (postId) => {
+    const UpdatePost = async (postId) => {
         try {
-            
-                if (post.description === "") {
-                    throw new Error("La descripción es obligatoria")
+
+            if (post.description === "") {
+                throw new Error("La descripción es obligatoria")
             }
 
             const fetched = await UpdatePostCall(reduxUser?.tokenData?.token, post, postId)
 
-            if (fetched.message === "Post actualizado correctamente"){
-              toast.success(fetched.message)
-              }else toast.error(fetched.message)
-
-
+            if (fetched.message === "Post actualizado correctamente") {
+                toast.success(fetched.message)
+            } else toast.error(fetched.message)
             setWrite("disabled")
-
-
 
         } catch (error) {
             console.log(error.message)
         }
     }
 
-    
+
 
     return (
         detailRdx?.detail?.id &&
@@ -132,32 +134,34 @@ export const MyPostDetail = () => {
             </div>
             <div className="postFields">
                 <CInput
-                    className={"InputDesign"}
+                    className={`inputDesign ${postError.titleError !== "" ? "inputDesignError" : ""
+                        }`}
                     type={"text"}
                     name={"title"}
                     disabled={write}
                     value={post.title || ""}
                     changeFunction={inputHandler}
-                    // blurFunction={checkError}
+                    blurFunction={checkError}
                 />
 
                 <CInput
-                    className={"InputDesign"}
+                    className={`inputDesign ${postError.descriptionError !== "" ? "inputDesignError" : ""
+                        }`}
                     type={"text"}
                     name={"description"}
                     disabled={write}
                     value={post.description || ""}
                     changeFunction={inputHandler}
-                    // blurFunction={checkError}
+                    blurFunction={checkError}
                 />
                 <CInput
-                    className={"InputDesign"}
+                    className={"inputDesign"}
                     type={"text"}
                     name={"picUrl"}
                     disabled={write}
                     value={post.picUrl || ""}
                     changeFunction={inputHandler}
-                    // blurFunction={checkError}
+                    blurFunction={checkError}
                 />
                 <CInput
                     className={"inputDesign"}
@@ -165,8 +169,6 @@ export const MyPostDetail = () => {
                     name={"ownerNickname"}
                     disabled={true}
                     value={post.ownerNickname}
-                    changeFunction={inputHandler}
-                    // blurFunction={checkError}
                 />
                 <CInput
                     className={"inputDesign"}
@@ -174,8 +176,6 @@ export const MyPostDetail = () => {
                     name={"createdAt"}
                     disabled={true}
                     value={"Fecha de creación:" + post.createdAt}
-                    changeFunction={inputHandler}
-                    // blurFunction={checkError}
                 />
                 <div className='deleteButton'>
                     <CButton key={post.id}
@@ -187,9 +187,21 @@ export const MyPostDetail = () => {
                 <CButton
                     className={write === "" ? " updateButton" : "allowButton"}
                     title={write === "" ? "Actualizar" : <img src="img/EditIcon.png" alt="editIcon"></img>}
-                  emitFunction={write === "" ? () => UpdatePost(post.id) : () => setWrite("")}
+                    emitFunction={write === "" ? () => UpdatePost(post.id) : () => setWrite("")}
                 />
             </div>
+            <ToastContainer
+                position="top-left"
+                autoClose={1500}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="dark"
+                />
         </div>
     )
-    }
+}

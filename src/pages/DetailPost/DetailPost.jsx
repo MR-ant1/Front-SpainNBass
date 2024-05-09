@@ -9,9 +9,8 @@ import { validate } from "../../utils/validations";
 import 'react-toastify/dist/ReactToastify.css';
 import { PostCard } from "../../common/PostCard/PostCard";
 import { CButton } from "../../common/CButton/CButton";
-// import { Heart } from "lucide-react";
-import { GetCommentsCall, LikeCall, PostLikesCall, bannedPostCall, newCommentCall} from "../../services/api.Calls";
-import { toast } from "react-toastify";
+import { GetCommentsCall, LikeCall, PostLikesCall, bannedPostCall, newCommentCall } from "../../services/api.Calls";
+import { ToastContainer, toast } from "react-toastify";
 import { CInput } from "../../common/CInput/CInput";
 import { Heart } from "lucide-react";
 
@@ -23,6 +22,13 @@ export const PostDetail = () => {
     const reduxUser = useSelector(userData)
 
     const navigate = useNavigate();
+
+
+    useEffect(() => {
+        if (reduxUser.tokenData.token === "") {
+            navigate("/")
+        }
+    }, [reduxUser?.tokenData?.token])
 
     const [loadedComments, setLoadedComments] = useState(false)
 
@@ -45,7 +51,6 @@ export const PostDetail = () => {
 
     const [write, setWrite] = useState("disabled")
 
-    // eslint-disable-next-line no-unused-vars
     const [isLikedBefore, setIsLikedBefore] = useState(false)
 
     // eslint-disable-next-line no-unused-vars
@@ -62,44 +67,20 @@ export const PostDetail = () => {
     })
 
     useEffect(() => {
-        if (!reduxUser?.tokenData?.token) {
-            navigate("/")
-        }
-    }, [reduxUser])
-
-    // useEffect(() => {
-    //     const isLiked = async () => {
-    //         try {
-
-    //             const fetched = await userLikesCall(reduxUser.tokenData.token)
-    //             if (fetched.success === true) {
-    //             setLikeCount(fetched.data)
-    //             setCountDone(true)
-    //             }
-    //         } catch (error) {
-    //             console.log(error.message)
-    //         }
-    //     }
-    //     if (countDone === false) {
-    //         isLiked()
-    //     }
-    // }, [likeCount])
-
-    useEffect(() => {
         const likesCount = async () => {
             try {
                 const fetched = await PostLikesCall(reduxUser.tokenData.token, post.id)
                 const likes = fetched.data
 
                 if (fetched.success === true) {
-                setCountDone(true)
-                setLikeCount(fetched.data.length)
-                    
-                for (let like in likes) {
-                    if (likes[like].user?.id === reduxUser?.tokenData?.user.userId) {
-                     setIsLikedBefore(true)
+                    setCountDone(true)
+                    setLikeCount(fetched.data.length)
+
+                    for (let like in likes) {
+                        if (likes[like].user?.id === reduxUser?.tokenData?.user.userId) {
+                            setIsLikedBefore(true)
+                        }
                     }
-                }
                 }
             } catch (error) {
                 console.log(error.message)
@@ -112,10 +93,10 @@ export const PostDetail = () => {
 
     useEffect(() => {
         toast.dismiss()
-        newComment.commentError &&
-            toast.warn(newComment.commentError)
-        newComment.urlError &&
-            toast.warn(newComment.urlError)
+        newCommentError.commentError &&
+            toast.warn(newCommentError.commentError)
+        newCommentError.urlError &&
+            toast.warn(newCommentError.urlError)
     }, [newCommentError])
 
 
@@ -141,10 +122,9 @@ export const PostDetail = () => {
 
             try {
                 const fetched = await GetCommentsCall(reduxUser.tokenData.token, post.id)
-
-                if (fetched.success === true ){
-                setPostComments(fetched.data)
-                setLoadedComments(true)
+                if (fetched.success === true) {
+                    setPostComments(fetched.data)
+                    setLoadedComments(true)
                 }
             } catch (error) {
                 console.log(error)
@@ -178,7 +158,6 @@ export const PostDetail = () => {
     }
 
     const createComment = async () => {
-
         try {
             const fetched = await newCommentCall(reduxUser.tokenData.token, post.id, newComment)
             if (newComment.comment.length === 0) {
@@ -189,11 +168,12 @@ export const PostDetail = () => {
                 setLoadedComments(false)
                 setPostComments(false)
                 setWrite("disabled")
+                toast.success(fetched.message)
                 setNewComment({
                     comment: "",
                     url: ""
                 })
-            }
+            } else toast.error(fetched.message)
         } catch (error) {
             console.log(error)
         }
@@ -202,10 +182,12 @@ export const PostDetail = () => {
     const deleteMyPost = async (id) => {
         try {
             const fetched = await bannedPostCall(id, reduxUser.tokenData.token)
-
             if (fetched.success === true) {
-                navigate('/community')
-            }
+                toast.success(fetched.message)
+                setTimeout(() => {
+                    navigate("/community")
+                }, 1500)
+            }else toast.error(fetched.message)
 
         } catch (error) {
             console.log(error.message)
@@ -228,8 +210,8 @@ export const PostDetail = () => {
                     title={detailRdx.detail?.title}
                     description={detailRdx?.detail?.description}
                     picUrl={detailRdx?.detail?.picUrl}
-                    createdAt={"Creado:" + detailRdx?.detail?.owner.createdAt}
-                    updatedAt={"Actualizado:" + detailRdx?.detail?.owner.updatedAt}
+                    createdAt={"Creado:" + detailRdx?.detail?.createdAt}
+                    updatedAt={"Actualizado:" + detailRdx?.detail?.updatedAt}
                 />
             </div>
             <div className="likeRow">
@@ -240,13 +222,13 @@ export const PostDetail = () => {
                 />
                 <div className="likesNum">{likeCount}</div>
             </div>
-            {detailRdx?.detail?.owner?.id === reduxUser?.tokenData?.user.userId ? (
+            {detailRdx?.detail?.owner?.id === reduxUser?.tokenData?.user.userId &&
                 <CButton
                     className={"editButton"}
                     title={"Actualizar"}
                     emitFunction={() => navigate('/detailMyPost')}
                 />
-            ) : (<div></div>)
+
             }
 
             <CInput
@@ -270,18 +252,17 @@ export const PostDetail = () => {
             <CButton
                 className={write === "" ? " updateButton" : "allowButton"}
                 title={write === "" ? "Enviar comentario" : "Escribir comentario"}
-                emitFunction={write === "" ? ()=>createComment() : () => setWrite("")}
+                emitFunction={write === "" ? () => createComment() : () => setWrite("")}
             />
-            {detailRdx?.detail?.owner?.id === reduxUser?.tokenData?.user.userId ? (
-            <div className='deleteButton'>
-                <CButton key={post.id}
-                    className={"deleteMyPostButton"}
-                    title={"Eliminar"}
-                    emitFunction={(() => deleteMyPost(post.id))}
-                />
-            </div>
-            ) : (<div></div>)
-        }
+            {detailRdx?.detail?.owner?.id === reduxUser?.tokenData?.user.userId &&
+                <div className='deleteButton'>
+                    <CButton key={post.id}
+                        className={"deleteMyPostButton"}
+                        title={"Eliminar"}
+                        emitFunction={(() => deleteMyPost(post.id))}
+                    />
+                </div>
+            }
 
             {loadedComments === true ? (
                 <div className='myPosts'>
@@ -305,6 +286,18 @@ export const PostDetail = () => {
 
             ) : (<div>Aun no hay ningún comentario en este post</div>
             )}
+            <ToastContainer
+                position="top-left"
+                autoClose={1500}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="dark"
+            />
         </div>
     )
 }

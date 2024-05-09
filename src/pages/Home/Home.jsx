@@ -7,7 +7,7 @@ import { GetLatestsCall, newLatestCall } from '../../services/api.Calls';
 import { updateDetail } from '../../app/slices/postDetailSlice';
 import { PostCard } from '../../common/PostCard/PostCard';
 import { CInput } from '../../common/CInput/CInput';
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import { validate } from '../../utils/validations';
 import { userData } from '../../app/slices/userSlice';
 import { CButton } from '../../common/CButton/CButton';
@@ -45,12 +45,10 @@ export const Home = () => {
 
     useEffect(() => {
         toast.dismiss()
-        newLatest.titleError &&
-            toast.warn(newLatest.titleError)
-        newLatest.descriptionError &&
-            toast.warn(newLatest.descriptionError)
-        newLatest.picUrlError &&
-            toast.warn(newLatest.picUrlError)
+        newLatestError.titleError &&
+            toast.warn(newLatestError.titleError)
+        newLatestError.descriptionError &&
+            toast.warn(newLatestError.descriptionError)
     }, [newLatestError])
 
 
@@ -87,19 +85,20 @@ export const Home = () => {
         if (loadedData === false) {
             latestFeed()
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [latests])
 
     const createLatest = async () => {
         try {
-            for (let elemento in newLatest) {
-                if (newLatest[elemento] === "") {
-                    throw new Error("Todos los campos deben estar rellenos")
+            if (!newLatest.title){
+                    toast.error("El título debe estar relleno")
                 }
-            }
+            if (!newLatest.description){
+                    toast.error("La descripción debe estar rellena")
+                }
             const fetched = await newLatestCall(reduxUser?.tokenData?.token, newLatest)
 
             if (fetched.success === true && fetched.data) {
+                toast.success(fetched.message)
                 setNewLatest({
                     title: "",
                     description: "",
@@ -119,7 +118,7 @@ export const Home = () => {
             {reduxUser?.tokenData?.user?.role === "super_admin" ? (
                 <div>
             <CInput
-                className={"inputDesign"}
+                className={`inputDesign ${newLatestError.titleError !== "" ? "inputDesignError" : "" }`}
                 type={"text"}
                 name={"title"}
                 disabled={write}
@@ -128,7 +127,7 @@ export const Home = () => {
                 blurFunction={checkError}
             />
             <CInput
-                className={"inputDesign"}
+                className={`inputDesign ${newLatestError.descriptionError !== "" ? "inputDesignError" : "" }`}
                 type={"text"}
                 name={"description"}
                 disabled={write}
@@ -192,6 +191,18 @@ export const Home = () => {
             )}
         </div>
         )}
+        <ToastContainer
+                position="top-left"
+                autoClose={1500}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="dark"
+            />
         </div>
     )
 }
