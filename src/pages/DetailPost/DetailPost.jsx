@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { PostCard } from "../../common/PostCard/PostCard";
 import { CButton } from "../../common/CButton/CButton";
 // import { Heart } from "lucide-react";
-import { GetCommentsCall, LikeCall, PostLikesCall, bannedPostCall, newCommentCall } from "../../services/api.Calls";
+import { GetCommentsCall, LikeCall, PostLikesCall, bannedPostCall, newCommentCall} from "../../services/api.Calls";
 import { toast } from "react-toastify";
 import { CInput } from "../../common/CInput/CInput";
 import { Heart } from "lucide-react";
@@ -45,8 +45,9 @@ export const PostDetail = () => {
 
     const [write, setWrite] = useState("disabled")
 
+    // eslint-disable-next-line no-unused-vars
     const [isLikedBefore, setIsLikedBefore] = useState(false)
-    
+    console.log(isLikedBefore)
     // eslint-disable-next-line no-unused-vars
     const [post, setPost] = useState({
         id: detailRdx?.detail?.id,
@@ -66,14 +67,43 @@ export const PostDetail = () => {
         }
     }, [reduxUser])
 
+    // useEffect(() => {
+    //     const isLiked = async () => {
+    //         try {
+
+    //             const fetched = await userLikesCall(reduxUser.tokenData.token)
+    //             if (fetched.success === true) {
+    //             setLikeCount(fetched.data)
+    //             setCountDone(true)
+    //             }
+    //         } catch (error) {
+    //             console.log(error.message)
+    //         }
+    //     }
+    //     if (countDone === false) {
+    //         isLiked()
+    //     }
+    // }, [likeCount])
+
     useEffect(() => {
         const likesCount = async () => {
             try {
 
                 const fetched = await PostLikesCall(reduxUser.tokenData.token, post.id)
-                setLikeCount(fetched.data)
+                const likes = fetched.data
+                console.log(likes)
+                if (fetched.success === true) {
                 setCountDone(true)
-
+                setLikeCount(fetched.data.length)
+                    
+                for (let like in likes) {
+                    if (likes[like].user?.id === reduxUser?.tokenData?.user.userId) {
+                     setIsLikedBefore(true)
+                    }
+                }
+                }
+                console.log(likeCount)
+                console.log(fetched.data)
             } catch (error) {
                 console.log(error.message)
             }
@@ -117,9 +147,7 @@ export const PostDetail = () => {
 
                 if (fetched.success === true ){
                 setPostComments(fetched.data)
-   
                 setLoadedComments(true)
-                // setIsLikedBefore(likeCount?.map(likeCount => likeCount.user.id === reduxUser.tokenData.user.userId ? (true) : (false)))
                 }
             } catch (error) {
                 console.log(error)
@@ -210,11 +238,10 @@ export const PostDetail = () => {
             <div className="likeRow">
                 <CButton
                     className={"likeButton"}
-                    title={<Heart fill={isLikedBefore === true ? "red"
-                        : "white"} />}
-                    emitFunction={() => likePost((post.id))}
+                    title={<Heart fill={isLikedBefore === true ? "red" : "white"} />}
+                    emitFunction={() => likePost(post.id)}
                 />
-                <div className="likesNum">{likeCount.length}</div>
+                <div className="likesNum">{likeCount}</div>
             </div>
             {detailRdx?.detail?.owner?.id === reduxUser?.tokenData?.user.userId ? (
                 <CButton

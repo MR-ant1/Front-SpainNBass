@@ -466,3 +466,26 @@ export const UpdatePostCall = async (token, post, id) => {
     }
 }
 
+export const userLikesCall = async (token) => {
+
+    const clientData = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        }
+    }
+
+    try {
+        const response = await fetch(`${root}likes/users`, clientData)
+        const data = await response.json();
+    
+        if (!data.success) {
+            throw new Error(data.message)
+        }
+        return data
+        
+    } catch (error) {
+        return error
+    }
+}
