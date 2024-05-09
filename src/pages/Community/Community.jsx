@@ -27,7 +27,6 @@ export const Community = () => {
 
     const dispatch = useDispatch()
 
-    console.log(categorySelection)
     const [loadedPosts, setLoadedPosts] = useState(false)
 
     const [posts, setPosts] = useState([])
@@ -74,7 +73,7 @@ export const Community = () => {
             try {
 
                 const fetched = await GetGenrePostCall(reduxUser.tokenData.token, categorySelection.category)
-                console.log(fetched.data)
+
                 if (fetched.success === true) {
                   setPosts(fetched.data)
                 setLoadedPosts(true)  
@@ -193,9 +192,9 @@ export const Community = () => {
                             {posts.map(
                                 post => {
                                     return (
-                                        <div className="cardDiv" key={post.index}>
+                                        <div className="cardDiv" key={post.id}>
                                             <PostCard
-                                                key={post.index}
+                                                key={post.id}
                                                 title={post.title.length > 20 ? post.title.substring(0, 20) : post.title}
                                                 description={post.description.length > 20 ? post.description.substring(0, 20) : post.description}
                                                 nickname={post.owner.nickname}

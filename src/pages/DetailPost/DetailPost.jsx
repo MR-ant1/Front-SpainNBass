@@ -47,7 +47,7 @@ export const PostDetail = () => {
 
     // eslint-disable-next-line no-unused-vars
     const [isLikedBefore, setIsLikedBefore] = useState(false)
-    console.log(isLikedBefore)
+
     // eslint-disable-next-line no-unused-vars
     const [post, setPost] = useState({
         id: detailRdx?.detail?.id,
@@ -88,10 +88,9 @@ export const PostDetail = () => {
     useEffect(() => {
         const likesCount = async () => {
             try {
-
                 const fetched = await PostLikesCall(reduxUser.tokenData.token, post.id)
                 const likes = fetched.data
-                console.log(likes)
+
                 if (fetched.success === true) {
                 setCountDone(true)
                 setLikeCount(fetched.data.length)
@@ -102,8 +101,6 @@ export const PostDetail = () => {
                     }
                 }
                 }
-                console.log(likeCount)
-                console.log(fetched.data)
             } catch (error) {
                 console.log(error.message)
             }
