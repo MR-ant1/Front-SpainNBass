@@ -27,10 +27,9 @@ export const Header = () => {
             ...prevState,
             election: e.target.value
         }))
-
+            if(e.target.value !== ""){
             dispatch(navigateCategory({ category: e.target.value }))
-            navigate('/')
-            navigate('/community')
+            navigate('/community')}
     }
     return (
         <div className="headerDesign">
@@ -63,7 +62,7 @@ export const Header = () => {
                         onChange={navigateCommunity}
                     >
                         
-                        <option value="">COMMUNITY</option>
+                        <option value="">Community</option>
                         <option value="Club dnb">Club dnb</option>
                         <option value="RaggaJungle">RaggaJungle</option>
                         <option value="Rollers">Rollers</option>

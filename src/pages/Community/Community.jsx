@@ -27,7 +27,7 @@ export const Community = () => {
 
     const dispatch = useDispatch()
 
-
+    console.log(categorySelection)
     const [loadedPosts, setLoadedPosts] = useState(false)
 
     const [posts, setPosts] = useState([])
@@ -36,7 +36,7 @@ export const Community = () => {
         title: "",
         description: "",
         picUrl: "",
-        topic: categorySelection.category
+        topic: ""
     })
 
     // eslint-disable-next-line no-unused-vars
@@ -74,12 +74,17 @@ export const Community = () => {
             try {
 
                 const fetched = await GetGenrePostCall(reduxUser.tokenData.token, categorySelection.category)
-
-                setPosts(fetched.data)
-                setLoadedPosts(true)
-
-                // dispatch(navigateCategory({ category: "" }))
-
+                console.log(fetched.data)
+                if (fetched.success === true) {
+                  setPosts(fetched.data)
+                setLoadedPosts(true)  
+                setNewPost({
+                    title:"",
+                    description:"",
+                    picUrl:"",
+                    topic: categorySelection.category
+                })
+                }
             } catch (error) {
                 console.log(error)
             }
@@ -96,17 +101,17 @@ export const Community = () => {
                 throw new Error("El campo description es obligatorio"),
                 toast.error("Descripción es obligatorio")
             }
-
-
             const fetched = await createPostCall(reduxUser.tokenData.token, newPost)
-
+       
             if (fetched.data && fetched.data.id) {
+                
                 setPosts([...posts, fetched.data])
                 setWrite("disabled")
                 setNewPost({
                     title: "",
                     description: "",
-                    picUrl: ""
+                    picUrl: "",
+                    topic: categorySelection?.category
                 })
             }
 
@@ -166,6 +171,15 @@ export const Community = () => {
                         name={"picUrl"}
                         disabled={write}
                         value={newPost.picUrl}
+                        changeFunction={inputHandler}
+                        blurFunction={checkError}
+                    />
+                    <CInput
+                        className={"inputDesign"}
+                        type={"text"}
+                        name={"topic"}
+                        disabled={true}
+                        value={categorySelection.category}
                         changeFunction={inputHandler}
                         blurFunction={checkError}
                     />
