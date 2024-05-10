@@ -66,9 +66,7 @@ export const Login = () => {
             
             if (fetched.message === "Usuario logueado correctamente") {
                 toast.success(fetched.message)
-            } 
-            if(fetched.message !== "Usuario logueado correctamente")
-                {toast.error(fetched.message)}
+            }else toast.error(fetched.message)
 
 
             if (fetched.token) {
@@ -78,13 +76,12 @@ export const Login = () => {
                     token: fetched.token,
                     user: decoded
                 };
-                dispatch(login({ tokenData: passInfo })
-            );
-
                 setTimeout(() => {
+                  dispatch(login({ tokenData: passInfo })  )
                     navigate("/")
-                }, 1000)
+                }, 1500)
             }
+                
         } catch (error) {
             console.log(error.message);
         }

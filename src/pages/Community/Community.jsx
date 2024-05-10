@@ -27,6 +27,8 @@ export const Community = () => {
 
     const dispatch = useDispatch()
 
+    const [invisible, setInvisible] = useState(true)
+
     const [loadedPosts, setLoadedPosts] = useState(false)
 
     const [posts, setPosts] = useState([])
@@ -148,11 +150,12 @@ export const Community = () => {
                 </>
             ) : (
                 <>
+                    <div className="communityInputsDesign" hidden={invisible}>
                     <CInput
                         className={"inputDesign"}
                         type={"text"}
                         name={"title"}
-                        disabled={write}
+                        hidden={true}
                         value={newPost.title || ""}
                         changeFunction={inputHandler}
                         blurFunction={checkError}
@@ -187,7 +190,13 @@ export const Community = () => {
                     <CButton
                         className={write === "" ? " updateButton" : "allowButton"}
                         title={write === "" ? "Actualizar" : "Habilitar"}
-                        emitFunction={write === "" ? sendPost : () => setWrite("")}
+                        emitFunction={write === "" ? sendPost : setWrite("")}
+                    />
+                    </div>
+                    <CButton
+                        className={write === "" ? " updateButton" : "allowButton"}
+                        title={write === "" ? "Actualizar" : "Habilitar"}
+                        emitFunction={invisible === true ? ()=>setInvisible(false) : ()=>setInvisible(true)}
                     />
                     {posts.length !== 0 ? (
                         <>

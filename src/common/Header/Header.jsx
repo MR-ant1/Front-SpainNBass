@@ -7,7 +7,7 @@ import { LogoNavigator } from '../LogoNavigator/LogoNavigator';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { navigateCategory } from '../../app/slices/communitySlice';
-
+import {  LogIn, PowerOff } from 'lucide-react';
 
 export const Header = () => {
 
@@ -30,104 +30,79 @@ export const Header = () => {
             if(e.target.value !== ""){
             dispatch(navigateCategory({ category: e.target.value }))
             navigate('/community')}
+            setCommunity({election:""})
     }
     return (
         <div className="headerDesign">
-            <div className='titleRow'>
-            <div className='webTitle'>
                 <LogoNavigator
                 path="/"
-                title="INICIO"
+                title={<img src='img/LogoSNB.png' alt="Logo"></img>}
                 />
-            </div>
-            </div>
-            
-            {reduxUser?.tokenData?.token ? (
-                reduxUser.tokenData.user.role === 'super_admin' ? (
-                    <div className='navigatorDesign'>
-                        <Navigator
-                            path='/superAdmin' title='super admin' />
-                        <Navigator
-                            path='/profile' title={reduxUser?.tokenData?.user.nickname} />
-                        <div
-                            className='logoutDesign'
-                            onClick={() => dispatch(logout({ tokenData: "" }))}>
-                            log out
-                        </div>
-                        <select
-                        className={"inputDesign"}
+                {reduxUser.tokenData.token &&
+            <div className='dropDownContainer'>
+            <select
+                        className={"dropDownDesign"}
                         type={"text"}
                         name={"election"}
                         value={community.election || ""}
                         onChange={navigateCommunity}
                     >
-                        
-                        <option value="">Community</option>
-                        <option value="Club dnb">Club dnb</option>
-                        <option value="RaggaJungle">RaggaJungle</option>
-                        <option value="Rollers">Rollers</option>
-                        <option value="Liquid dnb">Liquid dnb</option>
-                        <option value="Jump Up">Jump Up</option>
-                        <option value="NeuroFunk">NeuroFunk</option>
-                        <option value="memes">Memes</option>
+                        <option className='defaultChoice' value="">Comunidad</option>
+                        <option className='clubChoice' value="Club dnb">Club dnb</option>
+                        <option className='raggaChoice' value="RaggaJungle">RaggaJungle</option>
+                        <option className='rollersChoice' value="Rollers">Rollers</option>
+                        <option className='liquidChoice' value="Liquid dnb">Liquid dnb</option>
+                        <option className='jumpChoice' value="Jump Up">Jump Up</option>
+                        <option className='nueroChoice' value="NeuroFunk">NeuroFunk</option>
+                        <option className='memesChoice' value="memes">Memes</option>
                     </select>
+                    </div>
+                    }
+            {reduxUser?.tokenData?.token ? (
+                reduxUser.tokenData.user.role === 'super_admin' ? (
+                    <div className='navigatorDesignSuper'>
+                        <div className='profileSuperContainer'>
+                        <div className='superAdminButton'>
+                        <Navigator
+                            path='/superAdmin' title='super admin' />
+                        </div>
+                        <div className='homeProfileButton'>
+                        <Navigator
+                            path='/profile' title={reduxUser?.tokenData?.user.nickname} />
+                        </div>
+                        </div>
+                        <div 
+                            
+                            onClick={() => dispatch(logout({ tokenData: "" }))}>
+                            <PowerOff />
+                        </div>
                     </div>
                 ) : (
 
-                    <div className='navigatorDesign'>
+                    <div className='navigatorUserDesign'>
                         <Navigator
                             path='/profile' title={reduxUser.tokenData.user.nickname} />
                         <div
-                            className='logoutDesign'
+                            className='logoutSuperDesign'
                             onClick={() => dispatch(logout({ tokenData: "" }))}>
-                            log out
+                            <PowerOff />
                         </div>
-                        
-                        <select
-                        className={"inputDesign"}
-                        type={"text"}
-                        name={"election"}
-                        value={community.election || ""}
-                        onChange={navigateCommunity}
-                    >
-                        
-                        <option value="">COMMUNITY</option>
-                        <option value="Club dnb">Club dnb</option>
-                        <option value="RaggaJungle">RaggaJungle</option>
-                        <option value="Rollers">Rollers</option>
-                        <option value="Liquid dnb">Liquid dnb</option>
-                        <option value="Jump Up">Jump Up</option>
-                        <option value="NeuroFunk">NeuroFunk</option>
-                        <option value="memes">Memes</option>
-                    </select>
                     </div>
                 )
             ) : (
-                <div className='navigatorDesign'>
+                <div className='navigatorForeignDesign'>
+                    <div className='loginForeignDesign'>
                     <Navigator
                         path="/login"
-                        title="Login"
+                        title={<LogIn />}
                     />
+                    </div>
+                    <div className='registerForeignDesign'>
                     <Navigator
                         path="/register"
-                        title="Register"
+                        title="Crear Cuenta"
                     />
-                    <select
-                        className={"inputDesign"}
-                        type={"text"}
-                        name={"election"}
-                        value={community.election || ""}
-                        onChange={navigateCommunity}
-                    >
-                        <option value="">COMMUNITY</option>
-                        <option value="Club dnb">Club dnb</option>
-                        <option value="RaggaJungle">RaggaJungle</option>
-                        <option value="Rollers">Rollers</option>
-                        <option value="Liquid dnb">Liquid dnb</option>
-                        <option value="Jump Up">Jump Up</option>
-                        <option value="NeuroFunk">NeuroFunk</option>
-                        <option value="memes">Memes</option>
-                    </select>
+                    </div>
                 </div>
             )}
         </div>

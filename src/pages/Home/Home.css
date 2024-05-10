@@ -1,0 +1,114 @@
+
+.HomeDesign {
+    height: 100vh;
+    width: 100vw;
+    overflow-y: auto;
+    overflow-x: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.homeUserDesign{
+    height: 100%;
+    width: 100%;
+}
+
+.cardsHomeDesign{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    margin-top: 1em;
+  
+}
+
+.homeSuperDesign{
+    height: 100%;
+    width: 100%;
+}
+
+.inputSuperContainer{
+    height: 80%;
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.latestCardDesign{
+    height: 16em;
+    width: 100%;
+
+    border: 0.015em solid rgb(178, 178, 178);
+    margin-left: 0.3em;
+    margin-right: 0.3em;
+    border-radius: 0.4em;
+
+    transition: 0.3s;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.latestCardDesign:hover{
+    cursor: pointer;
+    background-color: rgb(241, 241, 241);
+
+    height: 15.90em;
+    width: 99%;
+    transition: 0.3s;
+}
+
+.cardDivDesign{
+    height: 25%;
+    width: 30%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+
+    margin:0.5em;
+    margin-bottom: 2em;
+}
+
+.viewTitleDesign{
+    height: 10%;
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    margin-top: 1em;
+
+    font-family:Impact;
+    font-size: 1.5em;
+    color: rgb(40, 24, 24)
+}
+.viewSubTitleDesign{
+    height: 10%;
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    margin-top: 0.5em;
+
+    font-family:Impact;
+    font-size: 1em;
+    color: rgb(40, 24, 24)
+}

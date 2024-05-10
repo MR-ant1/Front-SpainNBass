@@ -1,0 +1,19 @@
+
+.navigatorDesign{
+    transition: 0.3s;
+
+    color: white;
+    font-size: 1.2em;
+    font-family: sans-serif;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.navigatorDesign:hover{
+    color: rgb(190, 190, 190);
+    transition: 0.3s;
+    cursor: pointer;
+}

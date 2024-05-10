@@ -5,12 +5,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { GetLatestsCall, newLatestCall } from '../../services/api.Calls';
 import { updateDetail } from '../../app/slices/postDetailSlice';
-import { PostCard } from '../../common/PostCard/PostCard';
 import { CInput } from '../../common/CInput/CInput';
 import { ToastContainer, toast } from 'react-toastify';
 import { validate } from '../../utils/validations';
 import { userData } from '../../app/slices/userSlice';
 import { CButton } from '../../common/CButton/CButton';
+import { LatestCard } from '../../common/LatestCard/LatestCard';
 
 export const Home = () => {
 
@@ -73,7 +73,7 @@ export const Home = () => {
         const latestFeed = async () => {
             try {
                 const fetched = await GetLatestsCall()
-                
+
                 setLatests(fetched.data)
                 if (fetched.success === true) {
                     setLoadedData(true)
@@ -89,12 +89,12 @@ export const Home = () => {
 
     const createLatest = async () => {
         try {
-            if (!newLatest.title){
-                    toast.error("El título debe estar relleno")
-                }
-            if (!newLatest.description){
-                    toast.error("La descripción debe estar rellena")
-                }
+            if (!newLatest.title) {
+                toast.error("El título debe estar relleno")
+            }
+            if (!newLatest.description) {
+                toast.error("La descripción debe estar rellena")
+            }
             const fetched = await newLatestCall(reduxUser?.tokenData?.token, newLatest)
 
             if (fetched.success === true && fetched.data) {
@@ -114,84 +114,95 @@ export const Home = () => {
     }
 
     return (
+        
         <div className="homeDesign">
+            {!reduxUser.tokenData.token &&
+            <div className='viewTitleDesign'>NOTICIAS Y EVENTOS</div>}
+            {!reduxUser.tokenData.token &&
+                <div className='viewSubTitleDesign'>Registrate o inicia sesión para participar en nuestra comunidad en la sección foro</div>}
+
             {reduxUser?.tokenData?.user?.role === "super_admin" ? (
-                <div>
-            <CInput
-                className={`inputDesign ${newLatestError.titleError !== "" ? "inputDesignError" : "" }`}
-                type={"text"}
-                name={"title"}
-                disabled={write}
-                value={newLatest.title || ""}
-                changeFunction={inputHandler}
-                blurFunction={checkError}
-            />
-            <CInput
-                className={`inputDesign ${newLatestError.descriptionError !== "" ? "inputDesignError" : "" }`}
-                type={"text"}
-                name={"description"}
-                disabled={write}
-                value={newLatest.description || ""}
-                changeFunction={inputHandler}
-                blurFunction={checkError}
-            />
-            <CInput
-                className={"inputDesign"}
-                type={"text"}
-                name={"picUrl"}
-                disabled={write}
-                value={newLatest.picUrl || ""}
-                changeFunction={inputHandler}
-                blurFunction={checkError}
-            />
-            <CButton
-                className={write === "" ? " updateButton" : "allowButton"}
-                title={write === "" ? "Publicar" : "Nueva Noticia"}
-                emitFunction={write === "" ? createLatest : () => setWrite("")}
-            />
-            
-            {loadedData === true ? (
-                <div className="cardsDesign">
-                    {latests.slice(0, latests.length).map(
-                        latest => {
-                            return (
-                                <div className="cardDiv" key={latest.id}>
-                                    <PostCard
-                                        title={latest?.title?.length > 20 ? latest.title.substring(0, 20) : latest?.title}
-                                        description={latest?.description.length > 40 ? latest?.description.substring(0, 40) + "..." : latest?.description}
-                                        clickFunction={() => manageDetail(latest)}
-                                    />
-                                </div>
-                            )
-                        }).reverse()}
+                <div className='homeSuperDesign'>
+                    <div className='inputSuperContainer'>
+                        <CInput
+                            className={`inputTitleDesign ${newLatestError.titleError !== "" ? "inputTitleDesignError" : ""}`}
+                            type={"text"}
+                            name={"title"}
+                            placeholder={"Titular"}
+                            disabled={write}
+                            value={newLatest.title || ""}
+                            changeFunction={inputHandler}
+                            blurFunction={checkError}
+                        />
+                        <CInput
+                            className={`inputDescriptionHomeDesign ${newLatestError.descriptionError !== "" ? "inputDescriptionHomeDesignError" : ""}`}
+                            type={"text"}
+                            name={"description"}
+                            placeholder={"Información detallada"}
+                            disabled={write}
+                            value={newLatest.description || ""}
+                            changeFunction={inputHandler}
+                            blurFunction={checkError}
+                        />
+                        <CInput
+                            className={"inputDesign"}
+                            type={"text"}
+                            name={"picUrl"}
+                            placeholder={"url"}
+                            disabled={write}
+                            value={newLatest.picUrl || ""}
+                            changeFunction={inputHandler}
+                            blurFunction={checkError}
+                        />
+                        <CButton
+                            className={write === "" ? " updateButton" : "allowButton"}
+                            title={write === "" ? "Publicar" : "Nueva Noticia"}
+                            emitFunction={write === "" ? createLatest : () => setWrite("")}
+                        />
+                    </div>
+                    {loadedData === true ? (
+                        <div className="cardsHomeDesign">
+                             <div className='viewTitleDesign'>NOTICIAS Y EVENTOS</div>
+                            {latests.slice(0, latests.length).map(
+                                latest => {
+                                    return (
+                                        <div className='cardDivDesign' key={latest.id}>
+                                            <LatestCard
+                                                title={latest?.title?.length > 20 ? latest.title.substring(0, 20) : latest?.title}
+                                                description={latest?.description.length > 20 ? latest?.description.substring(0, 20) + "..." : latest?.description}
+                                                clickFunction={() => manageDetail(latest)}
+                                            />
+                                        </div>
+                                    )
+                                }).reverse()}
+                        </div>
+                    ) : (
+                        <div className="homeSuperLoadingDesign">CARGANDO</div>
+                    )}
                 </div>
             ) : (
-                <div className="homeDesign">CARGANDO</div>
-            )}
-        </div>
-        ) : (
-            <div>
-            {loadedData === true ? (
-                <div className="cardsDesign">
-                    {latests.slice(0, latests.length).map(
-                        latest => {
-                            return (
-                                <div className="cardDiv" key={latest.id}>
-                                    <PostCard
-                                        title={latest.title.length > 20 ? latest.title.substring(0, 20) : latest.title}
-                                        description={latest.description.length > 40 ? latest.description.substring(0, 40) + "..." : latest.description}
-                                        clickFunction={() => manageDetail(latest)}
-                                    />
-                                </div>
-                            )
-                        }).reverse()}
+                <div className='homeUserDesign'>
+                    {loadedData === true ? (
+                        <div className="cardsHomeDesign">
+                            {latests.slice(0, latests.length).map(
+                                latest => {
+                                    return (
+                                        <div className="cardDivDesign" key={latest.id}>
+                                            <LatestCard
+                                                title={latest.title.length > 20 ? latest.title.substring(0, 20) : latest.title}
+                                                description={latest.description.length > 40 ? latest.description.substring(0, 40) + "..." : latest.description}
+                                                clickFunction={() => manageDetail(latest)}
+                                            />
+                                        </div>
+                                    )
+                                }).reverse()}
+                        </div>
+                    ) : (
+                        <div className="homeLoadingDesign">CARGANDO</div>
+                    )}
                 </div>
-            ) : (
-                <div className="homeDesign">CARGANDO</div>
             )}
-        </div>
-        )}
-        <ToastContainer
+            <ToastContainer
                 position="top-left"
                 autoClose={1500}
                 hideProgressBar={false}

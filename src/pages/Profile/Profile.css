@@ -50,7 +50,7 @@
 .updateButton {
     height: 2em;
     width: 10em;
-    background-color: rgb(183, 185, 255); 
+    background-color: rgb(189, 189, 189); 
 
     display: flex;
     flex-direction: column;
@@ -68,13 +68,13 @@
 .updateButton:hover {
     cursor: pointer;
     transition: 0.3s;
-    background-color: rgb(151, 154, 255);
+    background-color: rgb(143, 143, 143);
 }
 
 .allowButton{
     height: 2em;
     width: 10em;
-    background-color: rgb(16, 178, 51);
+    background-color: rgb(218, 218, 218);
 
     display: flex;
     flex-direction: column;
@@ -92,7 +92,7 @@
 .allowButton:hover{
     cursor: pointer;
     transition: 0.3s;
-    background-color: rgb(14, 150, 43);
+    background-color: rgb(170, 170, 170);
 }
 
 .deleteButton {

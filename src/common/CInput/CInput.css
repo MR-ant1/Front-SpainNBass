@@ -2,12 +2,34 @@
 .inputDesign {
     height: 3em;
     width: 18em;
-    border: 0.2em solid black;
+    border: 0.15em solid black;
     border-radius: 0.5em;
     margin: 1em;
     display: flex;
 }
 
+.inputTitleDesign {
+    height: 5em;
+    width: 22em;
+    border: 0.15em solid black;
+    border-radius: 0.5em;
+    margin: 1em;
+    display: flex;
+}
+
+.inputDescriptionHomeDesign {
+    height: 20em;
+    width: 40em;
+    border: 0.15em solid black;
+    border-radius: 0.5em;
+    margin: 1em;
+    display: flex;
+}
+
+
 .inputDesignError{
-    border: 0.2em solid red;
+    border: 0.15em solid rgb(255, 0, 0);
+}
+.inputDescriptionHomeDesignError{
+    border: 0.15em solid rgb(255, 0, 0);
 }

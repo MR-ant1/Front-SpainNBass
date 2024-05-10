@@ -1,9 +1,9 @@
  
 .loginDesign {
     height: 88vh;
-    width: 100vw;
-
-    background-color:  rgb(106, 168, 255);
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: auto;
 
     display: flex;
     flex-direction: column;

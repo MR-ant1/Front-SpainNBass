@@ -12,7 +12,7 @@ import { CButton } from "../../common/CButton/CButton";
 import { GetCommentsCall, LikeCall, PostLikesCall, bannedPostCall, newCommentCall } from "../../services/api.Calls";
 import { ToastContainer, toast } from "react-toastify";
 import { CInput } from "../../common/CInput/CInput";
-import { Heart } from "lucide-react";
+import { Flame } from "lucide-react";
 
 
 export const PostDetail = () => {
@@ -25,10 +25,10 @@ export const PostDetail = () => {
 
 
     useEffect(() => {
-        if (reduxUser.tokenData.token === "") {
+        if (!reduxUser?.tokenData?.token) {
             navigate("/")
         }
-    }, [reduxUser?.tokenData?.token])
+    }, [reduxUser])
 
     const [loadedComments, setLoadedComments] = useState(false)
 
@@ -119,7 +119,6 @@ export const PostDetail = () => {
 
     useEffect(() => {
         const bringComments = async () => {
-
             try {
                 const fetched = await GetCommentsCall(reduxUser.tokenData.token, post.id)
                 if (fetched.success === true) {
@@ -193,7 +192,6 @@ export const PostDetail = () => {
             console.log(error.message)
         }
     }
-
     return (
         <div className="detailDesign">
             <div className="undoButton">
@@ -217,7 +215,7 @@ export const PostDetail = () => {
             <div className="likeRow">
                 <CButton
                     className={"likeButton"}
-                    title={<Heart fill={isLikedBefore === true ? "red" : "white"} />}
+                    title={<Flame fill={isLikedBefore === true ? "red" : "white"} />}
                     emitFunction={() => likePost(post.id)}
                 />
                 <div className="likesNum">{likeCount}</div>
@@ -228,7 +226,6 @@ export const PostDetail = () => {
                     title={"Actualizar"}
                     emitFunction={() => navigate('/detailMyPost')}
                 />
-
             }
 
             <CInput
@@ -254,6 +251,7 @@ export const PostDetail = () => {
                 title={write === "" ? "Enviar comentario" : "Escribir comentario"}
                 emitFunction={write === "" ? () => createComment() : () => setWrite("")}
             />
+
             {detailRdx?.detail?.owner?.id === reduxUser?.tokenData?.user.userId &&
                 <div className='deleteButton'>
                     <CButton key={post.id}
@@ -263,7 +261,6 @@ export const PostDetail = () => {
                     />
                 </div>
             }
-
             {loadedComments === true ? (
                 <div className='myPosts'>
                     {postComments.map(
@@ -277,13 +274,11 @@ export const PostDetail = () => {
                                         createdAt={"Creado:" + comment.createdAt}
                                     />
                                 </div>
-
                             )
                         }
                     ).reverse()
                     }
                 </div>
-
             ) : (<div>Aun no hay ningún comentario en este post</div>
             )}
             <ToastContainer
