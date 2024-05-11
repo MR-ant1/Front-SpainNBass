@@ -228,9 +228,7 @@ export const PostDetail = () => {
                     updatedAt={"Actualizado:" + detailRdx?.detail?.updatedAt}
                 />
             </div>
-            
-            </div>
-            <div className="postActionsContainerDesign">
+           
             <div className="editAndDeleteDetailContainer">
             <div className="likeAndNumContainer">
             <CButton
@@ -297,7 +295,8 @@ export const PostDetail = () => {
             
             {postComments.length > 0 ? (
                 <div className='postCommentsContainerDesign'>
-                    <div className="commentsMessageDesign">Comentarios al post</div>
+                    <div className="commentsMessageDesign">Comentarios</div>
+                        <div className="commentsContainerDesign">
                     {postComments.map(
                         comment => {
                             return (
@@ -313,6 +312,7 @@ export const PostDetail = () => {
                         }
                     ).reverse()
                     }
+                    </div>
                 </div>
             ) : (<div className="noCommentsText">Aun no hay ningún comentario en este post</div>
             )}

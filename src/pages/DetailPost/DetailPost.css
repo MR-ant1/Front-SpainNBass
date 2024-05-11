@@ -22,13 +22,6 @@
 .PostCard {
     height:1em;
 }
-.editButton{
-    height: 2em;
-    background-color: red;
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-}
 
 .newCommentInputsDesign{
     width: 100%;
@@ -41,10 +34,14 @@
 }
 
 .editAndDeleteDetailContainer{
-    width: 30%;
+    height: 50%;
+    width: 80%;
+    margin-top: 0.5em;
+
+
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: flex-start;
     align-items: center;
 }
 
@@ -53,14 +50,14 @@
     margin: 1em;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: flex-start;
     align-items: center;
 }
 
 .likeAndNumContainer{
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;   
 }
 
@@ -70,10 +67,11 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: flex-start;   
+    align-items: center;   
 }
 
 .postDetailCommentsDesign{
+    width: 100%;
     margin-bottom: 2em;
 
     display: flex;
@@ -83,6 +81,7 @@
 }
 
 .commentsCard{
+    width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -114,4 +113,22 @@
 .noCommentsText{
     height: 2em;
     font-size: 1.5em;
+}
+
+.commentsContainerDesign{
+    width: 100%;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;  
+}
+
+.detailPostContainerDesign{
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }

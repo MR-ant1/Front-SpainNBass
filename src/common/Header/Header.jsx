@@ -7,7 +7,7 @@ import { LogoNavigator } from '../LogoNavigator/LogoNavigator';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { navigateCategory } from '../../app/slices/communitySlice';
-import {  LogIn, PowerOff } from 'lucide-react';
+import {  CircleUser, LogIn, PowerOff } from 'lucide-react';
 
 export const Header = () => {
 
@@ -67,12 +67,12 @@ export const Header = () => {
                             path='/superAdmin' title='super admin' />
                         </div>
                         <div className='homeProfileButton'>
+                    
                         <Navigator
-                            path='/profile' title={reduxUser?.tokenData?.user.nickname} />
+                            path='/profile' title={<CircleUser />}/>
                         </div>
                         </div>
-                        <div 
-                            
+                        <div  
                             onClick={() => dispatch(logout({ tokenData: "" }))}>
                             <PowerOff />
                         </div>
@@ -91,16 +91,10 @@ export const Header = () => {
                 )
             ) : (
                 <div className='navigatorForeignDesign'>
-                    <div className='loginForeignDesign'>
+                    <div className='accessForeignDesign'>
                     <Navigator
-                        path="/login"
+                        path="/access"
                         title={<LogIn />}
-                    />
-                    </div>
-                    <div className='registerForeignDesign'>
-                    <Navigator
-                        path="/register"
-                        title="Crear Cuenta"
                     />
                     </div>
                 </div>

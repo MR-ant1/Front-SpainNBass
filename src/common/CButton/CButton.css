@@ -75,18 +75,19 @@
 .hideInputsButton{
     height: 2em;
     width: 10em;
-
-    margin-top: 1em;
+    background-color: rgb(92, 92, 92);
+    font-size: 0.8;
 
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 
-    font-size: 0.8em;
-    color:rgb(0, 0, 0);
-    background-color: rgb(92, 92, 92);
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+
     
+    color: rgb(255, 255, 255);
     font-weight: bold;
     transition: 0.3s;
     border: solid black 0.1em;
@@ -96,7 +97,7 @@
 .hideInputsButton:hover{
     cursor: pointer;
     transition: 0.3s;
-    background-color: rgb(93, 93, 93);
+    background-color: rgb(119, 119, 119);
 }
 
 .writePostButton{
@@ -110,8 +111,8 @@
     justify-content: center;
     align-items: center;
 
-    margin-top: 1em;
-    margin-bottom: 1em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
 
     
     color: rgb(255, 255, 255);
@@ -134,4 +135,17 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
+}
+
+.editOwnPostButton{
+    margin-right: 0.7em;
+    margin-left: 1em;
+}
+
+.likesNum{
+    margin-right: 0.5em;
+}
+
+.deleteMyPostButton{
+    margin-right: 0.7em;
 }

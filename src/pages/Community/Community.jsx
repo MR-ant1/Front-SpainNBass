@@ -75,20 +75,21 @@ export const Community = () => {
     useEffect(() => {
         const postFeed = async () => {
             try {
-                if( reduxUser.tokenData.token){
-                const fetched = await GetGenrePostCall(reduxUser.tokenData.token, categorySelection.category)
+                if (reduxUser.tokenData.token) {
+                    const fetched = await GetGenrePostCall(reduxUser.tokenData.token, categorySelection.category)
 
-                if (fetched.success === true) {
-                    setPosts(fetched.data)
-                    setLoadedPosts(true)
-                    setNewPost({
-                        title: "",
-                        description: "",
-                        picUrl: "",
-                        topic: categorySelection.category
+                    if (fetched.success === true) {
+                        setPosts(fetched.data)
+                        setLoadedPosts(true)
+                        setNewPost({
+                            title: "",
+                            description: "",
+                            picUrl: "",
+                            topic: categorySelection.category
 
-                    })
-                }}
+                        })
+                    }
+                }
             } catch (error) {
                 console.log(error)
             }
@@ -129,83 +130,83 @@ export const Community = () => {
                 <>
                     <div className="welcomeCommunityView">
                         <div className="welcomeCommunityMsg">Bienvenido a Community!
-                        <div className="welcomeMessage">Inicia sesión o regístrate para poder comunicarte con el resto de fans</div>
+                            <div className="welcomeMessage">Inicia sesión o regístrate para poder comunicarte con el resto de fans</div>
                         </div>
                         <div className="buttonsCommunityDesign">
-                        <RedirectButton
-                            className={"cbuttonDesign"}
-                            title={"Login"}
-                            emitFunction={() => navigate("/login")}
-                        />
-                        <RedirectButton
-                            className={"cbuttonDesign"}
-                            title={"Register"}
-                            emitFunction={() => navigate("/register")}
-                        />
+                            <RedirectButton
+                                className={"cbuttonDesign"}
+                                title={"Login"}
+                                emitFunction={() => navigate("/login")}
+                            />
+                            <RedirectButton
+                                className={"cbuttonDesign"}
+                                title={"Register"}
+                                emitFunction={() => navigate("/register")}
+                            />
                         </div>
                     </div>
                 </>
             ) : (
                 <>
                     <div className="inputsCommunityContainerDesign">
-                    <div className="communityInputsDesign" hidden={invisible}>
-                        <CInput
-                        className={"inputNicknameHomeDesign"}
-                        type={"text"}
-                        disabled={true}
-                        name={"owner"}
-                        value={reduxUser.tokenData.user.nickname}
-                    />
-                    <CInput
-                        className={"inputTitleCommunityDesign"}
-                        type={"text"}
-                        name={"title"}
-                        placeholder={"Título"}
-                        value={newPost.title || ""}
-                        changeFunction={inputHandler}
-                        blurFunction={checkError}
-                    />
-                    <CInput
-                        className={"inputDescriptionHomeDesign"}
-                        type={"text"}
-                        name={"description"}
-                        disabled={write}
-                        value={newPost.description}
-                        changeFunction={inputHandler}
-                        blurFunction={checkError}
-                    />
-                    <CInput
-                        className={"inputPicUrlCommunityDesign"}
-                        type={"text"}
-                        name={"picUrl"}
-                        placeholder={"Url"}
-                        disabled={write}
-                        value={newPost.picUrl}
-                        changeFunction={inputHandler}
-                        blurFunction={checkError}
-                    />
-                    <CInput
-                        className={"inputTopicCommunityDesign"}
-                        type={"text"}
-                        name={"topic"}
-                        disabled={true}
-                        value={categorySelection.category}
-                        changeFunction={inputHandler}
-                        blurFunction={checkError}
-                    />
-                    <div className="sendPostCommunityButton">
-                    <CButton
-                        className={write === "" ? " updateButton" : "allowButton"}
-                        title={write === "" ? "Enviar" : "Habilitar"}
-                        emitFunction={write === "" ? sendPost : setWrite("")}
-                    />
-                    </div>
-                    </div>
-                    <CButton
-                        className={invisible === false ? " hideInputsButton" : "writePostButton"}
-                        title={invisible === false ? "Ocultar" : "Escribir nuevo post"}
-                        emitFunction={invisible === true ? ()=>setInvisible(false) : ()=>setInvisible(true)}
-                    />
+                        <div className="communityInputsDesign" hidden={invisible}>
+                            <CInput
+                                className={"inputNicknameHomeDesign"}
+                                type={"text"}
+                                disabled={true}
+                                name={"owner"}
+                                value={reduxUser.tokenData.user.nickname}
+                            />
+                            <CInput
+                                className={"inputTitleCommunityDesign"}
+                                type={"text"}
+                                name={"title"}
+                                placeholder={"Título"}
+                                value={newPost.title || ""}
+                                changeFunction={inputHandler}
+                                blurFunction={checkError}
+                            />
+                            <CInput
+                                className={"inputDescriptionHomeDesign"}
+                                type={"text"}
+                                name={"description"}
+                                disabled={write}
+                                value={newPost.description}
+                                changeFunction={inputHandler}
+                                blurFunction={checkError}
+                            />
+                            <CInput
+                                className={"inputPicUrlCommunityDesign"}
+                                type={"text"}
+                                name={"picUrl"}
+                                placeholder={"Url"}
+                                disabled={write}
+                                value={newPost.picUrl}
+                                changeFunction={inputHandler}
+                                blurFunction={checkError}
+                            />
+                            <CInput
+                                className={"inputTopicCommunityDesign"}
+                                type={"text"}
+                                name={"topic"}
+                                disabled={true}
+                                value={categorySelection.category}
+                                changeFunction={inputHandler}
+                                blurFunction={checkError}
+                            />
+                            <div className="sendPostCommunityButton">
+                                <CButton
+                                    className={write === "" ? " updateButton" : "allowButton"}
+                                    title={write === "" ? "Enviar" : "Habilitar"}
+                                    emitFunction={write === "" ? sendPost : setWrite("")}
+                                />
+                            </div>
+                        </div>
+                        <CButton
+                            className={invisible === false ? " hideInputsButton" : "writePostButton"}
+                            title={invisible === false ? "Ocultar" : "Escribir nuevo post"}
+                            emitFunction={invisible === true ? () => setInvisible(false) : () => setInvisible(true)}
+                        />
                     </div>
                     <div className="communityTitle">Foro {newPost.topic}</div>
                     {posts.length !== 0 ? (
@@ -214,12 +215,12 @@ export const Community = () => {
                                 post => {
                                     return (
                                         <div className="communityCardDiv" key={post.id}>
-                                            
-                                                <CommunityCard
-                                                title={post.title.length > 30 ? post.title.substring(0,30) : post.title}
+
+                                            <CommunityCard
+                                                title={post.title.length > 60 ? post.title.substring(0, 60) : post.title}
                                                 nickname={post.owner.nickname}
                                                 clickFunction={() => manageDetail(post)}
-                                                />
+                                            />
                                         </div>
                                     )
                                 }).reverse()}
@@ -229,7 +230,7 @@ export const Community = () => {
 
                     )}
                 </>)}
-                <ToastContainer
+            <ToastContainer
                 position="top-left"
                 autoClose={1500}
                 hideProgressBar={false}

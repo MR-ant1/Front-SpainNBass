@@ -13,6 +13,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { PostCard } from '../../common/PostCard/PostCard';
 import { updateDetail } from '../../app/slices/postDetailSlice';
+import { Pencil } from 'lucide-react';
 
 
 
@@ -30,6 +31,8 @@ export const Profile = () => {
     const reduxUser = useSelector(userData)
 
     const [write, setWrite] = useState("disabled")
+
+    const [invisible, setInvisible] = useState(true)
 
     const dispatch = useDispatch()
 
@@ -152,117 +155,137 @@ export const Profile = () => {
         }
     }
     return (
-        <div className="profileDesign">
-            {loadedData ? (
-                <div className='inputsContainer'>
-                    <div className='editInstruction'>click sobre un post para editarlo y sobre habilitar para cambiar tu información personal</div>
-                    <CInput
-                        className={`inputDesign ${userError.nicknameError !== "" ? "inputDesignError" : ""
-                            }`}
-                        type={"text"}
-                        name={"nickname"}
-                        disabled={write}
-                        value={user.nickname || ""}
-                        changeFunction={inputHandler}
-                        blurFunction={checkError}
-                    />
-                    <select
-                        className={`inputDesign ${userError.favSubgenreError !== "" ? "inputDesignError" : ""
-                            }`}
-                        type={"text"}
-                        name={"favSubgenre"}
-                        disabled={write}
-                        value={user.favSubgenre || ""}
-                        onChange={inputHandler}
-                    >
-                        <option value="">Elige un subgenero</option>
-                        <option value="Club dnb">Club dnb</option>
-                        <option value="RaggaJungle">RaggaJungle</option>
-                        <option value="Rollers">Rollers</option>
-                        <option value="Liquid dnb">Liquid dnb</option>
-                        <option value="Jump Up">Jump Up</option>
-                        <option value="NeuroFunk">NeuroFunk</option>
-                    </select>
+        <div className="profileMainDesign">
+            <div className='profileContainer'>
+                {loadedData ? (
+                    <div className='inputsContainer'>
+                        <div className='textRowDesign'>
+                            <div className='editInstruction'><h2>Haz click sobre habilitar para cambiar tu información personal</h2></div>
+                            <div className='inputsRowDesign'>
+                            </div>
+                            <CInput
+                                className={`inputDesign ${userError.nicknameError !== "" ? "inputDesignError" : ""
+                                    }`}
+                                type={"text"}
+                                name={"nickname"}
+                                disabled={write}
+                                value={user.nickname || ""}
+                                changeFunction={inputHandler}
+                                blurFunction={checkError}
+                            />
+                            <select
+                                className={`inputDesign ${userError.favSubgenreError !== "" ? "inputDesignError" : ""
+                                    }`}
+                                type={"text"}
+                                name={"favSubgenre"}
+                                disabled={write}
+                                value={user.favSubgenre || ""}
+                                onChange={inputHandler}
+                            >
+                                <option value="">Elige un subgenero</option>
+                                <option value="Club dnb">Club dnb</option>
+                                <option value="RaggaJungle">RaggaJungle</option>
+                                <option value="Rollers">Rollers</option>
+                                <option value="Liquid dnb">Liquid dnb</option>
+                                <option value="Jump Up">Jump Up</option>
+                                <option value="NeuroFunk">NeuroFunk</option>
+                            </select>
 
-                    <select
-                        className={`inputDesign ${userError.preferenceError !== "" ? "inputDesignError" : ""
-                            }`}
-                        type={"text"}
-                        name={"preference"}
-                        disabled={write}
-                        value={user.preference || ""}
-                        onChange={inputHandler}
-                    >
-                        <option value="">¿Cual es tu rol?</option>
-                        <option value="dnb Lover">dnb Fan</option>
-                        <option value="DJ">DJ</option>
-                        <option value="Producer">Producer</option>
-                        <option value="DJ/Producer">DJ/Producer
-                        </option>
-                    </select>
-                    <CInput
-                        className={`inputDesign ${userError.turntableError !== "" ? "inputDesignError" : ""
-                            }`}
-                        type={"textarea"}
-                        name={"turntable"}
-                        disabled={write}
-                        value={user.turntable || ""}
-                        changeFunction={inputHandler}
-                        blurFunction={checkError}
-                    />
-                    <CInput
-                        className={"inputDesign"}
-                        type={"email"}
-                        name={"email"}
-                        disabled={true}
-                        value={user.email || ""}
-                        changeFunction={inputHandler}
-                        blurFunction={checkError}
-                    />
-                    <CInput
-                        className={"inputDesign"}
-                        type={"text"}
-                        name={"createdAt"}
-                        disabled={true}
-                        value={"Fecha de creación:" + user.createdAt}
-                        changeFunction={inputHandler}
-                        blurFunction={checkError}
-                    />
-                    <CButton
-                        className={write === "" ? " updateButton" : "allowButton"}
-                        title={write === "" ? "Actualizar" : "Habilitar"}
-                        emitFunction={write === "" ? UpdateProfile : () => setWrite("")}
-                    />
-                </div>
-            ) : (
-                <div>loading</div>
-            )}
+                            <select
+                                className={`inputDesign ${userError.preferenceError !== "" ? "inputDesignError" : ""
+                                    }`}
+                                type={"text"}
+                                name={"preference"}
+                                disabled={write}
+                                value={user.preference || ""}
+                                onChange={inputHandler}
+                            >
+                                <option value="">¿Cual es tu rol?</option>
+                                <option value="dnb Lover">dnb Fan</option>
+                                <option value="DJ">DJ</option>
+                                <option value="Producer">Producer</option>
+                                <option value="DJ/Producer">DJ/Producer
+                                </option>
+                            </select>
+                        </div>
+                        <div className='inputsRowDesign2'>
+                            <CInput
+                                className={`inputDesign ${userError.turntableError !== "" ? "inputDesignError" : ""
+                                    }`}
+                                type={"textarea"}
+                                name={"turntable"}
+                                disabled={write}
+                                value={user.turntable || ""}
+                                changeFunction={inputHandler}
+                                blurFunction={checkError}
+                            />
+                            <CInput
+                                className={"inputDesign"}
+                                type={"email"}
+                                name={"email"}
+                                disabled={true}
+                                value={user.email || ""}
+                                changeFunction={inputHandler}
+                                blurFunction={checkError}
+                            />
+                            <CInput
+                                className={"inputDesign"}
+                                type={"text"}
+                                name={"createdAt"}
+                                disabled={true}
+                                value={"Fecha de creación:" + user.createdAt}
+                                changeFunction={inputHandler}
+                                blurFunction={checkError}
+                            />
+                        </div>
+                        <div className='updateProfileContainer'>
+                            <CButton
+                                className={write === "" ? " updateButton" : "allowButton"}
+                                title={write === "" ? "Actualizar" : <Pencil />}
+                                emitFunction={write === "" ? UpdateProfile : () => setWrite("")}
+                            />
+                        </div>
+                    </div>
+                ) : (
+                    <div>loading</div>
+                )}
 
-            {posts.length !== 0 ? (
-                <div className='myPosts'>
-                    {posts.map(
-                        post => {
-                            return (
-                                <div className='myPostCard' key={post.id}>
-                                    <PostCard
-                                        nickname={post.owner.nickname}
-                                        title={post.title && post.title.length > 20 ? post.title.substring(0, 20) : post.title}
-                                        description={post.description.length > 40 ? post.description.substring(0, 40) + "..." : post.description}
-                                        picUrl={post.picUrl}
-                                        createdAt={"Creado:" + post.createdAt}
-                                        updatedAt={"Edit:" + post.updatedAt}
-                                        clickFunction={() => manageDetail(post)}
-                                    />
-                                </div>
+                {posts.length !== 0 ? (
 
-                            )
-                        }
-                    ).reverse()
-                    }
-                </div>
+                    <div className='myPosts'>
+                        <CButton
+                            className={invisible === false ? " hideInputsButton" : "writePostButton"}
+                            title={invisible === false ? "Ocultar" : "Mis posts"}
+                            emitFunction={invisible === true ? () => setInvisible(false) : () => setInvisible(true)}
+                        />
+                        <div className='hiddenCardsDesign' hidden={invisible}>
+                            <div className='editInstruction'><h2>Haz click sobre un post para verlo, editarlo o borrarlo</h2></div>
+                            {posts.map(
+                                post => {
+                                    return (
+                                        <div className='myPostCardProfile' key={post.id}>
+                                            <PostCard
+                                                nickname={post.owner.nickname}
+                                                title={post.title && post.title.length > 20 ? post.title.substring(0, 20) : post.title}
+                                                description={post.description.length > 40 ? post.description.substring(0, 40) + "..." : post.description}
+                                                picUrl={post.picUrl}
+                                                createdAt={"Creado:" + post.createdAt}
+                                                updatedAt={"Edit:" + post.updatedAt}
+                                                clickFunction={() => manageDetail(post)}
+                                            />
+                                        </div>
 
-            ) : (<div>Aun no has creado ningún post</div>
-            )}
+                                    )
+                                }
+                            ).reverse()
+                            }
+                        </div>
+                    </div>
+
+
+                ) : (<div>Aun no has creado ningún post</div>
+                )}
+            </div>
             <ToastContainer
                 position="top-left"
                 autoClose={1500}
@@ -274,7 +297,8 @@ export const Profile = () => {
                 draggable
                 pauseOnHover
                 theme="dark"
-                />
+            />
+
         </div>
     )
 }
