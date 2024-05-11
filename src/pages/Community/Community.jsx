@@ -150,14 +150,14 @@ export const Community = () => {
                     <div className="inputsCommunityContainerDesign">
                     <div className="communityInputsDesign" hidden={invisible}>
                         <CInput
-                        className={"inputDesign"}
+                        className={"inputNicknameHomeDesign"}
                         type={"text"}
                         disabled={true}
                         name={"owner"}
                         value={reduxUser.tokenData.user.nickname}
                     />
                     <CInput
-                        className={"inputDesign"}
+                        className={"inputTitleCommunityDesign"}
                         type={"text"}
                         name={"title"}
                         placeholder={"Título"}
@@ -175,7 +175,7 @@ export const Community = () => {
                         blurFunction={checkError}
                     />
                     <CInput
-                        className={"inputDesign"}
+                        className={"inputPicUrlCommunityDesign"}
                         type={"text"}
                         name={"picUrl"}
                         placeholder={"Url"}
@@ -185,7 +185,7 @@ export const Community = () => {
                         blurFunction={checkError}
                     />
                     <CInput
-                        className={"inputDesign"}
+                        className={"inputTopicCommunityDesign"}
                         type={"text"}
                         name={"topic"}
                         disabled={true}
@@ -193,15 +193,17 @@ export const Community = () => {
                         changeFunction={inputHandler}
                         blurFunction={checkError}
                     />
+                    <div className="sendPostCommunityButton">
                     <CButton
                         className={write === "" ? " updateButton" : "allowButton"}
-                        title={write === "" ? "Actualizar" : "Habilitar"}
+                        title={write === "" ? "Enviar" : "Habilitar"}
                         emitFunction={write === "" ? sendPost : setWrite("")}
                     />
                     </div>
+                    </div>
                     <CButton
                         className={invisible === false ? " hideInputsButton" : "writePostButton"}
-                        title={invisible === false ? "X" : "Escribir nuevo post"}
+                        title={invisible === false ? "Ocultar" : "Escribir nuevo post"}
                         emitFunction={invisible === true ? ()=>setInvisible(false) : ()=>setInvisible(true)}
                     />
                     </div>

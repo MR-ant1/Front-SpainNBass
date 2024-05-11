@@ -12,7 +12,7 @@ import { CButton } from "../../common/CButton/CButton";
 import { GetCommentsCall, LikeCall, PostLikesCall, bannedPostCall, deleteMyPostCall, newCommentCall } from "../../services/api.Calls";
 import { ToastContainer, toast } from "react-toastify";
 import { CInput } from "../../common/CInput/CInput";
-import { Flame, OctagonX, Pencil, Trash } from "lucide-react";
+import { Flame, OctagonX, Pencil, Trash, Undo2 } from "lucide-react";
 
 
 export const PostDetail = () => {
@@ -213,7 +213,7 @@ export const PostDetail = () => {
             <div className="xButton">
                 <CButton
                     className={"backCommunityButton"}
-                    title={"X"}
+                    title={<Undo2 />}
                     emitFunction={(() => navigate('/community'))}
                 />
             </div>
@@ -229,24 +229,26 @@ export const PostDetail = () => {
                 />
             </div>
             
-                <CButton
+            </div>
+            <div className="postActionsContainerDesign">
+            <div className="editAndDeleteDetailContainer">
+            <div className="likeAndNumContainer">
+            <CButton
                     className={"likeButton"}
                     title={<Flame fill={isLikedBefore === true ? "red" : "white"} />}
                     emitFunction={() => likePost(post.id)}
                 />
                 <div className="likesNum">{likeCount}</div>
-            
-            </div>
-            <div className="editAndDeleteDetailContainer">
+                </div>
             {detailRdx?.detail?.owner?.id === reduxUser?.tokenData?.user.userId &&
                 <CButton
                     className={"editOwnPostButton"}
-                    title={<Pencil />}
+                    title={<Pencil fill="grey" />}
                     emitFunction={() => navigate('/detailMyPost')}
                 />
             }
             {(detailRdx?.detail?.owner?.id === reduxUser?.tokenData?.user.userId) &&
-                <div className='deleteButton'>
+                <div className='deleteMyPostContainerDesign'>
                     <CButton key={post.id}
                         className={"deleteMyPostButton"}
                         title={<Trash />}
@@ -258,31 +260,14 @@ export const PostDetail = () => {
                 <div className='superDeleteButton'>
                     <CButton key={post.id}
                         className={"deleteMyPostButton"}
-                        title={<OctagonX />}
+                        title={<OctagonX fill="red"/>}
                         emitFunction={(() => deleteUserPost(post.id))}
                     />
                 </div>
             }
             </div>
-            
-            {loadedComments === true ? (
-                <div className='postCommentsContainerDesign'>
-                    {postComments.map(
-                        comment => {
-                            return (
-                                <div className='postDetailCommentsDesign' key={comment.id}>
-                                    <PostCard
-                                        nickname={comment.user?.nickname}
-                                        comment={comment.comment}
-                                        url={comment.url}
-                                        createdAt={"Creado:" + comment.createdAt}
-                                    />
-                                </div>
-                            )
-                        }
-                    ).reverse()
-                    }
-                    <div className="newCommentInputsDesign">
+            </div>
+            <div className="newCommentInputsDesign">
             <CInput
                 className={"inputDesign"}
                 type={"text"}
@@ -309,6 +294,25 @@ export const PostDetail = () => {
                 emitFunction={write === "" ? () => createComment() : () => setWrite("")}
             />
             </div>
+            
+            {postComments.length > 0 ? (
+                <div className='postCommentsContainerDesign'>
+                    <div className="commentsMessageDesign">Comentarios al post</div>
+                    {postComments.map(
+                        comment => {
+                            return (
+                                <div className='postDetailCommentsDesign' key={comment.id}>
+                                    <PostCard className="commentsCard"
+                                        nickname={comment.user?.nickname}
+                                        comment={comment.comment}
+                                        url={comment.url}
+                                        createdAt={"Creado:" + comment.createdAt}
+                                    />
+                                </div>
+                            )
+                        }
+                    ).reverse()
+                    }
                 </div>
             ) : (<div className="noCommentsText">Aun no hay ningún comentario en este post</div>
             )}

@@ -17,7 +17,7 @@
 .inputsCommunityContainerDesign{
     width: 100%;
     display:flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
@@ -111,4 +111,8 @@
 .welcomeMessage{
     font-size: 0.8em;;
     font-family: 'Trebuchet MS';
+}
+
+.inputsCommunityContainerDesign{
+    width: 30%;
 }

@@ -11,6 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { UpdatePostCall, deleteMyPostCall } from "../../services/api.Calls";
 import { ToastContainer, toast } from "react-toastify";
 import { validate } from "../../utils/validations";
+import { Trash, Undo2 } from "lucide-react";
 
 export const MyPostDetail = () => {
 
@@ -125,14 +126,16 @@ export const MyPostDetail = () => {
     return (
         detailRdx?.detail?.id &&
         <div className="detailDesign">
-            <div className="undoButton">
+            <div className="detailPostContainerDesign">
+            <div className="xButton">
                 <CButton
                     className={"backButton"}
-                    title={"X"}
+                    title={<Undo2 />}
                     emitFunction={(() => navigate('/detailPost'))}
                 />
+                <div className="mypostInfoMessage"><h1>Edita tu post</h1></div>
             </div>
-            <div className="postFields">
+            <div className="postFieldsDesign">
                 <CInput
                     className={`inputDesign ${postError.titleError !== "" ? "inputDesignError" : ""
                         }`}
@@ -145,7 +148,7 @@ export const MyPostDetail = () => {
                 />
 
                 <CInput
-                    className={`inputDesign ${postError.descriptionError !== "" ? "inputDesignError" : ""
+                    className={`inputDescriptionHomeDesign ${postError.descriptionError !== "" ? "inputDescriptionHomeDesignError" : ""
                         }`}
                     type={"text"}
                     name={"description"}
@@ -154,6 +157,8 @@ export const MyPostDetail = () => {
                     changeFunction={inputHandler}
                     blurFunction={checkError}
                 />
+                <div className="inputsNButtonsContainer">
+                    <div className="prueba">
                 <CInput
                     className={"inputDesign"}
                     type={"text"}
@@ -177,18 +182,23 @@ export const MyPostDetail = () => {
                     disabled={true}
                     value={"Fecha de creación:" + post.createdAt}
                 />
-                <div className='deleteButton'>
+                </div>
+                <div className="buttonsMyPostContainer">
+                <div className='deleteMyPostContainerDesign'>
                     <CButton key={post.id}
                         className={"deleteMyPostButton"}
-                        title={"Eliminar"}
+                        title={<Trash />}
                         emitFunction={(() => deleteMyPost(post.id))}
                     />
                 </div>
                 <CButton
                     className={write === "" ? " updateButton" : "allowButton"}
-                    title={write === "" ? "Actualizar" : <img src="img/EditIcon.png" alt="editIcon"></img>}
+                    title={write === "" ? "Actualizar" : "Habilitar"}
                     emitFunction={write === "" ? () => UpdatePost(post.id) : () => setWrite("")}
                 />
+                </div>
+                </div>
+                </div>
             </div>
             <ToastContainer
                 position="top-left"
