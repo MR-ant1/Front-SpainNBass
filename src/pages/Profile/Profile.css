@@ -8,8 +8,6 @@
     align-items: center;
     justify-content: space-evenly;
 
-    background-color:  rgb(106, 168, 255); 
-
     overflow-x: hidden;
 }
 
@@ -47,53 +45,6 @@
     align-items: center;
 }
 
-.updateButton {
-    height: 2em;
-    width: 10em;
-    background-color: rgb(189, 189, 189); 
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    
-    color: black;
-    font-weight: bold;
-    transition: 0.3s;
-    border: solid black 0.1em;
-    border-radius: 1em;
-}
-
-.updateButton:hover {
-    cursor: pointer;
-    transition: 0.3s;
-    background-color: rgb(143, 143, 143);
-}
-
-.allowButton{
-    height: 2em;
-    width: 10em;
-    background-color: rgb(218, 218, 218);
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    
-    color: black;
-    font-weight: bold;
-    transition: 0.5s;
-    border: solid black 0.1em;
-    border-radius: 1em;
-}
-
-.allowButton:hover{
-    cursor: pointer;
-    transition: 0.3s;
-    background-color: rgb(170, 170, 170);
-}
 
 .deleteButton {
     height: 2em;
@@ -121,19 +72,7 @@
 
 .deleteButton:hover {
     cursor: pointer;
-    background-color: rgb(151, 154, 255); 
     transition: 0.3s;
-}
-
-.postCardDesign {
-    width: 8em;
-    height: 8em;
-}
-
-.postCardDesign:hover {
-    cursor: pointer;
-    background-color: rgb(203, 203, 203);
-    transition: 0.2s;
 }
 
 .editInstruction{

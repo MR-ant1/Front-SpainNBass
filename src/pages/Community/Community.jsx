@@ -2,7 +2,6 @@
 import "./Community.css"
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from "react"
-import { PostCard } from "../../common/PostCard/PostCard"
 import { userData } from "../../app/slices/userSlice"
 import { RedirectButton } from "../../common/RedirButton/RedirButton"
 import { useNavigate } from 'react-router-dom'
@@ -13,7 +12,8 @@ import { GetGenrePostCall, createPostCall } from "../../services/api.Calls"
 import { CInput } from "../../common/CInput/CInput"
 import { validate } from "../../utils/validations"
 import { CButton } from "../../common/CButton/CButton"
-import { toast } from "react-toastify"
+import { ToastContainer, toast } from "react-toastify"
+import { CommunityCard } from "../../common/CommunityCard/CommunityCard"
 
 
 
@@ -100,16 +100,12 @@ export const Community = () => {
 
     const sendPost = async () => {
         try {
-
-            if (newPost.description === "") {
-                throw new Error("El campo description es obligatorio"),
-                toast.error("Descripción es obligatorio")
-            }
             const fetched = await createPostCall(reduxUser.tokenData.token, newPost)
 
             if (fetched.data && fetched.data.id) {
                 setPosts([...posts, fetched.data])
                 setWrite("disabled")
+                setInvisible(true)
                 setNewPost({
                     title: "",
                     description: "",
@@ -117,9 +113,6 @@ export const Community = () => {
                     topic: categorySelection?.category
                 })
             }
-
-
-
             if (fetched.success === true) {
                 toast.success(fetched.message)
             } else { toast.error(fetched.message) }
@@ -130,38 +123,50 @@ export const Community = () => {
     }
 
     return (
-        <div className="homeDesign">
+        <div className="communityDesign">
 
             {!reduxUser.tokenData.token ? (
                 <>
-                    <div className="welcomeView">
-                        <div className="welcomeMsg">Bienvenido a Community!</div>
+                    <div className="welcomeCommunityView">
+                        <div className="welcomeCommunityMsg">Bienvenido a Community!
+                        <div className="welcomeMessage">Inicia sesión o regístrate para poder comunicarte con el resto de fans</div>
+                        </div>
+                        <div className="buttonsCommunityDesign">
                         <RedirectButton
-                            className={"loginButtonDesign"}
+                            className={"cbuttonDesign"}
                             title={"Login"}
                             emitFunction={() => navigate("/login")}
                         />
                         <RedirectButton
-                            className={"registerButtonDesign"}
+                            className={"cbuttonDesign"}
                             title={"Register"}
                             emitFunction={() => navigate("/register")}
                         />
+                        </div>
                     </div>
                 </>
             ) : (
                 <>
+                    <div className="inputsCommunityContainerDesign">
                     <div className="communityInputsDesign" hidden={invisible}>
+                        <CInput
+                        className={"inputDesign"}
+                        type={"text"}
+                        disabled={true}
+                        name={"owner"}
+                        value={reduxUser.tokenData.user.nickname}
+                    />
                     <CInput
                         className={"inputDesign"}
                         type={"text"}
                         name={"title"}
-                        hidden={true}
+                        placeholder={"Título"}
                         value={newPost.title || ""}
                         changeFunction={inputHandler}
                         blurFunction={checkError}
                     />
                     <CInput
-                        className={"inputDesign"}
+                        className={"inputDescriptionHomeDesign"}
                         type={"text"}
                         name={"description"}
                         disabled={write}
@@ -173,6 +178,7 @@ export const Community = () => {
                         className={"inputDesign"}
                         type={"text"}
                         name={"picUrl"}
+                        placeholder={"Url"}
                         disabled={write}
                         value={newPost.picUrl}
                         changeFunction={inputHandler}
@@ -194,32 +200,45 @@ export const Community = () => {
                     />
                     </div>
                     <CButton
-                        className={write === "" ? " updateButton" : "allowButton"}
-                        title={write === "" ? "Actualizar" : "Habilitar"}
+                        className={invisible === false ? " hideInputsButton" : "writePostButton"}
+                        title={invisible === false ? "X" : "Escribir nuevo post"}
                         emitFunction={invisible === true ? ()=>setInvisible(false) : ()=>setInvisible(true)}
                     />
+                    </div>
+                    <div className="communityTitle">Foro {newPost.topic}</div>
                     {posts.length !== 0 ? (
-                        <>
+                        <div className="communityCardsContainer">
                             {posts.map(
                                 post => {
                                     return (
-                                        <div className="cardDiv" key={post.id}>
-                                            <PostCard
-                                                key={post.id}
-                                                title={post.title.length > 20 ? post.title.substring(0, 20) : post.title}
-                                                description={post.description.length > 20 ? post.description.substring(0, 20) : post.description}
+                                        <div className="communityCardDiv" key={post.id}>
+                                            
+                                                <CommunityCard
+                                                title={post.title.length > 30 ? post.title.substring(0,30) : post.title}
                                                 nickname={post.owner.nickname}
                                                 clickFunction={() => manageDetail(post)}
-                                            />
+                                                />
                                         </div>
                                     )
                                 }).reverse()}
-                        </>) : (
+                        </div>) : (
                         loadedPosts === false ? <div className="homeDesign">LOADING</div>
-                            : <div className="homeDesign">AUN NO HAY POST DE ESTA CATEGORIA</div>
+                            : <div className="communityNoPostsDesign">AUN NO HAY POST DE ESTA CATEGORIA</div>
 
                     )}
                 </>)}
+                <ToastContainer
+                position="top-left"
+                autoClose={1500}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="dark"
+            />
         </div>
     )
 }

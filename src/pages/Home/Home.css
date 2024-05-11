@@ -46,9 +46,9 @@
     height: 16em;
     width: 100%;
 
-    border: 0.015em solid rgb(178, 178, 178);
-    margin-left: 0.3em;
-    margin-right: 0.3em;
+    border: 0.15em solid rgb(0, 0, 0);
+    background-color: rgba(142, 142, 142, 0.667);
+
     border-radius: 0.4em;
 
     transition: 0.3s;
@@ -61,7 +61,7 @@
 
 .latestCardDesign:hover{
     cursor: pointer;
-    background-color: rgb(241, 241, 241);
+    background-color: rgba(188, 188, 188, 0.598);
 
     height: 15.90em;
     width: 99%;
@@ -94,7 +94,7 @@
     margin-top: 1em;
 
     font-family:Impact;
-    font-size: 1.5em;
+    font-size: 1.8em;
     color: rgb(40, 24, 24)
 }
 .viewSubTitleDesign{
@@ -109,6 +109,6 @@
     margin-top: 0.5em;
 
     font-family:Impact;
-    font-size: 1em;
+    font-size: 1.4em;
     color: rgb(40, 24, 24)
 }

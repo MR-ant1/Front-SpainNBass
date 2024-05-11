@@ -3,7 +3,8 @@
     height: 100%;
     width: 90%;
 
-
+    font-size: 1.8em;
+    font-family: 'Trebuchet MS';
 
     display: flex;
     flex-direction: row;
@@ -14,6 +15,9 @@
 .descriptionLatestDesign{
     height: 100%;
     width: 80%;
+
+    font-size: 1.2em;
+    font-family: 'Trebuchet MS';
 
     display: flex;
     flex-direction: row;

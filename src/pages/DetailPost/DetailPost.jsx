@@ -9,10 +9,10 @@ import { validate } from "../../utils/validations";
 import 'react-toastify/dist/ReactToastify.css';
 import { PostCard } from "../../common/PostCard/PostCard";
 import { CButton } from "../../common/CButton/CButton";
-import { GetCommentsCall, LikeCall, PostLikesCall, bannedPostCall, newCommentCall } from "../../services/api.Calls";
+import { GetCommentsCall, LikeCall, PostLikesCall, bannedPostCall, deleteMyPostCall, newCommentCall } from "../../services/api.Calls";
 import { ToastContainer, toast } from "react-toastify";
 import { CInput } from "../../common/CInput/CInput";
-import { Flame } from "lucide-react";
+import { Flame, OctagonX, Pencil, Trash } from "lucide-react";
 
 
 export const PostDetail = () => {
@@ -180,6 +180,21 @@ export const PostDetail = () => {
 
     const deleteMyPost = async (id) => {
         try {
+            const fetched = await deleteMyPostCall(id, reduxUser.tokenData.token)
+            if (fetched.success === true) {
+                toast.success(fetched.message)
+                setTimeout(() => {
+                    navigate("/community")
+                }, 1500)
+            }else toast.error(fetched.message)
+
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
+
+    const deleteUserPost = async (id) => {
+        try {
             const fetched = await bannedPostCall(id, reduxUser.tokenData.token)
             if (fetched.success === true) {
                 toast.success(fetched.message)
@@ -194,14 +209,15 @@ export const PostDetail = () => {
     }
     return (
         <div className="detailDesign">
-            <div className="undoButton">
+        <div className="detailPostContainerDesign">
+            <div className="xButton">
                 <CButton
-                    className={"backButton"}
+                    className={"backCommunityButton"}
                     title={"X"}
                     emitFunction={(() => navigate('/community'))}
                 />
             </div>
-            <div className='myPostCard' key={detailRdx.detail?.id}>
+            <div className='myPostCardDetailDesign' key={detailRdx.detail?.id}>
                 <PostCard
                     id={detailRdx.detail?.id}
                     nickname={detailRdx.detail?.owner.nickname}
@@ -212,61 +228,49 @@ export const PostDetail = () => {
                     updatedAt={"Actualizado:" + detailRdx?.detail?.updatedAt}
                 />
             </div>
-            <div className="likeRow">
+            
                 <CButton
                     className={"likeButton"}
                     title={<Flame fill={isLikedBefore === true ? "red" : "white"} />}
                     emitFunction={() => likePost(post.id)}
                 />
                 <div className="likesNum">{likeCount}</div>
+            
             </div>
+            <div className="editAndDeleteDetailContainer">
             {detailRdx?.detail?.owner?.id === reduxUser?.tokenData?.user.userId &&
                 <CButton
-                    className={"editButton"}
-                    title={"Actualizar"}
+                    className={"editOwnPostButton"}
+                    title={<Pencil />}
                     emitFunction={() => navigate('/detailMyPost')}
                 />
             }
-
-            <CInput
-                className={"inputDesign"}
-                type={"text"}
-                name={"comment"}
-                disabled={write}
-                value={newComment.comment || ""}
-                changeFunction={inputHandler}
-                blurFunction={checkError}
-            />
-            <CInput
-                className={"inputDesign"}
-                type={"text"}
-                name={"url"}
-                disabled={write}
-                value={newComment.url}
-                changeFunction={inputHandler}
-                blurFunction={checkError}
-            />
-            <CButton
-                className={write === "" ? " updateButton" : "allowButton"}
-                title={write === "" ? "Enviar comentario" : "Escribir comentario"}
-                emitFunction={write === "" ? () => createComment() : () => setWrite("")}
-            />
-
-            {detailRdx?.detail?.owner?.id === reduxUser?.tokenData?.user.userId &&
+            {(detailRdx?.detail?.owner?.id === reduxUser?.tokenData?.user.userId) &&
                 <div className='deleteButton'>
                     <CButton key={post.id}
                         className={"deleteMyPostButton"}
-                        title={"Eliminar"}
+                        title={<Trash />}
                         emitFunction={(() => deleteMyPost(post.id))}
                     />
                 </div>
             }
+            {(reduxUser?.tokenData?.user?.role === "super_admin") &&
+                <div className='superDeleteButton'>
+                    <CButton key={post.id}
+                        className={"deleteMyPostButton"}
+                        title={<OctagonX />}
+                        emitFunction={(() => deleteUserPost(post.id))}
+                    />
+                </div>
+            }
+            </div>
+            
             {loadedComments === true ? (
-                <div className='myPosts'>
+                <div className='postCommentsContainerDesign'>
                     {postComments.map(
                         comment => {
                             return (
-                                <div className='myPostCard' key={comment.id}>
+                                <div className='postDetailCommentsDesign' key={comment.id}>
                                     <PostCard
                                         nickname={comment.user?.nickname}
                                         comment={comment.comment}
@@ -278,8 +282,35 @@ export const PostDetail = () => {
                         }
                     ).reverse()
                     }
+                    <div className="newCommentInputsDesign">
+            <CInput
+                className={"inputDesign"}
+                type={"text"}
+                name={"comment"}
+                placeholder={"Comentario"}
+                disabled={write}
+                value={newComment.comment || ""}
+                changeFunction={inputHandler}
+                blurFunction={checkError}
+            />
+            <CInput
+                className={"inputDesign"}
+                type={"text"}
+                name={"url"}
+                placeholder={"Url"}
+                disabled={write}
+                value={newComment.url}
+                changeFunction={inputHandler}
+                blurFunction={checkError}
+            />
+            <CButton
+                className={write === "" ? " updateButton" : "allowButton"}
+                title={write === "" ? "Enviar comentario" : "Escribir comentario"}
+                emitFunction={write === "" ? () => createComment() : () => setWrite("")}
+            />
+            </div>
                 </div>
-            ) : (<div>Aun no hay ningún comentario en este post</div>
+            ) : (<div className="noCommentsText">Aun no hay ningún comentario en este post</div>
             )}
             <ToastContainer
                 position="top-left"

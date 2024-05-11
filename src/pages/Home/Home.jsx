@@ -116,8 +116,8 @@ export const Home = () => {
     return (
         
         <div className="homeDesign">
-            {!reduxUser.tokenData.token &&
-            <div className='viewTitleDesign'>NOTICIAS Y EVENTOS</div>}
+            
+            <div className='viewTitleDesign'>NOTICIAS Y EVENTOS</div>
             {!reduxUser.tokenData.token &&
                 <div className='viewSubTitleDesign'>Registrate o inicia sesión para participar en nuestra comunidad en la sección foro</div>}
 
@@ -162,7 +162,6 @@ export const Home = () => {
                     </div>
                     {loadedData === true ? (
                         <div className="cardsHomeDesign">
-                             <div className='viewTitleDesign'>NOTICIAS Y EVENTOS</div>
                             {latests.slice(0, latests.length).map(
                                 latest => {
                                     return (

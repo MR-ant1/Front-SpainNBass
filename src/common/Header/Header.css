@@ -23,9 +23,8 @@
 }
 
 .dropDownDesign {
-  width: 35%;
-  height: 2.5em;
-
+  width: 25%;
+  height: 1.82em;
 
  
   font-family: 'Trebuchet MS';
@@ -84,7 +83,7 @@ img:hover {
 }
 
 .navigatorDesignSuper {
-  width: 32%;
+  width: 34.9%;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -129,7 +128,7 @@ img:hover {
 }
 
 .navigatorForeignDesign {
-  width: 20%;
+  width: 25%;
   display: flex;
 
   flex-direction: row;
