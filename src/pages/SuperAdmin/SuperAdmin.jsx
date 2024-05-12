@@ -2,7 +2,7 @@
 import "./SuperAdmin.css"
 import { useSelector } from 'react-redux'
 import { useEffect, useState } from "react"
-import { userData } from "../../app/slices/userSlice"
+import { userData } from "../../app/Slices/userSlice"
 import { useNavigate } from 'react-router-dom'
 import { UserCard } from "../../common/UserCard/UserCard"
 import { deleteUserCall, getAllUsersCall } from "../../services/api.Calls"
@@ -114,19 +114,19 @@ export const SuperAdmin = () => {
                 pauseOnHover
                 theme="dark"
             />
-             <ul className="paginateContainer">
-                        {pageNumbers.map((number) => (
-                            <div key={number} className="pageContainer">
-                                <a
-                                    onClick={() => paginate(number)}
-                                    href="#"
-                                    className="pageDesign"
-                                >
-                                    {number}
-                                </a>
-                            </div>
-                        ))}
-                    </ul>
+            <ul className="paginateContainer">
+                {pageNumbers.map((number) => (
+                    <div key={number} className="pageContainer">
+                        <a
+                            onClick={() => paginate(number)}
+                            href="#"
+                            className="pageDesign"
+                        >
+                            {number}
+                        </a>
+                    </div>
+                ))}
+            </ul>
         </div>
     )
 }

@@ -1,7 +1,7 @@
 
 import "./LatestDetail.css";
 import { useSelector } from "react-redux";
-import { detailData } from "../../app/slices/postDetailSlice";
+import { detailData } from "../../app/Slices/postDetailSlice";
 import { useNavigate } from "react-router-dom";
 import { CButton } from "../../common/CButton/CButton";
 import 'react-toastify/dist/ReactToastify.css';
@@ -29,20 +29,20 @@ export const LatestDetail = () => {
         detailRdx?.detail?.id &&
         <div className="detailLatestDesign">
             <div className="detailLatestContainer">
-            <div className="xButton">
-                <CButton
-                    className={"backButton"}
-                    title={<Undo2 />}
-                    emitFunction={(() => navigate('/'))}
-                />
-            </div>
-            <div className="postFieldsDesign">
-                <PostCard
-                    title={latest.title}
-                    description={latest.description}
-                    picUrl = {latest.picUrl}
-                />
-            </div>
+                <div className="xButton">
+                    <CButton
+                        className={"backButton"}
+                        title={<Undo2 />}
+                        emitFunction={(() => navigate('/'))}
+                    />
+                </div>
+                <div className="postFieldsDesign">
+                    <PostCard
+                        title={latest.title}
+                        description={latest.description}
+                        picUrl={latest.picUrl}
+                    />
+                </div>
             </div>
         </div>
     )

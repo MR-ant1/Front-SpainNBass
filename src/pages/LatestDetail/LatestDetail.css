@@ -1,5 +1,4 @@
-
-.detailLatestDesign{
+.detailLatestDesign {
     height: 100%;
     width: 100%;
     overflow-y: auto;
@@ -11,7 +10,7 @@
     align-items: center;
 }
 
-.detailLatestContainer{
+.detailLatestContainer {
     width: 90%;
     height: 90%;
     display: flex;
@@ -20,14 +19,14 @@
     align-items: center;
 }
 
-.backButton{
+.backButton {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.postFields{
+.postFields {
     width: 100%;
     height: 80%;
     display: flex;

@@ -28,7 +28,7 @@
   width: 25%;
   height: 3em;
   margin-bottom: 0.1em;
- 
+
   font-family: 'Trebuchet MS';
   font-size: 1.2em;
   text-align: center;
@@ -42,11 +42,11 @@
   background-color: rgb(0, 0, 0);
 }
 
-.dropDownDesign:hover{
-  cursor: pointer; 
+.dropDownDesign:hover {
+  cursor: pointer;
 }
 
-.superAdminButton{
+.superAdminButton {
 
   margin-right: 1em;
   font-family: 'Trebuchet MS';
@@ -58,7 +58,7 @@
   cursor: pointer;
 }
 
-.homeProfileButton{
+.homeProfileButton {
   margin-left: 1em;
   font-family: 'Trebuchet MS';
   transition: 0.3s;
@@ -96,13 +96,13 @@ img:hover {
 .profileSuperContainer {
   width: 80%;
   height: 10%;
- 
+
   display: flex;
   flex-direction: row;
   justify-content: center;
 }
 
-.lucide-power-off:hover{
+.lucide-power-off:hover {
   color: rgb(160, 160, 160);
   display: flex;
   display: flex;
@@ -110,7 +110,8 @@ img:hover {
   justify-content: center;
   cursor: pointer;
 }
-.lucide-power-off{
+
+.lucide-power-off {
   color: rgb(255, 255, 255);
   display: flex;
   flex-direction: row;
@@ -139,11 +140,11 @@ img:hover {
   align-items: center;
 }
 
-.accessForeignDesign{
+.accessForeignDesign {
   width: 20%;
 }
 
-.navigatorUserDesign{
+.navigatorUserDesign {
   width: 20%;
   display: flex;
   flex-direction: row;

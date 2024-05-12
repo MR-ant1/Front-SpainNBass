@@ -1,4 +1,3 @@
-
 .profileMainDesign {
     height: 100%;
     width: 100%;
@@ -12,7 +11,7 @@
     justify-content: center;
 }
 
-.profileContainer{
+.profileContainer {
     width: 100%;
     height: 100%;
     display: flex;
@@ -59,7 +58,7 @@
 .deleteButton {
     height: 2em;
     width: 6em;
-    background-color: rgb(183, 185, 255); 
+    background-color: rgb(183, 185, 255);
 
     display: flex;
     flex-direction: row;
@@ -74,7 +73,7 @@
     border-radius: 0.2em;
 }
 
-.deletePostButton{
+.deletePostButton {
     width: 8em;
     display: flex;
     justify-content: center;
@@ -85,32 +84,32 @@
     transition: 0.3s;
 }
 
-.editInstruction{
+.editInstruction {
     height: 10%;
 }
 
-.inputsRowDesign{
+.inputsRowDesign {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
 }
 
-.inputsRowDesign1{
+.inputsRowDesign1 {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
 }
 
-.inputsRowDesign2{
+.inputsRowDesign2 {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
 }
 
-.textRowDesign{
+.textRowDesign {
     display: flex;
     flex-direction: row;
     justify-content: center;

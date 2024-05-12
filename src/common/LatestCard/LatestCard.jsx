@@ -1,9 +1,9 @@
 import "./LatestCard.css"
 
 // eslint-disable-next-line react/prop-types
-export const LatestCard = ({id, title, description, picUrl, updatedAt, createdAt, clickFunction}) => {
+export const LatestCard = ({ id, title, description, picUrl, updatedAt, createdAt, clickFunction }) => {
 
-    return(
+    return (
         <div className='latestCardDesign' onClick={clickFunction} key={id}>
             <div className="titleLatestDesign">{title}</div>
             <div className="descriptionLatestDesign">{description}</div>

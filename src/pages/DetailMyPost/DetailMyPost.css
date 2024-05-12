@@ -1,43 +1,42 @@
+.postFieldsDesign {
 
-.postFieldsDesign{
-    
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center; 
+    align-items: center;
 }
 
-.buttonsMyPostContainer{
+.buttonsMyPostContainer {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center; 
+    align-items: center;
 }
 
-.inputsNButtonsContainer{
+.inputsNButtonsContainer {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    align-items: center; 
+    align-items: center;
 
     margin-left: 10em;
 }
 
-.mypostInfoMessage{
+.mypostInfoMessage {
     font-family: 'Trebuchet MS';
-    margin-bottom:1em;
-    margin-top:1em;
+    margin-bottom: 1em;
+    margin-top: 1em;
 
     margin-left: 2em;
     margin-right: 4em;
 }
 
-.deleteMyPostContainerDesign:hover{
-        cursor:pointer;
-        scale:120%
-    }
+.deleteMyPostContainerDesign:hover {
+    cursor: pointer;
+    scale: 120%
+}
 
-    .backButton:hover{
-            cursor:pointer;
-            scale:120%
-        }
+.backButton:hover {
+    cursor: pointer;
+    scale: 120%
+}

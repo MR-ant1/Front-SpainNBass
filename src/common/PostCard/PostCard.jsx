@@ -2,9 +2,9 @@
 import "./PostCard.css"
 
 // eslint-disable-next-line react/prop-types
-export const PostCard = ({id, title, description, nickname, comment,picUrl, url, updatedAt, createdAt, clickFunction}) => {
+export const PostCard = ({ id, title, description, nickname, comment, picUrl, url, updatedAt, createdAt, clickFunction }) => {
 
-    return(
+    return (
         <div className="postCardDesign" onClick={clickFunction} key={id}>
             <div className="nicknamePostCardDesign">{nickname}</div>
             <div>{comment}</div>

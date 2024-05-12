@@ -2,12 +2,12 @@
 import "./Community.css"
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from "react"
-import { userData } from "../../app/slices/userSlice"
+import { userData } from "../../app/Slices/userSlice"
 import { RedirectButton } from "../../common/RedirButton/RedirButton"
 import { useNavigate } from 'react-router-dom'
-import { updateDetail } from "../../app/slices/postDetailSlice"
+import { updateDetail } from "../../app/Slices/postDetailSlice"
 import 'react-toastify/dist/ReactToastify.css';
-import { categoryData } from "../../app/slices/communitySlice"
+import { categoryData } from "../../app/Slices/communitySlice"
 import { GetGenrePostCall, createPostCall } from "../../services/api.Calls"
 import { CInput } from "../../common/CInput/CInput"
 import { validate } from "../../utils/validations"
@@ -256,19 +256,19 @@ export const Community = () => {
                 pauseOnHover
                 theme="dark"
             />
-             <ul className="paginateContainer">
-                        {pageNumbers.map((number) => (
-                            <div key={number} className="pageContainer">
-                                <a
-                                    onClick={() => paginate(number)}
-                                    href="#"
-                                    className="pageDesign"
-                                >
-                                    {number}
-                                </a>
-                            </div>
-                        ))}
-                    </ul>
+            <ul className="paginateContainer">
+                {pageNumbers.map((number) => (
+                    <div key={number} className="pageContainer">
+                        <a
+                            onClick={() => paginate(number)}
+                            href="#"
+                            className="pageDesign"
+                        >
+                            {number}
+                        </a>
+                    </div>
+                ))}
+            </ul>
         </div>
     )
 }

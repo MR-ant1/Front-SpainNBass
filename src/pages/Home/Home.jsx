@@ -4,11 +4,11 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { GetLatestsCall, newLatestCall } from '../../services/api.Calls';
-import { updateDetail } from '../../app/slices/postDetailSlice';
+import { updateDetail } from '../../app/Slices/postDetailSlice';
 import { CInput } from '../../common/CInput/CInput';
 import { ToastContainer, toast } from 'react-toastify';
 import { validate } from '../../utils/validations';
-import { userData } from '../../app/slices/userSlice';
+import { userData } from '../../app/Slices/userSlice';
 import { CButton } from '../../common/CButton/CButton';
 import { LatestCard } from '../../common/LatestCard/LatestCard';
 
@@ -128,9 +128,9 @@ export const Home = () => {
 
 
     return (
-        
+
         <div className="homeDesign">
-            
+
             <div className='viewTitleDesign'>NOTICIAS Y EVENTOS</div>
             {!reduxUser.tokenData.token &&
                 <div className='viewSubTitleDesign'>Registrate o inicia sesión para participar en nuestra comunidad en la sección foro</div>}
@@ -228,18 +228,18 @@ export const Home = () => {
                 theme="dark"
             />
             <ul className="paginateContainer">
-                        {pageNumbers.map((number) => (
-                            <div key={number} className="pageContainer">
-                                <a
-                                    onClick={() => paginate(number)}
-                                    href="#"
-                                    className="pageDesign"
-                                >
-                                    {number}
-                                </a>
-                            </div>
-                        ))}
-                    </ul>
+                {pageNumbers.map((number) => (
+                    <div key={number} className="pageContainer">
+                        <a
+                            onClick={() => paginate(number)}
+                            href="#"
+                            className="pageDesign"
+                        >
+                            {number}
+                        </a>
+                    </div>
+                ))}
+            </ul>
         </div>
     )
 }
