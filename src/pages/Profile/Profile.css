@@ -1,0 +1,120 @@
+
+.profileMainDesign {
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: auto;
+
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.profileContainer{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.inputsContainer {
+    height: 100%;
+    width: 45%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    font-weight: bold;
+}
+
+.myPosts {
+    width: 50%;
+    height: 100%;
+
+    margin-top: 2em;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.myPostCardProfile {
+    width: 100%;
+    height: 100%;
+    margin: 1em;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.deleteButton {
+    height: 2em;
+    width: 6em;
+    background-color: rgb(183, 185, 255); 
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+
+    margin-top: 2em;
+    color: black;
+    font-weight: bold;
+    transition: 0.5s;
+    border: solid black 0.1em;
+    border-radius: 0.2em;
+}
+
+.deletePostButton{
+    width: 8em;
+    display: flex;
+    justify-content: center;
+}
+
+.deleteButton:hover {
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.editInstruction{
+    height: 10%;
+}
+
+.inputsRowDesign{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.inputsRowDesign1{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.inputsRowDesign2{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.textRowDesign{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    font-family: 'Trebuchet MS';
+}

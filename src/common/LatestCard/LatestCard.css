@@ -1,0 +1,26 @@
+
+.titleLatestDesign{
+    height: 100%;
+    width: 90%;
+
+    font-size: 1.8em;
+    font-family: 'Trebuchet MS';
+    text-align: justify;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items:center;
+}
+
+.descriptionLatestDesign{
+    height: 100%;
+    width: 80%;
+
+    font-size: 1.2em;
+    font-family: 'Trebuchet MS';
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items:center;
+}
