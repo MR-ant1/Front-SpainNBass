@@ -165,7 +165,7 @@ export const PostDetail = () => {
             }
             if (fetched.success === true) {
                 setLoadedComments(false)
-                setPostComments(false)
+                setPostComments([fetched.data, ...currentComments])
                 setWrite("disabled")
                 toast.success(fetched.message)
                 setNewComment({
@@ -207,6 +207,21 @@ export const PostDetail = () => {
             console.log(error.message)
         }
     }
+
+    
+    const [currentPage, setCurrentPage] = useState(1);
+    const [commentsPerPage] = useState(10);
+
+    const lastCommentIndex = currentPage * commentsPerPage;
+    const firstCommentIndex = lastCommentIndex - commentsPerPage;
+    const currentComments = postComments.slice(firstCommentIndex, lastCommentIndex);
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(postComments.length / commentsPerPage); i++) {
+        pageNumbers.push(i);
+    }
+
     return (
         <div className="detailDesign">
         <div className="detailPostContainerDesign">
@@ -297,7 +312,7 @@ export const PostDetail = () => {
                 <div className='postCommentsContainerDesign'>
                     <div className="commentsMessageDesign">Comentarios</div>
                         <div className="commentsContainerDesign">
-                    {postComments.map(
+                    {currentComments.map(
                         comment => {
                             return (
                                 <div className='postDetailCommentsDesign' key={comment.id}>
@@ -328,6 +343,19 @@ export const PostDetail = () => {
                 pauseOnHover
                 theme="dark"
             />
+             <ul className="paginateContainer">
+                        {pageNumbers.map((number) => (
+                            <div key={number} className="pageContainer">
+                                <a
+                                    onClick={() => paginate(number)}
+                                    href="#"
+                                    className="pageDesign"
+                                >
+                                    {number}
+                                </a>
+                            </div>
+                        ))}
+                    </ul>
         </div>
     )
 }

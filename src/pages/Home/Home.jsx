@@ -187,7 +187,7 @@ export const Home = () => {
                                             />
                                         </div>
                                     )
-                                }).reverse()}
+                                })}
                         </div>
                     ) : (
                         <div className="homeSuperLoadingDesign">CARGANDO</div>
@@ -208,7 +208,7 @@ export const Home = () => {
                                             />
                                         </div>
                                     )
-                                }).reverse()}
+                                })}
                         </div>
                     ) : (
                         <div className="homeLoadingDesign">CARGANDO</div>

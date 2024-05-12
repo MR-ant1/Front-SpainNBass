@@ -104,7 +104,7 @@ export const Community = () => {
             const fetched = await createPostCall(reduxUser.tokenData.token, newPost)
 
             if (fetched.data && fetched.data.id) {
-                setPosts([...posts, fetched.data])
+                setPosts([fetched.data, ...currentPosts])
                 setWrite("disabled")
                 setInvisible(true)
                 setNewPost({
@@ -237,7 +237,7 @@ export const Community = () => {
                                             />
                                         </div>
                                     )
-                                }).reverse()}
+                                })}
                         </div>) : (
                         loadedPosts === false ? <div className="homeDesign">LOADING</div>
                             : <div className="communityNoPostsDesign">AUN NO HAY POST DE ESTA CATEGORIA</div>
