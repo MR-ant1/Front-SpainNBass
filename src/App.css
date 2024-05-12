@@ -20,7 +20,7 @@ body{
   padding:0;
   background-image: url('img/BackgroundFront.jpg');
   background-size: cover; 
-  background-position: center;
+  background-position:initial;
   
 }
 

@@ -133,3 +133,18 @@
     justify-content: center;
     align-items: center;
 }
+
+.likeButton:hover{
+    cursor:pointer;
+    scale:120%
+}
+
+.superDeleteButton:hover{
+    cursor:pointer;
+    scale:120%
+}
+
+.backCommunityButton:hover{
+    cursor:pointer;
+    scale:120%
+}

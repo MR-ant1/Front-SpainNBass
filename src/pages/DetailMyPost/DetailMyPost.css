@@ -31,3 +31,13 @@
     margin-left: 2em;
     margin-right: 4em;
 }
+
+.deleteMyPostContainerDesign:hover{
+        cursor:pointer;
+        scale:120%
+    }
+
+    .backButton:hover{
+            cursor:pointer;
+            scale:120%
+        }

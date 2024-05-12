@@ -17,7 +17,7 @@
     height: 100%;
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
 }
 
@@ -71,7 +71,7 @@
     font-weight: bold;
     transition: 0.5s;
     border: solid black 0.1em;
-    border-radius: 1em;
+    border-radius: 0.2em;
 }
 
 .deletePostButton{
@@ -91,21 +91,28 @@
 
 .inputsRowDesign{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.inputsRowDesign1{
+    display: flex;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
 }
 
 .inputsRowDesign2{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
 }
 
 .textRowDesign{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
 

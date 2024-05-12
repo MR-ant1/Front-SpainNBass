@@ -325,7 +325,7 @@ export const PostDetail = () => {
                                 </div>
                             )
                         }
-                    ).reverse()
+                    )
                     }
                     </div>
                 </div>

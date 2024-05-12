@@ -159,10 +159,9 @@ export const Profile = () => {
             <div className='profileContainer'>
                 {loadedData ? (
                     <div className='inputsContainer'>
-                        <div className='textRowDesign'>
+                        
                             <div className='editInstruction'><h2>Haz click sobre habilitar para cambiar tu información personal</h2></div>
-                            <div className='inputsRowDesign'>
-                            </div>
+                            <div className='inputsRowDesign'> 
                             <CInput
                                 className={`inputDesign ${userError.nicknameError !== "" ? "inputDesignError" : ""
                                     }`}
@@ -190,7 +189,8 @@ export const Profile = () => {
                                 <option value="Jump Up">Jump Up</option>
                                 <option value="NeuroFunk">NeuroFunk</option>
                             </select>
-
+                            </div>
+                            <div className='inputsRowDesign1'> 
                             <select
                                 className={`inputDesign ${userError.preferenceError !== "" ? "inputDesignError" : ""
                                     }`}
@@ -207,8 +207,7 @@ export const Profile = () => {
                                 <option value="DJ/Producer">DJ/Producer
                                 </option>
                             </select>
-                        </div>
-                        <div className='inputsRowDesign2'>
+                        
                             <CInput
                                 className={`inputDesign ${userError.turntableError !== "" ? "inputDesignError" : ""
                                     }`}
@@ -219,6 +218,8 @@ export const Profile = () => {
                                 changeFunction={inputHandler}
                                 blurFunction={checkError}
                             />
+                            </div>
+                            <div className='inputsRowDesign2'> 
                             <CInput
                                 className={"inputDesign"}
                                 type={"email"}
@@ -237,7 +238,8 @@ export const Profile = () => {
                                 changeFunction={inputHandler}
                                 blurFunction={checkError}
                             />
-                        </div>
+                            </div>
+                        
                         <div className='updateProfileContainer'>
                             <CButton
                                 className={write === "" ? " updateButton" : "allowButton"}
