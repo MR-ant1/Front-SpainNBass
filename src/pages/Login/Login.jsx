@@ -150,6 +150,7 @@ export const Access = () => {
         <div className='accessDesign'>
         <div className="loginRegisterMainDesign">
             <div className="registerContainerDesign">
+            <div className="welcomeMessageAccess">REGISTRO</div>
             <CInput
                 className={`inputDesign ${userRegisterError.nicknameError !== "" ? "inputDesignError" : ""
                     }`}
@@ -237,6 +238,7 @@ export const Access = () => {
         <div className='middleLineDesign'></div>
             <div className='loginContainerDesign'>
                 <div className='loginInputsDesign'>
+                <div className="welcomeMessageAccess">INICIO DE SESIÓN</div>
                 <CInput
                     className={`inputDesign ${userError.emailError !== "" ? "inputDesignError" : ""
                         }`}
