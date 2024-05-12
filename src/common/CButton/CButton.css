@@ -2,7 +2,7 @@
 .cbuttonDesign {
     height: 2em;
     width: 10em;
-    background-color: rgb(110, 110, 255);
+    background-color: rgb(189, 189, 189); 
 
     display: flex;
     flex-direction: column;
@@ -14,11 +14,152 @@
     font-weight: bold;
     transition: 0.5s;
     border: solid black 0.1em;
-    border-radius: 1em;
+    border-radius: 0.2em;
 }
 
 .cbuttonDesign:hover {
     cursor: pointer;
     transition: 0.2;
-    background-color: rgb(51, 0, 171);
+    background-color: rgb(143, 143, 143);
+}
+
+
+.updateButton {
+    height: 2em;
+    width: 10em;
+    background-color: rgb(189, 189, 189); 
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    
+    color: black;
+    font-weight: bold;
+    transition: 0.3s;
+    border: solid black 0.1em;
+    border-radius: 0.2em;
+}
+
+.updateButton:hover {
+    cursor: pointer;
+    transition: 0.3s;
+    background-color: rgb(143, 143, 143);
+}
+
+.allowButton{
+    height: 2em;
+    width: 10em;
+    background-color: rgb(218, 218, 218);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    
+    color: black;
+    font-weight: bold;
+    transition: 0.5s;
+    border: solid black 0.1em;
+    border-radius: 0.2em;
+}
+
+.allowButton:hover{
+    cursor: pointer;
+    transition: 0.3s;
+    background-color: rgb(170, 170, 170);
+}
+
+.hideInputsButton{
+    height: 2em;
+    width: 10em;
+    background-color: rgb(92, 92, 92);
+    font-size: 0.8;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+
+    
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    transition: 0.3s;
+    border: solid black 0.1em;
+    border-radius: 0.2em;
+}
+
+.hideInputsButton:hover{
+    cursor: pointer;
+    transition: 0.3s;
+    background-color: rgb(119, 119, 119);
+}
+
+.writePostButton{
+    height: 2em;
+    width: 10em;
+    background-color: rgb(92, 92, 92);
+    font-size: 0.8;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+
+    
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    transition: 0.3s;
+    border: solid black 0.1em;
+    border-radius: 0.2em;
+}
+
+.writePostButton:hover{
+    cursor: pointer;
+    transition: 0.3s;
+    background-color: rgb(104, 104, 104);
+}
+
+
+.sendPostCommunityButton{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.editOwnPostButton{
+    margin-right: 0.7em;
+    margin-left: 1em;
+}
+
+.editOwnPostButton:hover{
+    margin-right: 0.7em;
+    margin-left: 1em;
+        cursor:pointer;
+        scale:120%
+    }
+
+
+.likesNum{
+    margin-right: 0.5em;
+}
+
+.deleteMyPostButton{
+    margin-right: 0.7em;
+}
+
+
+.lucide lucide-undo2{
+    cursor:pointer;
+    scale:120%
 }

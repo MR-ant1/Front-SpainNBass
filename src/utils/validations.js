@@ -40,7 +40,7 @@ export const validate = (type, value) => {
         case "contraseña":
           
           if (!passwordRegex.test(value)) {
-            return "El password debe tener 8 caracteres, simbolo y mayúscula";
+            return "Su contraseña debe tener 8 caracteres, simbolo y mayúscula";
           }
     
           return "";
@@ -54,25 +54,41 @@ export const validate = (type, value) => {
             return ""
             
             case "turntable":
-              if (value && value.length < 3) {
-                return "Se necesitan mas de 3 caracteres en tu equipo y RRSS's"
+              if (value && value.length < 3 || value && value.length > 250) {
+                return "Se necesitan entre 3 y 250 caracteres en tu equipo y RRSS's"
               }
               return ""
 
-        //   case "serviceId":
+          case "description":
 
-        //     if (value > 5 || value < 1) {
-        //       return "El id de servicio tiene que ser un numero entre 1 y 5"
-        //     }
-        //     return ""
+            if (value.length > 1000 || value.length < 3) {
+              return "La descripción debe tener entre 3 y 1000 caracteres"
+            }
+            return ""
 
-        //     case "title":
-        //     case "description":
-        //   if (value.length < 3) {
-        //     return "Por favor, el campo debe de tener mínimo tres caracteres.";
-        //   }
+            case "title":
+
+          if (value.length < 3 || value.length > 250) {
+            return "Por favor, el título debe tener entre 3 y 250 caracteres.";
+          }
     
-        //   return "";
+          return "";
+
+          case "comment":
+
+          if (value.length > 1000 || value.length < 3) {
+            return "El comentario debe tener entre 3 y 1000 caracteres.";
+          }
+    
+          return "";
+
+          case "url":
+
+          if (value.length < 3 || value.length > 250) {
+            return "Por favor, la url debe tener entre 3 y 250 caracteres.";
+          }
+    
+          return "";
             
         default:
           console.log("No matches found")

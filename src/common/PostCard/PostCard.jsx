@@ -6,14 +6,14 @@ export const PostCard = ({id, title, description, nickname, comment,picUrl, url,
 
     return(
         <div className="postCardDesign" onClick={clickFunction} key={id}>
-            <div>{nickname}</div>
+            <div className="nicknamePostCardDesign">{nickname}</div>
             <div>{comment}</div>
             <div>{url}</div>
-            <div>{title}</div>
-            <div>{description}</div>
-            <div>{picUrl}</div>
-            <div>{createdAt}</div>
-            <div>{updatedAt}</div>
+            <div className="titlePostCardDesign">{title}</div>
+            <div className="descriptionPostCardDesign">{description}</div>
+            <div className="picUrlPostCardDesign">{picUrl}</div>
+            <div className="createdAtPostCardDesign">{createdAt}</div>
+            <div className="updatedAtPostCardDesign">{updatedAt}</div>
         </div>
     )
 }

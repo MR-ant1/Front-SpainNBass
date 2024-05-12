@@ -1,3 +1,71 @@
+
 .postCardDesign {
-    height: 3em;
+    width: 80%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(142, 142, 142, 0.667);
+    text-align: justify;
+
+    font-family: 'Trebuchet MS';
+}
+
+.postCardDesign:hover {
+    cursor: pointer;
+    background-color: rgba(188, 188, 188, 0.598);
+    transition: 0.2s;
+}
+
+.titlePostCardDesign{
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.descriptionPostCardDesign{
+    width: 100%;
+    height: 60%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.nicknamePostCardDesign{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.createdAtPostCardDesign{
+    width: 100%;
+    font-size: 0.9em;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.updatedAtPostCardDesign{
+    width: 100%;
+    font-size: 0.7em;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.picUrlPostCardDesign{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
 }

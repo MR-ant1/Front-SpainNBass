@@ -7,6 +7,7 @@ import { CButton } from "../../common/CButton/CButton";
 import 'react-toastify/dist/ReactToastify.css';
 import { PostCard } from "../../common/PostCard/PostCard";
 import { useState } from "react";
+import { Undo2 } from "lucide-react";
 
 export const LatestDetail = () => {
 
@@ -26,22 +27,23 @@ export const LatestDetail = () => {
 
     return (
         detailRdx?.detail?.id &&
-        <div className="detailDesign">
-            <div className="undoButton">
+        <div className="detailLatestDesign">
+            <div className="detailLatestContainer">
+            <div className="xButton">
                 <CButton
                     className={"backButton"}
-                    title={"X"}
+                    title={<Undo2 />}
                     emitFunction={(() => navigate('/'))}
                 />
             </div>
-            <div className="postFields">
+            <div className="postFieldsDesign">
                 <PostCard
                     title={latest.title}
                     description={latest.description}
                     picUrl = {latest.picUrl}
                 />
             </div>
-
+            </div>
         </div>
     )
 }

@@ -9,11 +9,10 @@ import { validate } from "../../utils/validations";
 import 'react-toastify/dist/ReactToastify.css';
 import { PostCard } from "../../common/PostCard/PostCard";
 import { CButton } from "../../common/CButton/CButton";
-// import { Heart } from "lucide-react";
-import { GetCommentsCall, LikeCall, PostLikesCall, bannedPostCall, newCommentCall} from "../../services/api.Calls";
-import { toast } from "react-toastify";
+import { GetCommentsCall, LikeCall, PostLikesCall, bannedPostCall, deleteMyPostCall, newCommentCall } from "../../services/api.Calls";
+import { ToastContainer, toast } from "react-toastify";
 import { CInput } from "../../common/CInput/CInput";
-import { Heart } from "lucide-react";
+import { Flame, OctagonX, Pencil, Trash, Undo2 } from "lucide-react";
 
 
 export const PostDetail = () => {
@@ -23,6 +22,13 @@ export const PostDetail = () => {
     const reduxUser = useSelector(userData)
 
     const navigate = useNavigate();
+
+
+    useEffect(() => {
+        if (!reduxUser?.tokenData?.token) {
+            navigate("/")
+        }
+    }, [reduxUser])
 
     const [loadedComments, setLoadedComments] = useState(false)
 
@@ -45,7 +51,6 @@ export const PostDetail = () => {
 
     const [write, setWrite] = useState("disabled")
 
-    // eslint-disable-next-line no-unused-vars
     const [isLikedBefore, setIsLikedBefore] = useState(false)
 
     // eslint-disable-next-line no-unused-vars
@@ -62,44 +67,20 @@ export const PostDetail = () => {
     })
 
     useEffect(() => {
-        if (!reduxUser?.tokenData?.token) {
-            navigate("/")
-        }
-    }, [reduxUser])
-
-    // useEffect(() => {
-    //     const isLiked = async () => {
-    //         try {
-
-    //             const fetched = await userLikesCall(reduxUser.tokenData.token)
-    //             if (fetched.success === true) {
-    //             setLikeCount(fetched.data)
-    //             setCountDone(true)
-    //             }
-    //         } catch (error) {
-    //             console.log(error.message)
-    //         }
-    //     }
-    //     if (countDone === false) {
-    //         isLiked()
-    //     }
-    // }, [likeCount])
-
-    useEffect(() => {
         const likesCount = async () => {
             try {
                 const fetched = await PostLikesCall(reduxUser.tokenData.token, post.id)
                 const likes = fetched.data
 
                 if (fetched.success === true) {
-                setCountDone(true)
-                setLikeCount(fetched.data.length)
-                    
-                for (let like in likes) {
-                    if (likes[like].user?.id === reduxUser?.tokenData?.user.userId) {
-                     setIsLikedBefore(true)
+                    setCountDone(true)
+                    setLikeCount(fetched.data.length)
+
+                    for (let like in likes) {
+                        if (likes[like].user?.id === reduxUser?.tokenData?.user.userId) {
+                            setIsLikedBefore(true)
+                        }
                     }
-                }
                 }
             } catch (error) {
                 console.log(error.message)
@@ -112,10 +93,10 @@ export const PostDetail = () => {
 
     useEffect(() => {
         toast.dismiss()
-        newComment.commentError &&
-            toast.warn(newComment.commentError)
-        newComment.urlError &&
-            toast.warn(newComment.urlError)
+        newCommentError.commentError &&
+            toast.warn(newCommentError.commentError)
+        newCommentError.urlError &&
+            toast.warn(newCommentError.urlError)
     }, [newCommentError])
 
 
@@ -138,13 +119,11 @@ export const PostDetail = () => {
 
     useEffect(() => {
         const bringComments = async () => {
-
             try {
                 const fetched = await GetCommentsCall(reduxUser.tokenData.token, post.id)
-
-                if (fetched.success === true ){
-                setPostComments(fetched.data)
-                setLoadedComments(true)
+                if (fetched.success === true) {
+                    setPostComments(fetched.data)
+                    setLoadedComments(true)
                 }
             } catch (error) {
                 console.log(error)
@@ -178,7 +157,6 @@ export const PostDetail = () => {
     }
 
     const createComment = async () => {
-
         try {
             const fetched = await newCommentCall(reduxUser.tokenData.token, post.id, newComment)
             if (newComment.comment.length === 0) {
@@ -187,13 +165,14 @@ export const PostDetail = () => {
             }
             if (fetched.success === true) {
                 setLoadedComments(false)
-                setPostComments(false)
+                setPostComments([fetched.data, ...currentComments])
                 setWrite("disabled")
+                toast.success(fetched.message)
                 setNewComment({
                     comment: "",
                     url: ""
                 })
-            }
+            } else toast.error(fetched.message)
         } catch (error) {
             console.log(error)
         }
@@ -201,58 +180,112 @@ export const PostDetail = () => {
 
     const deleteMyPost = async (id) => {
         try {
-            const fetched = await bannedPostCall(id, reduxUser.tokenData.token)
-
+            const fetched = await deleteMyPostCall(id, reduxUser.tokenData.token)
             if (fetched.success === true) {
-                navigate('/community')
-            }
+                toast.success(fetched.message)
+                setTimeout(() => {
+                    navigate("/community")
+                }, 1500)
+            }else toast.error(fetched.message)
 
         } catch (error) {
             console.log(error.message)
         }
     }
 
+    const deleteUserPost = async (id) => {
+        try {
+            const fetched = await bannedPostCall(id, reduxUser.tokenData.token)
+            if (fetched.success === true) {
+                toast.success(fetched.message)
+                setTimeout(() => {
+                    navigate("/community")
+                }, 1500)
+            }else toast.error(fetched.message)
+
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
+
+    
+    const [currentPage, setCurrentPage] = useState(1);
+    const [commentsPerPage] = useState(10);
+
+    const lastCommentIndex = currentPage * commentsPerPage;
+    const firstCommentIndex = lastCommentIndex - commentsPerPage;
+    const currentComments = postComments.slice(firstCommentIndex, lastCommentIndex);
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(postComments.length / commentsPerPage); i++) {
+        pageNumbers.push(i);
+    }
+
     return (
         <div className="detailDesign">
-            <div className="undoButton">
+        <div className="detailPostContainerDesign">
+            <div className="xButton">
                 <CButton
-                    className={"backButton"}
-                    title={"X"}
+                    className={"backCommunityButton"}
+                    title={<Undo2 />}
                     emitFunction={(() => navigate('/community'))}
                 />
             </div>
-            <div className='myPostCard' key={detailRdx.detail?.id}>
+            <div className='myPostCardDetailDesign' key={detailRdx.detail?.id}>
                 <PostCard
                     id={detailRdx.detail?.id}
                     nickname={detailRdx.detail?.owner.nickname}
                     title={detailRdx.detail?.title}
                     description={detailRdx?.detail?.description}
                     picUrl={detailRdx?.detail?.picUrl}
-                    createdAt={"Creado:" + detailRdx?.detail?.owner.createdAt}
-                    updatedAt={"Actualizado:" + detailRdx?.detail?.owner.updatedAt}
+                    createdAt={"Creado:" + detailRdx?.detail?.createdAt}
+                    updatedAt={"Actualizado:" + detailRdx?.detail?.updatedAt}
                 />
             </div>
-            <div className="likeRow">
-                <CButton
+           
+            <div className="editAndDeleteDetailContainer">
+            <div className="likeAndNumContainer">
+            <CButton
                     className={"likeButton"}
-                    title={<Heart fill={isLikedBefore === true ? "red" : "white"} />}
+                    title={<Flame fill={isLikedBefore === true ? "red" : "white"} />}
                     emitFunction={() => likePost(post.id)}
                 />
                 <div className="likesNum">{likeCount}</div>
-            </div>
-            {detailRdx?.detail?.owner?.id === reduxUser?.tokenData?.user.userId ? (
+                </div>
+            {detailRdx?.detail?.owner?.id === reduxUser?.tokenData?.user.userId &&
                 <CButton
-                    className={"editButton"}
-                    title={"Actualizar"}
+                    className={"editOwnPostButton"}
+                    title={<Pencil fill="grey" />}
                     emitFunction={() => navigate('/detailMyPost')}
                 />
-            ) : (<div></div>)
             }
-
+            {(detailRdx?.detail?.owner?.id === reduxUser?.tokenData?.user.userId) &&
+                <div className='deleteMyPostContainerDesign'>
+                    <CButton key={post.id}
+                        className={"deleteMyPostButton"}
+                        title={<Trash />}
+                        emitFunction={(() => deleteMyPost(post.id))}
+                    />
+                </div>
+            }
+            {(reduxUser?.tokenData?.user?.role === "super_admin") &&
+                <div className='superDeleteButton'>
+                    <CButton key={post.id}
+                        className={"deleteMyPostButton"}
+                        title={<OctagonX fill="red"/>}
+                        emitFunction={(() => deleteUserPost(post.id))}
+                    />
+                </div>
+            }
+            </div>
+            </div>
+            <div className="newCommentInputsDesign">
             <CInput
                 className={"inputDesign"}
                 type={"text"}
                 name={"comment"}
+                placeholder={"Comentario"}
                 disabled={write}
                 value={newComment.comment || ""}
                 changeFunction={inputHandler}
@@ -262,6 +295,7 @@ export const PostDetail = () => {
                 className={"inputDesign"}
                 type={"text"}
                 name={"url"}
+                placeholder={"Url"}
                 disabled={write}
                 value={newComment.url}
                 changeFunction={inputHandler}
@@ -270,41 +304,58 @@ export const PostDetail = () => {
             <CButton
                 className={write === "" ? " updateButton" : "allowButton"}
                 title={write === "" ? "Enviar comentario" : "Escribir comentario"}
-                emitFunction={write === "" ? ()=>createComment() : () => setWrite("")}
+                emitFunction={write === "" ? () => createComment() : () => setWrite("")}
             />
-            {detailRdx?.detail?.owner?.id === reduxUser?.tokenData?.user.userId ? (
-            <div className='deleteButton'>
-                <CButton key={post.id}
-                    className={"deleteMyPostButton"}
-                    title={"Eliminar"}
-                    emitFunction={(() => deleteMyPost(post.id))}
-                />
             </div>
-            ) : (<div></div>)
-        }
-
-            {loadedComments === true ? (
-                <div className='myPosts'>
-                    {postComments.map(
+            
+            {postComments.length > 0 ? (
+                <div className='postCommentsContainerDesign'>
+                    <div className="commentsMessageDesign">Comentarios</div>
+                        <div className="commentsContainerDesign">
+                    {currentComments.map(
                         comment => {
                             return (
-                                <div className='myPostCard' key={comment.id}>
-                                    <PostCard
+                                <div className='postDetailCommentsDesign' key={comment.id}>
+                                    <PostCard className="commentsCard"
                                         nickname={comment.user?.nickname}
                                         comment={comment.comment}
                                         url={comment.url}
                                         createdAt={"Creado:" + comment.createdAt}
                                     />
                                 </div>
-
                             )
                         }
-                    ).reverse()
+                    )
                     }
+                    </div>
                 </div>
-
-            ) : (<div>Aun no hay ningún comentario en este post</div>
+            ) : (<div className="noCommentsText">Aun no hay ningún comentario en este post</div>
             )}
+            <ToastContainer
+                position="top-left"
+                autoClose={1500}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="dark"
+            />
+             <ul className="paginateContainer">
+                        {pageNumbers.map((number) => (
+                            <div key={number} className="pageContainer">
+                                <a
+                                    onClick={() => paginate(number)}
+                                    href="#"
+                                    className="pageDesign"
+                                >
+                                    {number}
+                                </a>
+                            </div>
+                        ))}
+                    </ul>
         </div>
     )
 }
