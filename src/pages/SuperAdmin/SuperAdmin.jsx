@@ -59,12 +59,25 @@ export const SuperAdmin = () => {
         }
     }
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const [usersPerPage] = useState(10);
+
+    const lastUserIndex = currentPage * usersPerPage;
+    const firstUserIndex = lastUserIndex - usersPerPage;
+    const currentUsers = users.slice(firstUserIndex, lastUserIndex);
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(users.length / usersPerPage); i++) {
+        pageNumbers.push(i);
+    }
+
     return (
         <div className="adminDesign">
             {loadedData === true ? (
                 <div className="userCards">
                     <div className="usersColumnTitle"><h2>USUARIOS</h2></div>
-                    {users.map(
+                    {currentUsers.map(
                         user => {
                             return (
                                 <div className="userContainer" key={user.id}>
@@ -76,12 +89,12 @@ export const SuperAdmin = () => {
                                         email={user.email}
                                         createdAt={user.createdAt}
                                     />
-                                        <CButton key={user.id}
-                                            className={"deleteMyPostButton"}
-                                            title={<Trash />}
-                                            emitFunction={(() => deleteUser(user.id))}
-                                        />
-                                    
+                                    <CButton key={user.id}
+                                        className={"deleteMyPostButton"}
+                                        title={<Trash />}
+                                        emitFunction={(() => deleteUser(user.id))}
+                                    />
+
                                 </div>
                             )
                         })}
@@ -101,6 +114,19 @@ export const SuperAdmin = () => {
                 pauseOnHover
                 theme="dark"
             />
+             <ul className="paginateContainer">
+                        {pageNumbers.map((number) => (
+                            <div key={number} className="pageContainer">
+                                <a
+                                    onClick={() => paginate(number)}
+                                    href="#"
+                                    className="pageDesign"
+                                >
+                                    {number}
+                                </a>
+                            </div>
+                        ))}
+                    </ul>
         </div>
     )
 }

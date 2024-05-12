@@ -123,6 +123,20 @@ export const Community = () => {
         }
     }
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const [postsPerPage] = useState(10);
+
+    const lastPostIndex = currentPage * postsPerPage;
+    const firstPostIndex = lastPostIndex - postsPerPage;
+    const currentPosts = posts.slice(firstPostIndex, lastPostIndex);
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(posts.length / postsPerPage); i++) {
+        pageNumbers.push(i);
+    }
+
+
     return (
         <div className="communityDesign">
 
@@ -211,7 +225,7 @@ export const Community = () => {
                     <div className="communityTitle">Foro {newPost.topic}</div>
                     {posts.length !== 0 ? (
                         <div className="communityCardsContainer">
-                            {posts.map(
+                            {currentPosts.map(
                                 post => {
                                     return (
                                         <div className="communityCardDiv" key={post.id}>
@@ -242,6 +256,19 @@ export const Community = () => {
                 pauseOnHover
                 theme="dark"
             />
+             <ul className="paginateContainer">
+                        {pageNumbers.map((number) => (
+                            <div key={number} className="pageContainer">
+                                <a
+                                    onClick={() => paginate(number)}
+                                    href="#"
+                                    className="pageDesign"
+                                >
+                                    {number}
+                                </a>
+                            </div>
+                        ))}
+                    </ul>
         </div>
     )
 }

@@ -113,6 +113,20 @@ export const Home = () => {
         }
     }
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const [newsPerPage] = useState(10);
+
+    const lastNewIndex = currentPage * newsPerPage;
+    const firstNewIndex = lastNewIndex - newsPerPage;
+    const currentLatests = latests.slice(firstNewIndex, lastNewIndex);
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(latests.length / newsPerPage); i++) {
+        pageNumbers.push(i);
+    }
+
+
     return (
         
         <div className="homeDesign">
@@ -162,7 +176,7 @@ export const Home = () => {
                     </div>
                     {loadedData === true ? (
                         <div className="cardsHomeDesign">
-                            {latests.slice(0, latests.length).map(
+                            {currentLatests.map(
                                 latest => {
                                     return (
                                         <div className='cardDivDesign' key={latest.id}>
@@ -183,7 +197,7 @@ export const Home = () => {
                 <div className='homeUserDesign'>
                     {loadedData === true ? (
                         <div className="cardsHomeDesign">
-                            {latests.slice(0, latests.length).map(
+                            {currentLatests.map(
                                 latest => {
                                     return (
                                         <div className="cardDivDesign" key={latest.id}>
@@ -213,6 +227,19 @@ export const Home = () => {
                 pauseOnHover
                 theme="dark"
             />
+            <ul className="paginateContainer">
+                        {pageNumbers.map((number) => (
+                            <div key={number} className="pageContainer">
+                                <a
+                                    onClick={() => paginate(number)}
+                                    href="#"
+                                    className="pageDesign"
+                                >
+                                    {number}
+                                </a>
+                            </div>
+                        ))}
+                    </ul>
         </div>
     )
 }
