@@ -3,7 +3,6 @@ import "./Community.css"
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from "react"
 import { userData } from "../../app/Slices/userSlice"
-import { RedirectButton } from "../../common/RedirButton/RedirButton"
 import { useNavigate } from 'react-router-dom'
 import { updateDetail } from "../../app/Slices/postDetailSlice"
 import 'react-toastify/dist/ReactToastify.css';
@@ -32,6 +31,13 @@ export const Community = () => {
     const [loadedPosts, setLoadedPosts] = useState(false)
 
     const [posts, setPosts] = useState([])
+
+    
+    useEffect(() => {
+        if (!reduxUser?.tokenData?.token) {
+            navigate("/")
+        }
+    }, [reduxUser])
 
     const [newPost, setNewPost] = useState({
         title: "",
@@ -139,28 +145,6 @@ export const Community = () => {
 
     return (
         <div className="communityDesign">
-
-            {!reduxUser.tokenData.token ? (
-                <>
-                    <div className="welcomeCommunityView">
-                        <div className="welcomeCommunityMsg">Bienvenido a Community!
-                            <div className="welcomeMessage">Inicia sesión o regístrate para poder comunicarte con el resto de fans</div>
-                        </div>
-                        <div className="buttonsCommunityDesign">
-                            <RedirectButton
-                                className={"cbuttonDesign"}
-                                title={"Login"}
-                                emitFunction={() => navigate("/login")}
-                            />
-                            <RedirectButton
-                                className={"cbuttonDesign"}
-                                title={"Register"}
-                                emitFunction={() => navigate("/register")}
-                            />
-                        </div>
-                    </div>
-                </>
-            ) : (
                 <>
                     <div className="inputsCommunityContainerDesign">
                         <div className="communityInputsDesign" hidden={invisible}>
@@ -243,7 +227,7 @@ export const Community = () => {
                             : <div className="communityNoPostsDesign">AUN NO HAY POST DE ESTA CATEGORIA</div>
 
                     )}
-                </>)}
+                </>
             <ToastContainer
                 position="top-left"
                 autoClose={1500}
