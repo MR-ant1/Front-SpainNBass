@@ -1,5 +1,4 @@
-
-.navigatorDesign{
+.navigatorDesign {
     transition: 0.3s;
 
     color: white;
@@ -12,7 +11,7 @@
     align-items: center;
 }
 
-.navigatorDesign:hover{
+.navigatorDesign:hover {
     color: rgb(190, 190, 190);
     transition: 0.3s;
     cursor: pointer;

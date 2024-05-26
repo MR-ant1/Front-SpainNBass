@@ -8,8 +8,8 @@ function App() {
 
   return (
     <>
-    <Header />
-    <Body />
+      <Header />
+      <Body />
     </>
   )
 }

@@ -2,18 +2,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 export const communitySlice = createSlice({
-    name: 'community',
-    initialState: {
-      category: ""
+  name: 'community',
+  initialState: {
+    category: ""
+  },
+  reducers: {
+    navigateCategory: (state, action) => {
+      return {
+        ...state,
+        ...action.payload
+      }
     },
-    reducers: {
-      navigateCategory: (state, action) => {
-        return {
-          ...state,
-          ...action.payload
-        }
-      },
-    }
+  }
 });
 
 export const { navigateCategory } = communitySlice.actions;

@@ -1,7 +1,7 @@
 
 import './Login.css'
 import { useNavigate } from 'react-router-dom/dist'
-import { login, userData } from '../../app/slices/userSlice'
+import { login, userData } from '../../app/Slices/userSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { validate } from '../../utils/validations'
@@ -97,11 +97,11 @@ export const Access = () => {
         toast.dismiss()
         userRegisterError.nicknameError &&
             toast.error(userRegisterError.nicknameError)
-            userRegisterError.turntableError &&
+        userRegisterError.turntableError &&
             toast.error(userRegisterError.turntableError)
-            userRegisterError.emailError &&
+        userRegisterError.emailError &&
             toast.error(userRegisterError.emailError)
-            userRegisterError.passwordError &&
+        userRegisterError.passwordError &&
             toast.error(userRegisterError.passwordError)
     }, [userRegisterError])
 
@@ -148,127 +148,127 @@ export const Access = () => {
 
     return (
         <div className='accessDesign'>
-        <div className="loginRegisterMainDesign">
-            <div className="registerContainerDesign">
-            <div className="welcomeMessageAccess">REGISTRO</div>
-            <CInput
-                className={`inputDesign ${userRegisterError.nicknameError !== "" ? "inputDesignError" : ""
-                    }`}
-                type={"text"}
-                placeholder={"nickname"}
-                name={"nickname"}
-                value={userRegister.nickname || ""}
-                changeFunction={inputHandlerRegister}
-                blurFunction={checkErrorRegister}
-            />
+            <div className="loginRegisterMainDesign">
+                <div className="registerContainerDesign">
+                    <div className="welcomeMessageAccess">REGISTRO</div>
+                    <CInput
+                        className={`inputDesign ${userRegisterError.nicknameError !== "" ? "inputDesignError" : ""
+                            }`}
+                        type={"text"}
+                        placeholder={"nickname"}
+                        name={"nickname"}
+                        value={userRegister.nickname || ""}
+                        changeFunction={inputHandlerRegister}
+                        blurFunction={checkErrorRegister}
+                    />
 
-            <select
-                className={`inputDesign ${userRegisterError.favSubgenreError !== "" ? "inputDesignError" : ""
-                    }`}
-                type={"text"}
-                name={"favSubgenre"}
-                value={userRegister.favSubgenre || ""}
-                onChange={inputHandlerRegister}
-            >
-                <option value="">Elige un subgenero</option>
-                <option value="Club dnb">Club dnb</option>
-                <option value="RaggaJungle">RaggaJungle</option>
-                <option value="Rollers">Rollers</option>
-                <option value="Liquid dnb">Liquid dnb</option>
-                <option value="Jump Up">Jump Up</option>
-                <option value="NeuroFunk">NeuroFunk</option>
-            </select>
+                    <select
+                        className={`inputDesign ${userRegisterError.favSubgenreError !== "" ? "inputDesignError" : ""
+                            }`}
+                        type={"text"}
+                        name={"favSubgenre"}
+                        value={userRegister.favSubgenre || ""}
+                        onChange={inputHandlerRegister}
+                    >
+                        <option value="">Elige un subgenero</option>
+                        <option value="Club dnb">Club dnb</option>
+                        <option value="RaggaJungle">RaggaJungle</option>
+                        <option value="Rollers">Rollers</option>
+                        <option value="Liquid dnb">Liquid dnb</option>
+                        <option value="Jump Up">Jump Up</option>
+                        <option value="NeuroFunk">NeuroFunk</option>
+                    </select>
 
 
-            <select 
-                className={`inputDesign ${userRegisterError.preferenceError !== "" ? "inputDesignError" : ""
-                    }`}
-                type={"text"}
-                name={"preference"}
-                value={userRegister.preference || ""}
-                onChange={inputHandlerRegister}
-            >
-                <option value="">¿Cual es tu rol?</option>
-                <option value="dnb Lover">dnb Fan</option>
-                <option value="DJ">DJ</option>
-                <option value="Producer">Producer</option>
-                <option value="DJ/Producer">DJ/Producer
-                </option>
-            </select>
+                    <select
+                        className={`inputDesign ${userRegisterError.preferenceError !== "" ? "inputDesignError" : ""
+                            }`}
+                        type={"text"}
+                        name={"preference"}
+                        value={userRegister.preference || ""}
+                        onChange={inputHandlerRegister}
+                    >
+                        <option value="">¿Cual es tu rol?</option>
+                        <option value="dnb Lover">dnb Fan</option>
+                        <option value="DJ">DJ</option>
+                        <option value="Producer">Producer</option>
+                        <option value="DJ/Producer">DJ/Producer
+                        </option>
+                    </select>
 
-            <CInput
-                className={`inputDesign ${userRegisterError.turntableError !== "" ? "inputDesignError" : ""
-                    }`}
-                type={"text"}
-                placeholder={"Bio (equipo, anécdotas, influencias...)"}
-                name={"turntable"}
-                value={userRegister.turntable || ""}
-                changeFunction={inputHandlerRegister}
-                blurFunction={checkErrorRegister}
-            />
+                    <CInput
+                        className={`inputDesign ${userRegisterError.turntableError !== "" ? "inputDesignError" : ""
+                            }`}
+                        type={"text"}
+                        placeholder={"Bio (equipo, anécdotas, influencias...)"}
+                        name={"turntable"}
+                        value={userRegister.turntable || ""}
+                        changeFunction={inputHandlerRegister}
+                        blurFunction={checkErrorRegister}
+                    />
 
-            <CInput
-                className={`inputDesign ${userRegisterError.emailError !== "" ? "inputDesignError" : ""
-                    }`}
-                type={"email"}
-                placeholder={"email"}
-                name={"email"}
-                value={userRegister.email || ""}
-                changeFunction={inputHandlerRegister}
-                blurFunction={checkErrorRegister}
-            />
+                    <CInput
+                        className={`inputDesign ${userRegisterError.emailError !== "" ? "inputDesignError" : ""
+                            }`}
+                        type={"email"}
+                        placeholder={"email"}
+                        name={"email"}
+                        value={userRegister.email || ""}
+                        changeFunction={inputHandlerRegister}
+                        blurFunction={checkErrorRegister}
+                    />
 
-            <CInput
-                className={`inputDesign ${userRegisterError.passwordError !== "" ? "inputDesignError" : ""
-                    }`}
-                type={"password"}
-                placeholder={"password"}
-                name={"password"}
-                value={userRegister.password || ""}
-                changeFunction={inputHandlerRegister}
-                blurFunction={checkErrorRegister}
-            />
+                    <CInput
+                        className={`inputDesign ${userRegisterError.passwordError !== "" ? "inputDesignError" : ""
+                            }`}
+                        type={"password"}
+                        placeholder={"password"}
+                        name={"password"}
+                        value={userRegister.password || ""}
+                        changeFunction={inputHandlerRegister}
+                        blurFunction={checkErrorRegister}
+                    />
 
-            <CButton
-                className={"cbuttonDesign"}
-                title={"Register"}
-                emitFunction={registerUser}
-            />
-        </div>
-        <div className='middleLineDesign'></div>
-            <div className='loginContainerDesign'>
-                <div className='loginInputsDesign'>
-                <div className="welcomeMessageAccess">INICIO DE SESIÓN</div>
-                <CInput
-                    className={`inputDesign ${userError.emailError !== "" ? "inputDesignError" : ""
-                        }`}
-                    type={"email"}
-                    name={"email"}
-                    placeholder={"email"}
-                    value={user.email || ""}
-                    changeFunction={inputHandler}
-                    blurFunction={checkError}
-                />
-
-                <CInput
-                    className={`inputDesign ${userError.passwordError !== "" ? "inputDesignError" : ""
-                        }`}
-                    type={"password"}
-                    name={"password"}
-                    placeholder={"password"}
-                    value={user.password || ""}
-                    changeFunction={inputHandler}
-                    blurFunction={checkError}
-                />
-
-                <CButton
-                    className={"cbuttonDesign"}
-                    title={"Login"}
-                    emitFunction={loginUser}
-                />
+                    <CButton
+                        className={"cbuttonDesign"}
+                        title={"Register"}
+                        emitFunction={registerUser}
+                    />
                 </div>
+                <div className='middleLineDesign'></div>
+                <div className='loginContainerDesign'>
+                    <div className='loginInputsDesign'>
+                        <div className="welcomeMessageAccess">INICIO DE SESIÓN</div>
+                        <CInput
+                            className={`inputDesign ${userError.emailError !== "" ? "inputDesignError" : ""
+                                }`}
+                            type={"email"}
+                            name={"email"}
+                            placeholder={"email"}
+                            value={user.email || ""}
+                            changeFunction={inputHandler}
+                            blurFunction={checkError}
+                        />
+
+                        <CInput
+                            className={`inputDesign ${userError.passwordError !== "" ? "inputDesignError" : ""
+                                }`}
+                            type={"password"}
+                            name={"password"}
+                            placeholder={"password"}
+                            value={user.password || ""}
+                            changeFunction={inputHandler}
+                            blurFunction={checkError}
+                        />
+
+                        <CButton
+                            className={"cbuttonDesign"}
+                            title={"Login"}
+                            emitFunction={loginUser}
+                        />
+                    </div>
                 </div>
-                </div>
+            </div>
             <ToastContainer
                 position="top-left"
                 autoClose={1500}

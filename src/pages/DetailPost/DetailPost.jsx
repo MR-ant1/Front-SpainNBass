@@ -1,10 +1,10 @@
 
 import "./DetailPost.css";
 import { useSelector } from "react-redux";
-import { detailData, } from "../../app/slices/postDetailSlice";
+import { detailData, } from "../../app/Slices/postDetailSlice";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { userData } from "../../app/slices/userSlice";
+import { userData } from "../../app/Slices/userSlice";
 import { validate } from "../../utils/validations";
 import 'react-toastify/dist/ReactToastify.css';
 import { PostCard } from "../../common/PostCard/PostCard";
@@ -186,7 +186,7 @@ export const PostDetail = () => {
                 setTimeout(() => {
                     navigate("/community")
                 }, 1500)
-            }else toast.error(fetched.message)
+            } else toast.error(fetched.message)
 
         } catch (error) {
             console.log(error.message)
@@ -201,14 +201,14 @@ export const PostDetail = () => {
                 setTimeout(() => {
                     navigate("/community")
                 }, 1500)
-            }else toast.error(fetched.message)
+            } else toast.error(fetched.message)
 
         } catch (error) {
             console.log(error.message)
         }
     }
 
-    
+
     const [currentPage, setCurrentPage] = useState(1);
     const [commentsPerPage] = useState(10);
 
@@ -224,109 +224,109 @@ export const PostDetail = () => {
 
     return (
         <div className="detailDesign">
-        <div className="detailPostContainerDesign">
-            <div className="xButton">
-                <CButton
-                    className={"backCommunityButton"}
-                    title={<Undo2 />}
-                    emitFunction={(() => navigate('/community'))}
-                />
-            </div>
-            <div className='myPostCardDetailDesign' key={detailRdx.detail?.id}>
-                <PostCard
-                    id={detailRdx.detail?.id}
-                    nickname={detailRdx.detail?.owner.nickname}
-                    title={detailRdx.detail?.title}
-                    description={detailRdx?.detail?.description}
-                    picUrl={detailRdx?.detail?.picUrl}
-                    createdAt={"Creado:" + detailRdx?.detail?.createdAt}
-                    updatedAt={"Actualizado:" + detailRdx?.detail?.updatedAt}
-                />
-            </div>
-           
-            <div className="editAndDeleteDetailContainer">
-            <div className="likeAndNumContainer">
-            <CButton
-                    className={"likeButton"}
-                    title={<Flame fill={isLikedBefore === true ? "red" : "white"} />}
-                    emitFunction={() => likePost(post.id)}
-                />
-                <div className="likesNum">{likeCount}</div>
-                </div>
-            {detailRdx?.detail?.owner?.id === reduxUser?.tokenData?.user.userId &&
-                <CButton
-                    className={"editOwnPostButton"}
-                    title={<Pencil fill="grey" />}
-                    emitFunction={() => navigate('/detailMyPost')}
-                />
-            }
-            {(detailRdx?.detail?.owner?.id === reduxUser?.tokenData?.user.userId) &&
-                <div className='deleteMyPostContainerDesign'>
-                    <CButton key={post.id}
-                        className={"deleteMyPostButton"}
-                        title={<Trash />}
-                        emitFunction={(() => deleteMyPost(post.id))}
+            <div className="detailPostContainerDesign">
+                <div className="xButton">
+                    <CButton
+                        className={"backCommunityButton"}
+                        title={<Undo2 />}
+                        emitFunction={(() => navigate('/community'))}
                     />
                 </div>
-            }
-            {(reduxUser?.tokenData?.user?.role === "super_admin") &&
-                <div className='superDeleteButton'>
-                    <CButton key={post.id}
-                        className={"deleteMyPostButton"}
-                        title={<OctagonX fill="red"/>}
-                        emitFunction={(() => deleteUserPost(post.id))}
+                <div className='myPostCardDetailDesign' key={detailRdx.detail?.id}>
+                    <PostCard
+                        id={detailRdx.detail?.id}
+                        nickname={detailRdx.detail?.owner.nickname}
+                        title={detailRdx.detail?.title}
+                        description={detailRdx?.detail?.description}
+                        picUrl={detailRdx?.detail?.picUrl}
+                        createdAt={"Creado:" + detailRdx?.detail?.createdAt}
+                        updatedAt={"Actualizado:" + detailRdx?.detail?.updatedAt}
                     />
                 </div>
-            }
-            </div>
+
+                <div className="editAndDeleteDetailContainer">
+                    <div className="likeAndNumContainer">
+                        <CButton
+                            className={"likeButton"}
+                            title={<Flame fill={isLikedBefore === true ? "red" : "white"} />}
+                            emitFunction={() => likePost(post.id)}
+                        />
+                        <div className="likesNum">{likeCount}</div>
+                    </div>
+                    {detailRdx?.detail?.owner?.id === reduxUser?.tokenData?.user.userId &&
+                        <CButton
+                            className={"editOwnPostButton"}
+                            title={<Pencil fill="grey" />}
+                            emitFunction={() => navigate('/detailMyPost')}
+                        />
+                    }
+                    {(detailRdx?.detail?.owner?.id === reduxUser?.tokenData?.user.userId) &&
+                        <div className='deleteMyPostContainerDesign'>
+                            <CButton key={post.id}
+                                className={"deleteMyPostButton"}
+                                title={<Trash />}
+                                emitFunction={(() => deleteMyPost(post.id))}
+                            />
+                        </div>
+                    }
+                    {(reduxUser?.tokenData?.user?.role === "super_admin") &&
+                        <div className='superDeleteButton'>
+                            <CButton key={post.id}
+                                className={"deleteMyPostButton"}
+                                title={<OctagonX fill="red" />}
+                                emitFunction={(() => deleteUserPost(post.id))}
+                            />
+                        </div>
+                    }
+                </div>
             </div>
             <div className="newCommentInputsDesign">
-            <CInput
-                className={"inputDesign"}
-                type={"text"}
-                name={"comment"}
-                placeholder={"Comentario"}
-                disabled={write}
-                value={newComment.comment || ""}
-                changeFunction={inputHandler}
-                blurFunction={checkError}
-            />
-            <CInput
-                className={"inputDesign"}
-                type={"text"}
-                name={"url"}
-                placeholder={"Url"}
-                disabled={write}
-                value={newComment.url}
-                changeFunction={inputHandler}
-                blurFunction={checkError}
-            />
-            <CButton
-                className={write === "" ? " updateButton" : "allowButton"}
-                title={write === "" ? "Enviar comentario" : "Escribir comentario"}
-                emitFunction={write === "" ? () => createComment() : () => setWrite("")}
-            />
+                <CInput
+                    className={"inputDesign"}
+                    type={"text"}
+                    name={"comment"}
+                    placeholder={"Comentario"}
+                    disabled={write}
+                    value={newComment.comment || ""}
+                    changeFunction={inputHandler}
+                    blurFunction={checkError}
+                />
+                <CInput
+                    className={"inputDesign"}
+                    type={"text"}
+                    name={"url"}
+                    placeholder={"Url"}
+                    disabled={write}
+                    value={newComment.url}
+                    changeFunction={inputHandler}
+                    blurFunction={checkError}
+                />
+                <CButton
+                    className={write === "" ? " updateButton" : "allowButton"}
+                    title={write === "" ? "Enviar comentario" : "Escribir comentario"}
+                    emitFunction={write === "" ? () => createComment() : () => setWrite("")}
+                />
             </div>
-            
+
             {postComments.length > 0 ? (
                 <div className='postCommentsContainerDesign'>
                     <div className="commentsMessageDesign">Comentarios</div>
-                        <div className="commentsContainerDesign">
-                    {currentComments.map(
-                        comment => {
-                            return (
-                                <div className='postDetailCommentsDesign' key={comment.id}>
-                                    <PostCard className="commentsCard"
-                                        nickname={comment.user?.nickname}
-                                        comment={comment.comment}
-                                        url={comment.url}
-                                        createdAt={"Creado:" + comment.createdAt}
-                                    />
-                                </div>
-                            )
+                    <div className="commentsContainerDesign">
+                        {currentComments.map(
+                            comment => {
+                                return (
+                                    <div className='postDetailCommentsDesign' key={comment.id}>
+                                        <PostCard className="commentsCard"
+                                            nickname={comment.user?.nickname}
+                                            comment={comment.comment}
+                                            url={comment.url}
+                                            createdAt={"Creado:" + comment.createdAt}
+                                        />
+                                    </div>
+                                )
+                            }
+                        )
                         }
-                    )
-                    }
                     </div>
                 </div>
             ) : (<div className="noCommentsText">Aun no hay ningún comentario en este post</div>
@@ -343,19 +343,19 @@ export const PostDetail = () => {
                 pauseOnHover
                 theme="dark"
             />
-             <ul className="paginateContainer">
-                        {pageNumbers.map((number) => (
-                            <div key={number} className="pageContainer">
-                                <a
-                                    onClick={() => paginate(number)}
-                                    href="#"
-                                    className="pageDesign"
-                                >
-                                    {number}
-                                </a>
-                            </div>
-                        ))}
-                    </ul>
+            <ul className="paginateContainer">
+                {pageNumbers.map((number) => (
+                    <div key={number} className="pageContainer">
+                        <a
+                            onClick={() => paginate(number)}
+                            href="#"
+                            className="pageDesign"
+                        >
+                            {number}
+                        </a>
+                    </div>
+                ))}
+            </ul>
         </div>
     )
 }

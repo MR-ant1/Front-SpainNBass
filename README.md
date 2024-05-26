@@ -22,7 +22,7 @@ El objetivo de este proyecto es recrear el frontend de una web-comunidad donde l
     - [AGRADECIMIENTOS :raised\_hands:](#agradecimientos-raised_hands)
 
 ### TECNOLOGIAS :wrench:
-<img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" /><img src="https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white" alt="NODE.JS" />![alt text](image.png)
+<img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" /><img src="https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white" alt="NODE.JS" />
 <img src="https://camo.githubusercontent.com/6c3957842901e5baa389f3bb8758c8966683333b28493013062fcab5fab645e7/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f52656163742d3230323332413f7374796c653d666f722d7468652d6261646765266c6f676f3d7265616374266c6f676f436f6c6f723d363144414642" alt="React"><img src="https://img.shields.io/badge/DOCKER-2020BF?style=for-the-badge&logo=docker&logoColor=white" alt="Docker"/><img src="https://camo.githubusercontent.com/0f98e0edc3ae47a19fac8a8679ba0a4f678ed9872c18771cb53f493b21ddaf90/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f6a61766173636970742d4546443831443f7374796c653d666f722d7468652d6261646765266c6f676f3d6a617661736372697074266c6f676f436f6c6f723d626c61636b" alt="Javascript"/><img src="https://camo.githubusercontent.com/aac74ca85b21ed1ff4fa88dda8712fce9cddbf786bdf807231e6179f70003ac5/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4a57542d626c61636b3f7374796c653d666f722d7468652d6261646765266c6f676f3d4a534f4e253230776562253230746f6b656e73" alt="JWT">
 
 
@@ -66,14 +66,14 @@ git init
 ```
 una vez hecho esto, introducimos "git clone https://github.com/MR-ant1/Front-SpainNBass.git"
 
-1.     Después abrimos la consola y escribimos estos comandos para instalar dependencias y correr el servidor:
+2. Después abrimos la consola y escribimos estos comandos para instalar dependencias y correr el servidor:
 ``` bash
 npm i
 ```
 ``` bash
 npm run dev
 ```
-1.  Aqui se facilitan dos usuarios para utilizar la web como usuario estandar o super_admin
+3.  Aqui se facilitan dos usuarios para utilizar la web como usuario estandar o super_admin
 ```bash
 admin@admin.com
 superadmin@superadmin.com
@@ -133,7 +133,7 @@ El trabajo restante consiste en implementar páginas y lógica para hacerlas fun
 
 ![alt text](img/accessView.png)
 
-En la página de registro e inicio de sesión, creamos una función donde primero se definen todas las funciones de usuario, error y acción, y luego, en el retorno, se lanzan 4 entradas y un botón personalizado para registro, y en la otra mitad de la pantalla, los dos inputs con su botón para iniciar sesión
+En la página de registro e inicio de sesión, creamos una función donde primero se definen todas las variables y funciones de usuario, error y acción, y luego, en el retorno, se lanzan 4 entradas y un botón personalizado para registro, y en la otra mitad de la pantalla, los dos inputs con su botón para iniciar sesión
 
 ![alt text](img/RegisterScreenshot2.png)
 
@@ -149,24 +149,15 @@ Finalmente, el CButton contiene la función de "registro", lo que hace que se ej
 
 ![alt text](img/CButtonScreenshot.png)
 
+Login usa una lógica similar usando la información recogida del usuario en forma de objeto enviado al archivo apicalls donde se conecta con el backend.
 
-Login use a similar structure with a function that contains user data in an object to send to backend four fields with the same structure we prepared in there. InputHandler function and checkerror are included too for fields email and password from user.
+USAR LA CONTRASEÑA aA123456 PARA CUALQUIER USUARIO DE LA BASE DE DATOS
 
-USE THE PASSWORD aA123456 FOR ALL USERS IN DB
+![alt text](img/LoginScreenshot.png)
 
-![alt text](img/LoginLogic.png)
+La función de login envía al archivo api.calls los datos introducidos en los inputs (después de que cada campo pase su función checkError), y allí LoginUser realiza la conexión con el backend y envía los datos en formato JSON.
 
-![alt text](img/LoginView.png)
-
-Same hooks and consts alike in Register are declared, and then inputhandler and checkerror for inputs.
-
-La función loginMe envía al archivo api.calls los datos introducidos en los inputs (después de que cada campo pase su función checkError), y allí LoginUser realiza la conexión con el backend y envía datos JSON.
-
-Luego, si accessData es correcto, la respuesta del backend contiene la información del token que se guarda en nuestra variable tokenData en el almacenamiento local. Así es como podremos obtener el nombre, la identificación y la función del usuario en otras páginas.
-
-In api.calls, the function LoginUser defines a clientData variable with the required formatted data needed our backend's client. (in this case method, headers and body with inputs data from register page).
-
-With al this functionality, Login throws two fields and a register me button, with same structure that in register.
+Luego, si accessData es correcto, la respuesta del backend contiene la información del token que se guarda en nuestra variable tokenData en el almacenamiento de redux. Así es como podremos obtener el nombre, el rol, y el id.
 
 ![alt text](img/apicallsLoginScreenshot.png)
 
@@ -177,13 +168,13 @@ With al this functionality, Login throws two fields and a register me button, wi
 <details>
 <summary>PROFILE</summary>
 
-![alt text](img/ProfileLogic.png)
+![alt text](img/ProfileLogicscreenshot.png)
 
-![alt text](img/ProfileView.png)
+![alt text](img/ProfileViewScreenshot.png)
 
 La página de perfil funciona de manera similar a la página de inicio de sesión y registro, generando 3 entradas con información de usuario extraída de la base de datos con la función useEffect cuando se carga la página. La principal diferencia es la nueva función Upload que envía nuevos datos ingresados en inputs como otros pero usando un método PUT para cargar valores en DB.
-El campo de correo electrónico no es editable, por lo que se agregó un accesorio deshabilitado para no permitir esta acción.
-En la otra mitad de la pantalla, aparecen las publicaciones de su usuario y puede editarlas o eliminarlas una por una.
+Los campos de correo electrónico y nickname no son editables, por lo que se agregó un accesorio deshabilitado para no permitir esta acción.
+En la otra mitad de la pantalla, aparecen las publicaciones de su usuario y puede editarlas o eliminarlas una por una en su vista detalle.
 
 -----------------------------------------
 
@@ -196,15 +187,29 @@ En la otra mitad de la pantalla, aparecen las publicaciones de su usuario y pued
 
 ![alt text](img/HomeViewScreenshot.png)
 
-Esta página actúa como la página de inicio a la que accede el usuario por primera vez y como fuente para escribir nuevas publicaciones y leer el resto. Si el usuario no ha iniciado sesión, la vista mostrará la primera y se podrá realizar cualquier acto excepto iniciar sesión y registrarse.
+Esta página actúa como la página de inicio a la que accede el usuario por primera vez y como fuente para consultar nuevas noticias sobre el gémnero. Si el usuario ha iniciado sesión, la vista se mostrará la primera y se podrá realizar cualquier acto excepto iniciar sesión y registrarse.
 
-La primera parte de la función de inicio es diferente y no necesita la función inputHandler. Agregamos un useEffect para ejecutar la función OBTENER datos de servicios al cargar la página. getServices funciona casi como las funciones anteriores de inicio de sesión y registro enviando datos a api.calls y luego al backend.
+La primera parte de la función de inicio es diferente y no necesita la función inputHandler. Agregamos un useEffect para ejecutar la función OBTENER noticias al cargar la página. getLatests funciona casi como las funciones anteriores de inicio de sesión y registro enviando datos a api.calls y luego al backend. Si el usuario es superAdmin, se mostrarán en primer lugar trs inputs para crear nuevas noticias.
 
-La principal diferencia en esta y otras páginas es que return no arroja entradas. Esta vez, los datos de servicios se definen como una matriz vacía y, a cambio, un método de mapa itera una tarjeta para cada objeto traído por la base de datos con claves definidas en el componente de tarjeta previamente definido en su propio archivo:
+Cada noticia dispone de una vista detalle donde consultar la información completa.
 
-Además, a cada tarjeta se le puede dar me gusta haciendo clic en el ícono del corazón o acceder a la vista detallada haciendo clic en la tarjeta misma.
+-----------------------------------------
 
-El cuadro de arriba en el feed es donde podemos crear una nueva publicación con un título y una descripción.
+</details>
+<details>
+<summary>COMMUNITY</summary>
+
+Al hacer login y ser redirigido a la vista home, podrá verse en el header un desplegable con el nombre de esta vista que contiene cada una de las categorías de posts en la que se muestran los posts relativos a esa apartado. 
+
+Una vez dentro de esta vista, aparecerá un botón para desplegar los cuadros para escribir un nuevo post y debajo los posts ya creados por otros usuarios mostrado con el nick del autor y un avance del título o la totalidad del mismo dependiendo de su extensión. 
+
+![alt text](img/CommunityLogicScreenshot.png)
+
+![alt text](img/CommunityLogic2Screenshot.png)
+
+Clickando en cualquiera de estos posts, accederemos a su vista detalle con la posibilidad de escribir comentarios y dar like al mismo.
+
+![alt text](img/CommunityViewScreenshot.png)
 
 -----------------------------------------
 
@@ -213,7 +218,7 @@ El cuadro de arriba en el feed es donde podemos crear una nueva publicación con
 <details>
 <summary>VISTAS DETAIL</summary>
 
-In home view and profile too, you can click in cards and go to their detail page. There you'll be able to see full info from any post and, in case of profile own post, edit them. 
+Tanto en profile, como home y community, cada tarjeta de post o noticia tienen su vista detalle donde poder leer toda la información de esta y, por el momento, interaccionar con los posts en forma de like o comentario. En el caso del propietario del post, puede también borrarlo o clickar en el icono de editar y ser redirigido al detail de profile donde se edita el mismo.
 
 ![alt text](img/DetailPostView.png)
 
@@ -265,4 +270,4 @@ Espaciales agradecimientos a todos mis compañeros que siempre están ahi para u
 
 [def]: #Agradecimientos-
 
-:arrow_up: [TABLE OF CONTENTS](#TABLE_OF_CONTENTS-open_file_folder)
+:arrow_up: [INDICE](#TABLE_OF_CONTENTS-open_file_folder)

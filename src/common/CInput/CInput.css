@@ -1,4 +1,3 @@
-
 .inputDesign {
     height: 3em;
     width: 18em;
@@ -27,15 +26,15 @@
 }
 
 
-.inputDesignError{
+.inputDesignError {
     border: 0.15em solid rgb(255, 0, 0);
 }
 
-.inputDescriptionHomeDesignError{
+.inputDescriptionHomeDesignError {
     border: 0.15em solid rgb(255, 0, 0);
 }
 
-.inputPicUrlCommunityDesign{
+.inputPicUrlCommunityDesign {
     height: 3em;
     width: 22em;
     border: 0.15em solid black;
@@ -44,7 +43,7 @@
 
 }
 
-.inputTitleCommunityDesign{
+.inputTitleCommunityDesign {
     height: 3em;
     width: 22em;
     border: 0.15em solid black;
@@ -52,8 +51,8 @@
     margin: 1em;
 }
 
-.inputTopicCommunityDesign{
- 
+.inputTopicCommunityDesign {
+
     height: 3em;
     width: 22em;
     border: 0.15em solid black;
@@ -61,7 +60,7 @@
     margin: 1em;
 }
 
-.inputNicknameHomeDesign{
+.inputNicknameHomeDesign {
     height: 3em;
     width: 22em;
     border: 0.15em solid black;

@@ -1,12 +1,12 @@
 
 import "./DetailMyPost.css";
 import { useSelector } from "react-redux";
-import { detailData } from "../../app/slices/postDetailSlice";
+import { detailData } from "../../app/Slices/postDetailSlice";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CButton } from "../../common/CButton/CButton";
 import { CInput } from "../../common/CInput/CInput";
-import { userData } from "../../app/slices/userSlice";
+import { userData } from "../../app/Slices/userSlice";
 import 'react-toastify/dist/ReactToastify.css';
 import { UpdatePostCall, deleteMyPostCall } from "../../services/api.Calls";
 import { ToastContainer, toast } from "react-toastify";
@@ -127,77 +127,77 @@ export const MyPostDetail = () => {
         detailRdx?.detail?.id &&
         <div className="detailDesign">
             <div className="detailPostContainerDesign">
-            <div className="xButton">
-                <CButton
-                    className={"backButton"}
-                    title={<Undo2 />}
-                    emitFunction={(() => navigate('/detailPost'))}
-                />
-                <div className="mypostInfoMessage"><h1>Edita tu post</h1></div>
-            </div>
-            <div className="postFieldsDesign">
-                <CInput
-                    className={`inputDesign ${postError.titleError !== "" ? "inputDesignError" : ""
-                        }`}
-                    type={"text"}
-                    name={"title"}
-                    disabled={write}
-                    value={post.title || ""}
-                    changeFunction={inputHandler}
-                    blurFunction={checkError}
-                />
-
-                <CInput
-                    className={`inputDescriptionHomeDesign ${postError.descriptionError !== "" ? "inputDescriptionHomeDesignError" : ""
-                        }`}
-                    type={"text"}
-                    name={"description"}
-                    disabled={write}
-                    value={post.description || ""}
-                    changeFunction={inputHandler}
-                    blurFunction={checkError}
-                />
-                <div className="inputsNButtonsContainer">
-                    <div className="prueba">
-                <CInput
-                    className={"inputDesign"}
-                    type={"text"}
-                    name={"picUrl"}
-                    disabled={write}
-                    value={post.picUrl || ""}
-                    changeFunction={inputHandler}
-                    blurFunction={checkError}
-                />
-                <CInput
-                    className={"inputDesign"}
-                    type={"text"}
-                    name={"ownerNickname"}
-                    disabled={true}
-                    value={post.ownerNickname}
-                />
-                <CInput
-                    className={"inputDesign"}
-                    type={"text"}
-                    name={"createdAt"}
-                    disabled={true}
-                    value={"Fecha de creación:" + post.createdAt}
-                />
-                </div>
-                <div className="buttonsMyPostContainer">
-                <div className='deleteMyPostContainerDesign'>
-                    <CButton key={post.id}
-                        className={"deleteMyPostButton"}
-                        title={<Trash />}
-                        emitFunction={(() => deleteMyPost(post.id))}
+                <div className="xButton">
+                    <CButton
+                        className={"backButton"}
+                        title={<Undo2 />}
+                        emitFunction={(() => navigate('/detailPost'))}
                     />
+                    <div className="mypostInfoMessage"><h1>Edita tu post</h1></div>
                 </div>
-                <CButton
-                    className={write === "" ? " updateButton" : "allowButton"}
-                    title={write === "" ? "Actualizar" : "Habilitar"}
-                    emitFunction={write === "" ? () => UpdatePost(post.id) : () => setWrite("")}
-                />
-                </div>
-                </div>
+                <div className="postFieldsDesign">
+                    <CInput
+                        className={`inputDesign ${postError.titleError !== "" ? "inputDesignError" : ""
+                            }`}
+                        type={"text"}
+                        name={"title"}
+                        disabled={write}
+                        value={post.title || ""}
+                        changeFunction={inputHandler}
+                        blurFunction={checkError}
+                    />
+
+                    <CInput
+                        className={`inputDescriptionHomeDesign ${postError.descriptionError !== "" ? "inputDescriptionHomeDesignError" : ""
+                            }`}
+                        type={"text"}
+                        name={"description"}
+                        disabled={write}
+                        value={post.description || ""}
+                        changeFunction={inputHandler}
+                        blurFunction={checkError}
+                    />
+                    <div className="inputsNButtonsContainer">
+                        <div className="prueba">
+                            <CInput
+                                className={"inputDesign"}
+                                type={"text"}
+                                name={"picUrl"}
+                                disabled={write}
+                                value={post.picUrl || ""}
+                                changeFunction={inputHandler}
+                                blurFunction={checkError}
+                            />
+                            <CInput
+                                className={"inputDesign"}
+                                type={"text"}
+                                name={"ownerNickname"}
+                                disabled={true}
+                                value={post.ownerNickname}
+                            />
+                            <CInput
+                                className={"inputDesign"}
+                                type={"text"}
+                                name={"createdAt"}
+                                disabled={true}
+                                value={"Fecha de creación:" + post.createdAt}
+                            />
+                        </div>
+                        <div className="buttonsMyPostContainer">
+                            <div className='deleteMyPostContainerDesign'>
+                                <CButton key={post.id}
+                                    className={"deleteMyPostButton"}
+                                    title={<Trash />}
+                                    emitFunction={(() => deleteMyPost(post.id))}
+                                />
+                            </div>
+                            <CButton
+                                className={write === "" ? " updateButton" : "allowButton"}
+                                title={write === "" ? "Actualizar" : "Habilitar"}
+                                emitFunction={write === "" ? () => UpdatePost(post.id) : () => setWrite("")}
+                            />
+                        </div>
+                    </div>
                 </div>
             </div>
             <ToastContainer
@@ -211,7 +211,7 @@ export const MyPostDetail = () => {
                 draggable
                 pauseOnHover
                 theme="dark"
-                />
+            />
         </div>
     )
 }

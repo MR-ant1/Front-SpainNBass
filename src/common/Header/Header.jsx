@@ -2,12 +2,12 @@
 import './Header.css'
 import { Navigator } from '../Navigator/Navigator'
 import { useSelector, useDispatch } from "react-redux";
-import { userData, logout } from "../../app/slices/userSlice";
+import { userData, logout } from "../../app/Slices/userSlice";
 import { LogoNavigator } from '../LogoNavigator/LogoNavigator';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { navigateCategory } from '../../app/slices/communitySlice';
-import {  CircleUser, LogIn, PowerOff } from 'lucide-react';
+import { navigateCategory } from '../../app/Slices/communitySlice';
+import { CircleUser, LogIn, PowerOff } from 'lucide-react';
 
 export const Header = () => {
 
@@ -22,25 +22,26 @@ export const Header = () => {
     const dispatch = useDispatch();
 
     const navigateCommunity = (e) => {
-        
+
         setCommunity((prevState) => ({
             ...prevState,
             election: e.target.value
         }))
-            if(e.target.value !== ""){
+        if (e.target.value !== "") {
             dispatch(navigateCategory({ category: e.target.value }))
-            navigate('/community')}
-            setCommunity({election:""})
+            navigate('/community')
+        }
+        setCommunity({ election: "" })
     }
     return (
         <div className="headerDesign">
-                <LogoNavigator
+            <LogoNavigator
                 path="/"
                 title={<img src='img/LogoSNB.png' alt="Logo"></img>}
-                />
-                {reduxUser.tokenData.token &&
-            <div className='dropDownContainer'>
-            <select
+            />
+            {reduxUser.tokenData.token &&
+                <div className='dropDownContainer'>
+                    <select
                         className={"dropDownDesign"}
                         type={"text"}
                         name={"election"}
@@ -56,23 +57,23 @@ export const Header = () => {
                         <option className='nueroChoice' value="NeuroFunk">NeuroFunk</option>
                         <option className='memesChoice' value="memes">Memes</option>
                     </select>
-                    </div>
-                    }
+                </div>
+            }
             {reduxUser?.tokenData?.token ? (
                 reduxUser.tokenData.user.role === 'super_admin' ? (
                     <div className='navigatorDesignSuper'>
                         <div className='profileSuperContainer'>
-                        <div className='superAdminButton'>
-                        <Navigator
-                            path='/superAdmin' title='super admin' />
+                            <div className='superAdminButton'>
+                                <Navigator
+                                    path='/superAdmin' title='super admin' />
+                            </div>
+                            <div className='homeProfileButton'>
+
+                                <Navigator
+                                    path='/profile' title={<CircleUser />} />
+                            </div>
                         </div>
-                        <div className='homeProfileButton'>
-                    
-                        <Navigator
-                            path='/profile' title={<CircleUser />}/>
-                        </div>
-                        </div>
-                        <div  
+                        <div
                             onClick={() => dispatch(logout({ tokenData: "" }))}>
                             <PowerOff />
                         </div>
@@ -92,10 +93,10 @@ export const Header = () => {
             ) : (
                 <div className='navigatorForeignDesign'>
                     <div className='accessForeignDesign'>
-                    <Navigator
-                        path="/access"
-                        title={<LogIn />}
-                    />
+                        <Navigator
+                            path="/access"
+                            title={<LogIn />}
+                        />
                     </div>
                 </div>
             )}

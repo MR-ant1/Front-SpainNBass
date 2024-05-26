@@ -1,6 +1,6 @@
 
 const root = "http://localhost:4001/api/"
-import { logout } from "../app/slices/userSlice";
+import { logout } from "../app/Slices/userSlice";
 
 export const loginCall = async (user) => {
 
@@ -62,7 +62,7 @@ export const GetProfile = async (token) => {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`          
+            "Authorization": `Bearer ${token}`
         }
     }
 
@@ -221,7 +221,7 @@ export const LikeCall = async (token, id) => {
 
     try {
         const response = await fetch(`${root}likes/${id}`, clientData)
-       
+
         const data = await response.json();
 
         if (!data.success) {
@@ -247,15 +247,15 @@ export const PostLikesCall = async (token, id) => {
 
     try {
         const response = await fetch(`${root}likes/posts/${id}`, clientData)
-       
+
         const data = await response.json();
 
         if (!data.success) {
             throw new Error(data.message)
         }
-     
+
         return data
-        
+
     } catch (error) {
         return error
     }
@@ -273,15 +273,15 @@ export const GetCommentsCall = async (token, id) => {
 
     try {
         const response = await fetch(`${root}comments/${id}`, clientData)
-       
+
         const data = await response.json();
 
         if (!data.success) {
             throw new Error(data.message)
         }
-     
+
         return data
-        
+
     } catch (error) {
         return error
     }
@@ -301,15 +301,15 @@ export const newCommentCall = async (token, id, comment) => {
 
     try {
         const response = await fetch(`${root}comments/${id}`, clientData)
-       
+
         const data = await response.json();
 
         if (!data.success) {
             throw new Error(data.message)
         }
-     
+
         return data
-        
+
     } catch (error) {
         return error
     }
@@ -334,9 +334,9 @@ export const createPostCall = async (token, post) => {
         if (!data.success) {
             throw new Error(data.message)
         }
-     
+
         return data
-        
+
     } catch (error) {
         return error
     }
@@ -360,9 +360,9 @@ export const getAllUsersCall = async (token) => {
         if (!data.success) {
             throw new Error(data.message)
         }
-     
+
         return data
-        
+
     } catch (error) {
         return error
     }
@@ -386,7 +386,7 @@ export const deleteUserCall = async (token, id) => {
             throw new Error(data.message)
         }
         return data
-        
+
     } catch (error) {
         return error
     }
@@ -410,7 +410,7 @@ export const bannedPostCall = async (id, token) => {
             throw new Error(data.message)
         }
         return data
-        
+
     } catch (error) {
         return error
     }
@@ -430,12 +430,12 @@ export const newLatestCall = async (token, latest) => {
     try {
         const response = await fetch(`${root}latests`, clientData)
         const data = await response.json();
-    
+
         if (!data.success) {
             throw new Error(data.message)
         }
         return data
-        
+
     } catch (error) {
         return error
     }
@@ -455,12 +455,12 @@ export const UpdatePostCall = async (token, post, id) => {
     try {
         const response = await fetch(`${root}posts/own/${id}`, clientData)
         const data = await response.json();
-    
+
         if (!data.success) {
             throw new Error(data.message)
         }
         return data
-        
+
     } catch (error) {
         return error
     }
@@ -479,12 +479,12 @@ export const userLikesCall = async (token) => {
     try {
         const response = await fetch(`${root}likes/users`, clientData)
         const data = await response.json();
-    
+
         if (!data.success) {
             throw new Error(data.message)
         }
         return data
-        
+
     } catch (error) {
         return error
     }

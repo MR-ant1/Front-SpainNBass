@@ -2,11 +2,11 @@
 import "./CInput.css"
 
 // eslint-disable-next-line react/prop-types
-export const CInput = ({className, type, name, placeholder, disabled, value, onClick, changeFunction, blurFunction}) => {
+export const CInput = ({ className, type, name, placeholder, disabled, value, onClick, changeFunction, blurFunction }) => {
 
     return (
 
-        <input 
+        <input
             className={className}
             type={type}
             name={name}
@@ -14,7 +14,7 @@ export const CInput = ({className, type, name, placeholder, disabled, value, onC
             disabled={disabled}
             value={value}
             onClick={onClick}
-            onChange={(e)=>changeFunction(e)}
+            onChange={(e) => changeFunction(e)}
             onBlur={(e) => blurFunction(e)}
         />
     )

@@ -1,4 +1,3 @@
-
 .HomeDesign {
     height: 100vh;
     width: 100vw;
@@ -11,12 +10,12 @@
 
 }
 
-.homeUserDesign{
+.homeUserDesign {
     height: 100%;
     width: 100%;
 }
 
-.cardsHomeDesign{
+.cardsHomeDesign {
     height: 100%;
     width: 100%;
     display: flex;
@@ -24,15 +23,15 @@
     justify-content: center;
 
     margin-top: 1em;
-  
+
 }
 
-.homeSuperDesign{
+.homeSuperDesign {
     height: 100%;
     width: 100%;
 }
 
-.inputSuperContainer{
+.inputSuperContainer {
     height: 80%;
     width: 100%;
 
@@ -42,7 +41,7 @@
     align-items: center;
 }
 
-.latestCardDesign{
+.latestCardDesign {
     height: 16em;
     width: 100%;
 
@@ -59,7 +58,7 @@
     align-items: center;
 }
 
-.latestCardDesign:hover{
+.latestCardDesign:hover {
     cursor: pointer;
     background-color: rgba(188, 188, 188, 0.598);
 
@@ -68,7 +67,7 @@
     transition: 0.3s;
 }
 
-.cardDivDesign{
+.cardDivDesign {
     height: 25%;
     width: 30%;
 
@@ -78,11 +77,11 @@
     align-items: center;
 
 
-    margin:0.5em;
+    margin: 0.5em;
     margin-bottom: 2em;
 }
 
-.viewTitleDesign{
+.viewTitleDesign {
     height: 10%;
     width: 100%;
 
@@ -93,11 +92,12 @@
 
     margin-top: 1em;
 
-    font-family:Impact;
+    font-family: Impact;
     font-size: 1.8em;
     color: rgb(40, 24, 24)
 }
-.viewSubTitleDesign{
+
+.viewSubTitleDesign {
     height: 10%;
     width: 100%;
 
@@ -108,7 +108,7 @@
 
     margin-top: 0.5em;
 
-    font-family:Impact;
+    font-family: Impact;
     font-size: 1.4em;
     color: rgb(40, 24, 24)
 }

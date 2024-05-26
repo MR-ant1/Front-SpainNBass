@@ -2,12 +2,11 @@
 import "./Community.css"
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from "react"
-import { userData } from "../../app/slices/userSlice"
-import { RedirectButton } from "../../common/RedirButton/RedirButton"
+import { userData } from "../../app/Slices/userSlice"
 import { useNavigate } from 'react-router-dom'
-import { updateDetail } from "../../app/slices/postDetailSlice"
+import { updateDetail } from "../../app/Slices/postDetailSlice"
 import 'react-toastify/dist/ReactToastify.css';
-import { categoryData } from "../../app/slices/communitySlice"
+import { categoryData } from "../../app/Slices/communitySlice"
 import { GetGenrePostCall, createPostCall } from "../../services/api.Calls"
 import { CInput } from "../../common/CInput/CInput"
 import { validate } from "../../utils/validations"
@@ -32,6 +31,13 @@ export const Community = () => {
     const [loadedPosts, setLoadedPosts] = useState(false)
 
     const [posts, setPosts] = useState([])
+
+    
+    useEffect(() => {
+        if (!reduxUser?.tokenData?.token) {
+            navigate("/")
+        }
+    }, [reduxUser])
 
     const [newPost, setNewPost] = useState({
         title: "",
@@ -139,28 +145,6 @@ export const Community = () => {
 
     return (
         <div className="communityDesign">
-
-            {!reduxUser.tokenData.token ? (
-                <>
-                    <div className="welcomeCommunityView">
-                        <div className="welcomeCommunityMsg">Bienvenido a Community!
-                            <div className="welcomeMessage">Inicia sesión o regístrate para poder comunicarte con el resto de fans</div>
-                        </div>
-                        <div className="buttonsCommunityDesign">
-                            <RedirectButton
-                                className={"cbuttonDesign"}
-                                title={"Login"}
-                                emitFunction={() => navigate("/login")}
-                            />
-                            <RedirectButton
-                                className={"cbuttonDesign"}
-                                title={"Register"}
-                                emitFunction={() => navigate("/register")}
-                            />
-                        </div>
-                    </div>
-                </>
-            ) : (
                 <>
                     <div className="inputsCommunityContainerDesign">
                         <div className="communityInputsDesign" hidden={invisible}>
@@ -243,7 +227,7 @@ export const Community = () => {
                             : <div className="communityNoPostsDesign">AUN NO HAY POST DE ESTA CATEGORIA</div>
 
                     )}
-                </>)}
+                </>
             <ToastContainer
                 position="top-left"
                 autoClose={1500}
@@ -256,19 +240,19 @@ export const Community = () => {
                 pauseOnHover
                 theme="dark"
             />
-             <ul className="paginateContainer">
-                        {pageNumbers.map((number) => (
-                            <div key={number} className="pageContainer">
-                                <a
-                                    onClick={() => paginate(number)}
-                                    href="#"
-                                    className="pageDesign"
-                                >
-                                    {number}
-                                </a>
-                            </div>
-                        ))}
-                    </ul>
+            <ul className="paginateContainer">
+                {pageNumbers.map((number) => (
+                    <div key={number} className="pageContainer">
+                        <a
+                            onClick={() => paginate(number)}
+                            href="#"
+                            className="pageDesign"
+                        >
+                            {number}
+                        </a>
+                    </div>
+                ))}
+            </ul>
         </div>
     )
 }
