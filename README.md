@@ -270,4 +270,4 @@ Espaciales agradecimientos a todos mis compañeros que siempre están ahi para u
 
 [def]: #Agradecimientos-
 
-:arrow_up: [INDICE](#TABLE_OF_CONTENTS-open_file_folder)
+:arrow_up: [INDICE](#INDICE-open_file_folder)
