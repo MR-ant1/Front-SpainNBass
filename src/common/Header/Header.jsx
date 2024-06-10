@@ -1,6 +1,6 @@
 
 import './Header.css'
-import '../../../img/LogoSNB.png'
+import logo from '../../../img/LogoSNB.png'
 import { Navigator } from '../Navigator/Navigator'
 import { useSelector, useDispatch } from "react-redux";
 import { userData, logout } from "../../app/Slices/userSlice";
@@ -38,7 +38,7 @@ export const Header = () => {
         <div className="headerDesign">
             <LogoNavigator
                 path="/"
-                title={<img src='../../../img/LogoSNB.png' alt="Logo"></img>}
+                title={logo}
             />
             {reduxUser.tokenData.token &&
                 <div className='dropDownContainer'>
