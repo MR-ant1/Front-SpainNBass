@@ -37,7 +37,7 @@ export const Header = () => {
         <div className="headerDesign">
             <LogoNavigator
                 path="/"
-                title={<img src='img/LogoSNB.jpg' alt="Logo"></img>}
+                title={<img src='img/LogoSNB.png' alt="Logo"></img>}
             />
             {reduxUser.tokenData.token &&
                 <div className='dropDownContainer'>
