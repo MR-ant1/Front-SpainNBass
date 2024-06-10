@@ -1,6 +1,6 @@
 
 import './Header.css'
-import '../../../img/LogoSNB.png'
+import '../../../img/LogoSNB.jpg'
 import { Navigator } from '../Navigator/Navigator'
 import { useSelector, useDispatch } from "react-redux";
 import { userData, logout } from "../../app/Slices/userSlice";
