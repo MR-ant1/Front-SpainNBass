@@ -1,5 +1,5 @@
 
-const root = "http://localhost:4001/api/"
+const root = "https://api-spain-n-bass-f0iucq8us-antonios-projects-ea526b06.vercel.app/api/"
 import { logout } from "../app/Slices/userSlice";
 
 export const loginCall = async (user) => {
