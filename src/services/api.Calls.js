@@ -1,5 +1,5 @@
 
-const root = "api-spainnbass-production.up.railway.app/api/"
+const root = "http://api-spainnbass-production.up.railway.app/api/"
 import { logout } from "../app/Slices/userSlice";
 
 export const loginCall = async (user) => {
