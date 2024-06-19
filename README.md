@@ -1,7 +1,7 @@
 
 # SpainNBass Frontend
 
-![alt text](img/FotoReadme.jpg)
+![alt text](./public/img/FotoReadme.jpg)
 
 ### OBJETIVO :dart:
 
@@ -43,7 +43,7 @@ Este proyecto de front permite tanto crear un usuario como loguerase en el mismo
 
 ### DIAGRAMA DB :clipboard:
 
-![alt text](img/DiagramaDB.png)
+![alt text](./public/img/DiagramaDB.png)
 
 ### COMO DESCARGAR Y PROBARLO :mag: 
 
@@ -92,19 +92,19 @@ También se añadió Provider y PersistGate para permitir funcionar correctament
 
 Después, se creó la variable app para asociarla a express, de esta forma podremos levantar el servidor.
 
-![alt text](img/MainScreenshot.png)
+![alt text](./public/img/MainScreenshot.png)
 
 "app" contendrá las secciones principales de nuestra pantalla, Cuerpo y Encabezado. Este archivo controlará la visualización web y permitirá agregar propiedades y diseños a ambas secciones más adelante.
 
 Una vez que hayamos creado el archivo de nuestra aplicación, agregamos los archivos "Cuerpo" y "Encabezado" para definir lo que estas secciones tendrán que mostrar. Primero su archivo Body, que no contiene datos de diseño y solo tiene las diferentes rutas de cada página para navegar. Entonces encontramos que el cuerpo actúa como un enrutador que mostrará una vista dependiendo de la ruta que tengamos en nuestra URL.
 
-![alt text](img/BodyScreenshot.png)
+![alt text](./public/img/BodyScreenshot.png)
 
 Puedes ver en la imagen todas las diferentes vistas que puede mostrar este frente y sus rutas para navegar. Tenga en cuenta que la primera Ruta se introduce para reubicar cualquier otra ruta no descrita en este archivo a la página de inicio con la ruta "/".
 
 Luego, se crea el encabezado. Esta sección se mostrará siempre en nuestra web para permitir moverse a todas las secciones.
 
-![alt text](img/HeaderScreenshot.png)
+![alt text](./public/img/HeaderScreenshot.png)
 
 En esta foto de la primera parte del encabezado, podemos ver cómo se trae tokenData para permitir mostrar uno de dos posibles encabezados y cómo se define la función cerrar sesión para hacer que este botón elimine el token y salga de un usuario registrado. También podemos ver la visualización del encabezado para los casos en los que el usuario posee un tokenData del inicio de sesión anterior. En este caso, todas las secciones de usuario se mostrarán en el encabezado (mi perfil, categorías del foro cerrar sesión y, si el usuario es super_admin, la sección "área de administración" para ver todos los usuarios).
 
@@ -113,7 +113,7 @@ La página de inicio se encuentra al comienzo del retorno y está fuera de condi
 
 Para que las rutas del cuerpo funcionen, necesitaremos BrowserRoutes que definimos antes y el archivo Navigator que contiene la lógica para cambiar una página dependiendo de la instrucción "enviar a" de la nueva página seleccionada.
 
-![alt text](img/NavigatorScreenshot.png)
+![alt text](./public/img/NavigatorScreenshot.png)
 
 Esto permite invocar la variable de navegación que envía a la ruta que damos dentro ("/")
 
@@ -129,17 +129,17 @@ El trabajo restante consiste en implementar páginas y lógica para hacerlas fun
 <details>
 <summary>REGISTRO/LOGIN</summary>
 
-![alt text](img/RegisterScreenshot1.png)
+![alt text](./public/img/RegisterScreenshot1.png)
 
-![alt text](img/accessView.png)
+![alt text](./public/img/accessView.png)
 
 En la página de registro e inicio de sesión, creamos una función donde primero se definen todas las variables y funciones de usuario, error y acción, y luego, en el retorno, se lanzan 4 entradas y un botón personalizado para registro, y en la otra mitad de la pantalla, los dos inputs con su botón para iniciar sesión
 
-![alt text](img/RegisterScreenshot2.png)
+![alt text](./public/img/RegisterScreenshot2.png)
 
 La función InputHandler hace que las entradas puedan cambiar dinámicamente mientras alguien escribe cada valor clave del objeto de usuario. Se da el mismo uso de InputHandler para verificar cualquier error cuando salimos del campo. Ambas funciones están definidas en nuestro modelo CIunput:
 
-![alt text](img/CInputScreenshot.png)
+![alt text](./public/img/CInputScreenshot.png)
 
 Hay algunas entradas diferentes para otras vistas, pero todas funcionan de la misma manera.
 
@@ -147,19 +147,19 @@ OnChangeFunction contiene la funcionalidad de cambio de escritura y onBlurFuncti
 
 Finalmente, el CButton contiene la función de "registro", lo que hace que se ejecute cuando hacemos clic en este componente.
 
-![alt text](img/CButtonScreenshot.png)
+![alt text](./public/img/CButtonScreenshot.png)
 
 Login usa una lógica similar usando la información recogida del usuario en forma de objeto enviado al archivo apicalls donde se conecta con el backend.
 
 USAR LA CONTRASEÑA aA123456 PARA CUALQUIER USUARIO DE LA BASE DE DATOS
 
-![alt text](img/LoginScreenshot.png)
+![alt text](./public/img/LoginScreenshot.png)
 
 La función de login envía al archivo api.calls los datos introducidos en los inputs (después de que cada campo pase su función checkError), y allí LoginUser realiza la conexión con el backend y envía los datos en formato JSON.
 
 Luego, si accessData es correcto, la respuesta del backend contiene la información del token que se guarda en nuestra variable tokenData en el almacenamiento de redux. Así es como podremos obtener el nombre, el rol, y el id.
 
-![alt text](img/apicallsLoginScreenshot.png)
+![alt text](./public/img/apicallsLoginScreenshot.png)
 
 -----------------------------------------
 
@@ -168,9 +168,9 @@ Luego, si accessData es correcto, la respuesta del backend contiene la informaci
 <details>
 <summary>PROFILE</summary>
 
-![alt text](img/ProfileLogicscreenshot.png)
+![alt text](./public/img/ProfileLogicscreenshot.png)
 
-![alt text](img/ProfileViewScreenshot.png)
+![alt text](./public/img/ProfileViewScreenshot.png)
 
 La página de perfil funciona de manera similar a la página de inicio de sesión y registro, generando 3 entradas con información de usuario extraída de la base de datos con la función useEffect cuando se carga la página. La principal diferencia es la nueva función Upload que envía nuevos datos ingresados en inputs como otros pero usando un método PUT para cargar valores en DB.
 Los campos de correo electrónico y nickname no son editables, por lo que se agregó un accesorio deshabilitado para no permitir esta acción.
@@ -183,9 +183,9 @@ En la otra mitad de la pantalla, aparecen las publicaciones de su usuario y pued
 <details>
 <summary>HOME</summary>
 
-![alt text](img/HomeLogic1.png)
+![alt text](./public/img/HomeLogic1.png)
 
-![alt text](img/HomeViewScreenshot.png)
+![alt text](./public/img/HomeViewScreenshot.png)
 
 Esta página actúa como la página de inicio a la que accede el usuario por primera vez y como fuente para consultar nuevas noticias sobre el gémnero. Si el usuario ha iniciado sesión, la vista se mostrará la primera y se podrá realizar cualquier acto excepto iniciar sesión y registrarse.
 
@@ -203,13 +203,13 @@ Al hacer login y ser redirigido a la vista home, podrá verse en el header un de
 
 Una vez dentro de esta vista, aparecerá un botón para desplegar los cuadros para escribir un nuevo post y debajo los posts ya creados por otros usuarios mostrado con el nick del autor y un avance del título o la totalidad del mismo dependiendo de su extensión. 
 
-![alt text](img/CommunityLogicScreenshot.png)
+![alt text](./public/img/CommunityLogicScreenshot.png)
 
-![alt text](img/CommunityLogic2Screenshot.png)
+![alt text](./public/img/CommunityLogic2Screenshot.png)
 
 Clickando en cualquiera de estos posts, accederemos a su vista detalle con la posibilidad de escribir comentarios y dar like al mismo.
 
-![alt text](img/CommunityViewScreenshot.png)
+![alt text](./public/img/CommunityViewScreenshot.png)
 
 -----------------------------------------
 
@@ -220,11 +220,11 @@ Clickando en cualquiera de estos posts, accederemos a su vista detalle con la po
 
 Tanto en profile, como home y community, cada tarjeta de post o noticia tienen su vista detalle donde poder leer toda la información de esta y, por el momento, interaccionar con los posts en forma de like o comentario. En el caso del propietario del post, puede también borrarlo o clickar en el icono de editar y ser redirigido al detail de profile donde se edita el mismo.
 
-![alt text](img/DetailPostView.png)
+![alt text](./public/img/DetailPostView.png)
 
-![alt text](img/DetailViewScreenshot.png)
+![alt text](./public/img/DetailViewScreenshot.png)
 
-![alt text](img/EditPostViewScreenshot.png)
+![alt text](./public/img/EditPostViewScreenshot.png)
 
 ---------------------------------------------------
 
@@ -236,7 +236,7 @@ Tanto en profile, como home y community, cada tarjeta de post o noticia tienen s
 
 Funciona como un feed con un mapa iterando tarjetas, pero esta vez todos los usuarios se obtienen desde la base de datos y solo super_admin (acceso controlado al comienzo de la función) puede acceder.
 
-![alt text](img/superadminScreenshot.png)
+![alt text](./public/img/superadminScreenshot.png)
 
 ---------------------------------------------------
 
